@@ -1,0 +1,4131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>اساطير رويل</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #040711;
+      --bg-card: #0e1526;
+      --bg-card-2: #18223c;
+      --gold: #fbbf24;
+      --gold-dark: #d97706;
+      --ticket: #ec4899;
+      --green: #10b981;
+      --red: #ef4444;
+      --cyan: #06b6d4;
+      --purple: #8b5cf6;
+      --text: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #020308;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      max-width: 480px;
+      background: radial-gradient(circle at top, #162244 0%, var(--bg-main) 75%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding-bottom: 85px;
+      box-shadow: 0 0 45px rgba(0,0,0,0.95);
+    }
+
+    /* شاشة الحظر الكاملة غير القابلة للتخطي */
+    .ban-screen {
+      position: fixed;
+      inset: 0;
+      background: #050711;
+      z-index: 999999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .ban-screen.active {
+      display: flex !important;
+    }
+    .ban-box {
+      background: rgba(220, 38, 38, 0.12);
+      border: 2px solid var(--red);
+      border-radius: 22px;
+      padding: 24px 18px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+    .ban-icon-anim {
+      font-size: 4.5rem;
+      margin-bottom: 12px;
+      animation: bounceDown 1.5s infinite;
+    }
+
+    .toast-msg {
+      position: fixed;
+      top: 65px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--green);
+      color: #000;
+      font-weight: 900;
+      padding: 10px 18px;
+      border-radius: 25px;
+      z-index: 7000;
+      display: none;
+      font-size: 0.84rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+      text-align: center;
+      max-width: 92%;
+    }
+
+    .auth-screen {
+      position: fixed;
+      inset: 0;
+      max-width: 480px;
+      margin: 0 auto;
+      background: linear-gradient(160deg, #070b19 0%, #1a0f2e 50%, #040711 100%);
+      z-index: 4500;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .auth-card {
+      background: rgba(14, 21, 38, 0.95);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.75);
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: #060913;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 14px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      border-radius: 9px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #94a3b8;
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+    }
+
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 0.78rem; margin-bottom: 4px; color: #cbd5e1; }
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #060913;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--gold); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+      font-weight: 900;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.12s;
+    }
+    .btn-primary:active { transform: scale(0.96); }
+
+    .top-bar {
+      background: rgba(14, 21, 38, 0.96);
+      backdrop-filter: blur(10px);
+      padding: 8px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 300;
+    }
+
+    .user-mini {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1e293b;
+      font-size: 1.3rem;
+      overflow: hidden;
+    }
+    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+    .vip-badge-mini {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      background: linear-gradient(135deg, #fbbf24, #b45309);
+      color: #000;
+      font-size: 0.56rem;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 6px;
+      border: 1px solid #fff;
+      z-index: 3;
+    }
+
+    .currencies { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+    .curr-pill {
+      background: #060913;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 3px 7px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-weight: 900;
+      font-size: 0.73rem;
+      cursor: pointer;
+    }
+    .curr-gold { border-color: var(--gold); color: var(--gold); }
+    .curr-pts { border-color: var(--cyan); color: #38bdf8; }
+    .curr-ticket { border-color: var(--ticket); color: #f472b6; }
+
+    .download-app-banner {
+      background: linear-gradient(135deg, #065f46 0%, #047857 50%, #0284c7 100%);
+      border: 2px solid #fde047;
+      border-radius: 16px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.45);
+    }
+    .download-app-banner:active { transform: scale(0.97); }
+    .dl-icon-anim {
+      font-size: 2rem;
+      animation: bounceDown 1.2s infinite ease-in-out;
+    }
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(-4px); }
+      50% { transform: translateY(5px); }
+    }
+
+    .frame-vip-0 { border: 2px solid #475569; }
+    .frame-vip-1, .frame-vip-2 { border: 2px solid #38bdf8; box-shadow: 0 0 10px #38bdf8; }
+    .frame-vip-3, .frame-vip-4 { border: 2px solid #a855f7; box-shadow: 0 0 12px #a855f7; }
+    .frame-vip-5, .frame-vip-6 { border: 3px solid #f59e0b; box-shadow: 0 0 14px #f59e0b; animation: pulseGlow 1.5s infinite; }
+    .frame-vip-7, .frame-vip-8 { border: 3px solid #ec4899; box-shadow: 0 0 16px #ec4899; animation: pulseGlow 1.2s infinite; }
+    .frame-vip-9, .frame-vip-10 {
+      border: 3px solid #fde047;
+      box-shadow: 0 0 22px #eab308, inset 0 0 10px #ef4444;
+      animation: rainbowSpin 2s infinite linear;
+    }
+
+    .chat-frame-0 { background: #1e293b; border: 1px solid #475569; color: #cbd5e1; }
+    .chat-frame-1, .chat-frame-2 { background: linear-gradient(135deg, #0c4a6e, #1e3a8a); border: 1px solid #38bdf8; box-shadow: 0 0 8px rgba(56,189,248,0.4); }
+    .chat-frame-3, .chat-frame-4 { background: linear-gradient(135deg, #3b0764, #581c87); border: 1px solid #c084fc; box-shadow: 0 0 10px rgba(192,132,252,0.5); }
+    .chat-frame-5, .chat-frame-6 { background: linear-gradient(135deg, #78350f, #b45309); border: 2px solid #fbbf24; box-shadow: 0 0 12px rgba(251,191,36,0.5); }
+    .chat-frame-7, .chat-frame-8 { background: linear-gradient(135deg, #831843, #be185d); border: 2px solid #f472b6; box-shadow: 0 0 14px rgba(244,114,182,0.6); }
+    .chat-frame-9, .chat-frame-10 { background: linear-gradient(135deg, #7f1d1d, #b45309, #3b0764); border: 2px solid #fde047; box-shadow: 0 0 18px #eab308; }
+
+    @keyframes pulseGlow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes rainbowSpin { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+    @keyframes floatAnim { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-7px) scale(1.06); } }
+
+    .view-section { display: none; padding: 12px; }
+    .view-section.active { display: block; }
+
+    .section-title {
+      font-size: 0.94rem;
+      font-weight: 900;
+      margin: 4px 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--gold);
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .game-card {
+      border-radius: 16px;
+      height: 132px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid rgba(251, 191, 36, 0.35);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.65);
+    }
+    .game-card:active { transform: scale(0.95); }
+
+    .game-card-art {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      z-index: 1;
+      animation: floatAnim 2.8s infinite ease-in-out;
+      padding-bottom: 20px;
+    }
+
+    .game-card::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 45%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.26), transparent);
+      transform: rotate(25deg);
+      animation: shineSweep 3.5s infinite;
+      z-index: 2;
+    }
+    @keyframes shineSweep { 0% { left: -60%; } 40%, 100% { left: 130%; } }
+
+    .game-card-overlay {
+      position: relative;
+      z-index: 3;
+      background: rgba(4, 7, 17, 0.85);
+      border-radius: 10px;
+      padding: 5px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .game-card-title { font-weight: 900; font-size: 0.84rem; color: #fff; }
+
+    .store-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .store-tab-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: var(--bg-card);
+      color: #cbd5e1;
+      font-weight: 900;
+      font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .store-tab-btn.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+      border-color: #fff;
+    }
+
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .store-pack-card {
+      background: linear-gradient(160deg, #162240 0%, #0c1324 100%);
+      border: 1.5px solid rgba(251, 191, 36, 0.4);
+      border-radius: 16px;
+      padding: 12px 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+    }
+    .store-pack-icon { font-size: 2.2rem; }
+    .store-pack-amount { font-weight: 900; font-size: 0.92rem; color: var(--gold); }
+    .store-buy-btn {
+      width: 100%;
+      margin-top: 2px;
+      padding: 7px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    /* شريط تقدم مستويات VIP */
+    .vip-progress-header {
+      background: var(--bg-card);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .vip-bar-track {
+      width: 100%;
+      height: 12px;
+      background: #060913;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+      border: 1px solid #334155;
+    }
+    .vip-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #fbbf24);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .game-modal {
+      position: fixed;
+      inset: 0;
+      max-width: 480px;
+      margin: 0 auto;
+      background: var(--bg-main);
+      z-index: 3500;
+      display: none;
+      flex-direction: column;
+    }
+    .game-modal.open { display: flex; }
+
+    .modal-header {
+      background: var(--bg-card);
+      padding: 9px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #263354;
+    }
+
+    .game-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px 10px;
+      overflow-y: auto;
+    }
+
+    .stage-display {
+      background: radial-gradient(circle, #162244 0%, #050814 90%);
+      border: 2px solid rgba(251, 191, 36, 0.35);
+      border-radius: 18px;
+      padding: 8px;
+      min-height: 345px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* أيقونة وصندوق تجميع أرباح الـ 8 جولات المجانية */
+    .free-spins-hud {
+      width: 100%;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #7f1d1d, #b45309, #7f1d1d);
+      border: 2px solid #fde047;
+      border-radius: 14px;
+      padding: 6px 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.5);
+    }
+    .free-spins-hud.active { display: flex; }
+    .fs-pot-collector {
+      background: #060913;
+      border: 1.5px solid #10b981;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 900;
+      font-size: 0.82rem;
+      color: #34d399;
+    }
+
+    .cascade-wrapper { position: relative; width: 100%; }
+    .cascade-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+      width: 100%;
+    }
+    .stone-cell {
+      aspect-ratio: 1;
+      background: linear-gradient(145deg, #1e2946, #0f172a);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      position: relative;
+    }
+    .stone-drop { animation: dropFromTop 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes dropFromTop {
+      0% { transform: translateY(-55px) scale(0.7); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .stone-match {
+      background: radial-gradient(circle, #fbbf24, #dc2626) !important;
+      border-color: #fff !important;
+      animation: explodeGem 0.4s ease forwards;
+    }
+    @keyframes explodeGem {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.25) rotate(10deg); filter: brightness(2); }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    .mult-orb-cell {
+      background: radial-gradient(circle, #fde047 0%, #ef4444 60%, #7e22ce 100%) !important;
+      border: 2px solid #fff !important;
+      color: #000 !important;
+      font-weight: 900 !important;
+      font-size: 1.05rem !important;
+      box-shadow: 0 0 18px #fde047;
+      animation: pulseGlow 0.6s infinite;
+    }
+
+    .king-full-column {
+      background: linear-gradient(180deg, #fde047 0%, #b45309 50%, #7f1d1d 100%) !important;
+      border: 2px solid #fff !important;
+      box-shadow: 0 0 20px #fbbf24;
+      animation: kingReelPulse 0.6s infinite alternate;
+      font-size: 1.75rem !important;
+      z-index: 5;
+    }
+    @keyframes kingReelPulse {
+      from { transform: scale(0.96); filter: brightness(1); }
+      to { transform: scale(1.05); filter: brightness(1.4); }
+    }
+
+    .scatter-celebration-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(180,83,9,0.96) 0%, rgba(4,7,17,0.97) 85%);
+      z-index: 50;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 15px;
+      animation: scatterZoom 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .scatter-celebration-overlay.show { display: flex; }
+    @keyframes scatterZoom {
+      0% { transform: scale(0.2); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .scatter-en-title {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #fde047;
+      text-shadow: 0 0 20px #ef4444, 0 4px 0 #991b1b;
+    }
+
+    .crash-history-strip {
+      width: 100%;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 4px 6px;
+      background: rgba(0,0,0,0.55);
+      border-radius: 10px;
+      margin-bottom: 6px;
+      border: 1px solid rgba(255,255,255,0.1);
+      scrollbar-width: none;
+    }
+    .crash-history-strip::-webkit-scrollbar { display: none; }
+    .crash-pill {
+      padding: 2px 7px;
+      border-radius: 8px;
+      font-size: 0.68rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .crash-pill.low { background: rgba(239, 68, 68, 0.25); color: #f87171; border: 1px solid #ef4444; }
+    .crash-pill.high { background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid #10b981; }
+
+    .rocket-tall-screen {
+      width: 100%;
+      height: 365px;
+      background: radial-gradient(circle at bottom, #1e1b4b 0%, #030612 85%);
+      border-radius: 16px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .center-pro-timer {
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      border: 5px solid var(--gold);
+      background: rgba(14, 21, 38, 0.92);
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    /* شبكة ألعاب الخطوات 35 (الدجاج والتفاح وغيرها) بالمضاعفات المعدلة */
+    .expanded-step-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      width: 100%;
+    }
+    .step-cell-35 {
+      padding: 7px 4px;
+      background: #162038;
+      border: 1.5px solid #263354;
+      border-radius: 9px;
+      text-align: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .step-cell-35.active-row {
+      border-color: var(--gold);
+      background: #233256;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+    }
+    .step-mult-badge {
+      font-size: 0.62rem;
+      font-weight: 900;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+
+    .profile-hero-cover {
+      height: 155px;
+      border-radius: 18px;
+      background-size: cover;
+      background-position: center;
+      background-image: linear-gradient(135deg, #1e1b4b, #7e22ce, #b45309);
+      position: relative;
+      margin-bottom: 48px;
+      border: 2px solid rgba(251, 191, 36, 0.4);
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 10px;
+    }
+    .change-cover-btn {
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      border: 1px solid var(--gold);
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .profile-main-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: #090d1f;
+      position: absolute;
+      bottom: -40px;
+      right: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      overflow: hidden;
+    }
+    .profile-main-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .info-grid-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .info-stat-box {
+      background: var(--bg-card);
+      border: 1px solid #263354;
+      border-radius: 12px;
+      padding: 9px 11px;
+    }
+    .info-stat-label { font-size: 0.7rem; color: #94a3b8; }
+    .info-stat-val { font-size: 0.88rem; font-weight: 900; color: #fff; margin-top: 2px; }
+
+    .bet-controls {
+      background: var(--bg-card);
+      padding: 9px;
+      border-radius: 14px;
+      border: 1px solid #1e2946;
+      margin-top: 6px;
+    }
+    .bet-tiers-scroll {
+      display: flex;
+      gap: 5px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      margin-bottom: 6px;
+      scrollbar-width: none;
+    }
+    .bet-tiers-scroll::-webkit-scrollbar { display: none; }
+    .tier-chip {
+      background: #070b16;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 4px 9px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 0.74rem;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .tier-chip.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+      border-color: #fff;
+    }
+
+    .auto-spin-bar { display: flex; gap: 5px; margin-bottom: 7px; }
+    .auto-btn {
+      flex: 1;
+      background: #17213a;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      padding: 5px 4px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: 265px;
+      height: 265px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wheel-pointer {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      z-index: 20;
+    }
+    .fruit-wheel-big {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 7px solid var(--gold);
+      position: relative;
+      background: conic-gradient(
+        #dc2626 0deg 45deg, #ea580c 45deg 90deg, #ca8a04 90deg 135deg, #16a34a 135deg 180deg,
+        #0284c7 180deg 225deg, #4f46e5 225deg 270deg, #9333ea 270deg 315deg, #db2777 315deg 360deg
+      );
+      transition: transform 3.2s cubic-bezier(0.12, 0.85, 0.22, 1);
+    }
+    .wheel-item-label {
+      position: absolute;
+      width: 54px;
+      height: 54px;
+      margin-left: -27px;
+      margin-top: -27px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.7rem;
+      color: #fff;
+      text-shadow: 0 2px 4px #000;
+    }
+
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 5000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .popup-overlay.open { display: flex; }
+    .popup-box {
+      width: 100%;
+      max-width: 430px;
+      background: var(--bg-card);
+      border: 2px solid var(--gold);
+      border-radius: 20px;
+      padding: 16px;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    /* شريط التنقل السفلي */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      background: rgba(10, 15, 29, 0.98);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 2px;
+      z-index: 900;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 0.58rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      padding: 2px 0;
+      transition: color 0.15s ease;
+    }
+    .nav-item.active { color: var(--gold); }
+    .nav-icon { font-size: 1.1rem; line-height: 1.1; margin-bottom: 2px; }
+
+    .task-card {
+      background: var(--bg-card);
+      border: 1px solid #263354;
+      border-radius: 14px;
+      padding: 11px;
+      margin-bottom: 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* أنماط الدردشة الحية العامة */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 165px);
+      background: #060a16;
+      border-radius: 16px;
+      border: 1px solid #263354;
+      overflow: hidden;
+    }
+    .chat-messages-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-msg-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      animation: fadeIn 0.2s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .chat-bubble {
+      flex: 1;
+      padding: 8px 11px;
+      border-radius: 12px;
+      position: relative;
+    }
+    .chat-msg-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      margin-bottom: 3px;
+    }
+    .chat-msg-text {
+      font-size: 0.84rem;
+      word-break: break-word;
+      color: #f1f5f9;
+    }
+    .chat-actions-strip {
+      display: flex;
+      gap: 6px;
+      margin-top: 5px;
+      justify-content: flex-end;
+    }
+    .chat-action-btn {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #cbd5e1;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .chat-action-btn:hover {
+      border-color: var(--gold);
+      color: #fff;
+    }
+    .chat-input-bar {
+      padding: 8px 10px;
+      background: #0a1020;
+      border-top: 1px solid #1e2946;
+      display: flex;
+      gap: 6px;
+    }
+
+    /* أنماط الأصدقاء والبحث */
+    .friends-search-box {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .friend-card {
+      background: var(--bg-card);
+      border: 1px solid #263354;
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .uid-badge {
+      background: #060913;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 2px 7px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    /* أنماط التسجيل الإضافية والصورة الشخصية وتأكيد واتساب */
+    .reg-extra-box {
+      display: none;
+    }
+    .reg-extra-box.active {
+      display: block;
+    }
+    .reg-avatar-picker {
+      background: #060913;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .reg-avatar-preview {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2px solid var(--gold);
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      overflow: hidden;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.35);
+    }
+    .reg-avatar-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .phone-input-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .country-code-input {
+      width: 90px;
+      text-align: center;
+      direction: ltr;
+      font-weight: 900;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .whatsapp-verify-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.88rem;
+      text-decoration: none;
+      text-align: center;
+      margin-top: 6px;
+      margin-bottom: 8px;
+      border: 1px solid #4ade80;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+      transition: transform 0.12s;
+    }
+    .whatsapp-verify-btn:active {
+      transform: scale(0.97);
+    }
+    .whatsapp-verified-badge {
+      display: none;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--green);
+      color: #34d399;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .whatsapp-verified-badge.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="toast-msg" id="toast"></div>
+
+<!-- شاشة الحظر الكاملة وغير القابلة للتخطي لحين فك الحظر في فايربيس -->
+<div class="ban-screen" id="bannedScreenOverlay">
+  <div class="ban-box">
+    <div class="ban-icon-anim">🚫🔒</div>
+    <h2 style="color:var(--red); font-size:1.4rem; font-weight:900; margin-bottom:8px;">حسابك محظور نهائياً</h2>
+    <div style="font-size:0.86rem; color:#cbd5e1; line-height:1.6; margin-bottom:14px;">
+      تم حظر هذا الحساب من قِبل إدارة <strong>اساطير رويل</strong> لمخالفة الشروط والأحكام أو محاولة التلاعب بالوقت واستخدام النواسخ وVPN.
+    </div>
+    <div style="background:#090d19; border:1px dashed var(--red); border-radius:12px; padding:10px; margin-bottom:12px;">
+      <div style="font-size:0.8rem; color:#94a3b8;">اسم اللاعب: <strong id="bannedUsername" style="color:#fff;">لاعب</strong></div>
+      <div style="font-size:0.8rem; color:#94a3b8; margin-top:3px;">المعرف الفريد: <span class="uid-badge" id="bannedUserId">#0000000</span></div>
+      <div style="font-size:0.75rem; color:var(--red); margin-top:5px;" id="bannedReason">السبب: مخالفة سياسات اللعب النظيف</div>
+    </div>
+    <p style="font-size:0.75rem; color:#ef4444; font-weight:700;">⚠️ لا يمكن تخطي هذه الشاشة إلا بعد قيام الأدمن بفك الحظر من السيرفر.</p>
+  </div>
+</div>
+
+<!-- نافذة أنميشن تنزيل التطبيق (100%) -->
+<div class="popup-overlay" id="downloadAppModal">
+  <div class="popup-box" style="text-align:center;">
+    <div style="font-size:3.2rem; margin-bottom:8px;" class="dl-icon-anim">📲</div>
+    <h3 style="color:var(--gold); margin-bottom:12px;">جاري تحميل اساطير رويل...</h3>
+    <div style="width:100%; height:22px; background:#060913; border-radius:12px; border:1px solid var(--gold); overflow:hidden; margin-bottom:8px;">
+      <div id="dlProgressBar" style="width:0%; height:100%; background:linear-gradient(90deg, #10b981, #fbbf24); transition:width 0.12s;"></div>
+    </div>
+    <div id="dlPercentText" style="font-size:1.4rem; font-weight:900; color:var(--green);">0%</div>
+  </div>
+</div>
+
+<!-- شاشة تسجيل الدخول وإنشاء الحساب -->
+<div class="auth-screen" id="authScreen">
+  <div style="text-align:center; margin-bottom:16px;">
+    <div style="font-size:3.6rem; animation:floatAnim 2.5s infinite;">👑</div>
+    <h1 style="color:var(--gold); font-size:1.6rem;">اساطير رويل</h1>
+    <p style="color:#94a3b8; font-size:0.78rem; margin-top:2px;">العالم الملكي للألعاب والجوائز</p>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">تسجيل دخول</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">حساب جديد</div>
+    </div>
+
+    <!-- إضافة صورة شخصية عند تسجيل حساب جديد -->
+    <div class="reg-extra-box" id="regAvatarSection">
+      <div class="reg-avatar-picker">
+        <div style="font-size:0.76rem; color:var(--gold); font-weight:900; margin-bottom:6px;">🖼️ الصورة الشخصية للحساب الجديد</div>
+        <div class="reg-avatar-preview" id="regAvatarPreview"><span>🦁</span></div>
+        <div style="display:flex; gap:5px; justify-content:center; margin-bottom:8px;">
+          <button type="button" onclick="selectRegAvatarPreset('🦁')" class="tier-chip">🦁</button>
+          <button type="button" onclick="selectRegAvatarPreset('🐺')" class="tier-chip">🐺</button>
+          <button type="button" onclick="selectRegAvatarPreset('🦅')" class="tier-chip">🦅</button>
+          <button type="button" onclick="selectRegAvatarPreset('👑')" class="tier-chip">👑</button>
+          <button type="button" onclick="selectRegAvatarPreset('🐉')" class="tier-chip">🐉</button>
+        </div>
+        <label class="btn-primary" style="display:inline-block; width:auto; padding:6px 14px; background:#1e2946; color:#fff; border:1px solid var(--gold); font-size:0.75rem; cursor:pointer;">
+          📷 رفع صورة شخصية من الجهاز
+          <input type="file" id="regAvatarInput" accept="image/*" style="display:none;" onchange="handleRegAvatarUpload(event)">
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label id="authUserLabel">اسم المستخدم أو رقم الهاتف</label>
+      <input type="text" id="authUser" class="form-input" placeholder="اسم المستخدم أو رقم الهاتف" oninput="onAuthUserInput(this)">
+      <div id="usernameRuleHint" style="display:none; font-size:0.68rem; color:#94a3b8; margin-top:3px;">
+        * حروف عربية أو إنجليزية فقط بدون زخرفة أو علامات تنقيط (أقصى 9 أحرف)
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>كلمة المرور</label>
+      <input type="password" id="authPass" class="form-input" placeholder="******">
+    </div>
+
+    <!-- حقول التسجيل الإضافية: تأكيد كلمة المرور + الدولة ومفتاح الدولة ورقم الهاتف + تأكيد واتساب -->
+    <div class="reg-extra-box" id="regFieldsSection">
+      <div class="form-group">
+        <label>تأكيد كلمة المرور</label>
+        <input type="password" id="authPassConfirm" class="form-input" placeholder="أعد كتابة كلمة المرور">
+      </div>
+
+      <div class="form-group">
+        <label>اختر الدولة أو اكتب مفتاح الدولة مباشرة</label>
+        <select id="authCountrySelect" class="form-input" style="margin-bottom:6px;" onchange="onCountrySelectChange(this.value)">
+          <option value="+964" selected>🇮🇶 العراق (+964)</option>
+          <option value="+966">🇸🇦 السعودية (+966)</option>
+          <option value="+20">🇪🇬 مصر (+20)</option>
+          <option value="+971">🇦🇪 الإمارات (+971)</option>
+          <option value="+962">🇯🇴 الأردن (+962)</option>
+          <option value="+965">🇰🇼 الكويت (+965)</option>
+          <option value="+974">🇶🇦 قطر (+974)</option>
+          <option value="+973">🇧🇭 البحرين (+973)</option>
+          <option value="+968">🇴🇲 عُمان (+968)</option>
+          <option value="+963">🇸🇾 سوريا (+963)</option>
+          <option value="+961">🇱🇧 لبنان (+961)</option>
+          <option value="+970">🇵🇸 فلسطين (+970)</option>
+          <option value="+967">🇾🇪 اليمن (+967)</option>
+          <option value="+213">🇩🇿 الجزائر (+213)</option>
+          <option value="+212">🇲🇦 المغرب (+212)</option>
+          <option value="+216">🇹🇳 تونس (+216)</option>
+          <option value="+218">🇱🇾 ليبيا (+218)</option>
+          <option value="+249">🇸🇩 السودان (+249)</option>
+          <option value="+90">🇹🇷 تركيا (+90)</option>
+          <option value="+49">🇩🇪 ألمانيا (+49)</option>
+          <option value="+1">🇺🇸 أمريكا / كندا (+1)</option>
+          <option value="+44">🇬🇧 بريطانيا (+44)</option>
+          <option value="custom">🌍 دولة أخرى (كتابة المفتاح يدوياً)</option>
+        </select>
+
+        <div class="phone-input-row">
+          <input type="text" id="authCountryCode" class="form-input country-code-input" value="+964" placeholder="+964" oninput="onCountryCodeDirectInput(this.value)">
+          <input type="tel" id="authPhoneInput" class="form-input" style="direction:ltr; text-align:right;" placeholder="78XXXXXXXX" oninput="updateWhatsappVerifyHref()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>تأكيد رقم الهاتف عبر واتساب</label>
+        <a id="whatsappVerifyLink" class="whatsapp-verify-btn" href="whatsapp://send?text=message_text&phone=" onclick="handleWhatsappVerifyClick(event)">إرسال رسالة واتساب</a>
+        <div id="whatsappVerifiedBadge" class="whatsapp-verified-badge">
+          ✅ تم تأكيد رقم الهاتف عبر رسالة واتساب بنجاح
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="authSubmitBtn" onclick="handleAuth()">دخول 🎮</button>
+  </div>
+</div>
+
+<!-- التطبيق الرئيسي -->
+<div class="app-wrapper">
+  <div class="top-bar">
+    <div class="user-mini" onclick="switchView('profileView')">
+      <div class="avatar-wrap frame-vip-0" id="topAvatarFrame">
+        <span id="topAvatarContent">🦁</span>
+        <span class="vip-badge-mini" id="topVipBadge">VIP 0</span>
+      </div>
+      <div>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <span style="font-weight:900; font-size:0.84rem;" id="topUsername">لاعب</span>
+          <span class="uid-badge" style="font-size:0.6rem; padding:1px 4px;" id="topUserUidMini">#0000000</span>
+        </div>
+        <div style="font-size:0.65rem; color:var(--gold);" id="topTitle">اساطير رويل</div>
+      </div>
+    </div>
+
+    <div class="currencies">
+      <button id="exclusiveAdminBtn" onclick="openAdminModal()" style="display:none; background:linear-gradient(135deg,#ef4444,#b91c1c); color:#fff; border:1px solid #fde047; padding:3px 7px; border-radius:8px; font-weight:900; font-size:0.68rem; cursor:pointer;">⚙️ الأدمن</button>
+      <div class="curr-pill curr-gold" onclick="switchView('storeView')">🪙 <span id="goldBalance">1.0M</span></div>
+      <div class="curr-pill curr-pts" onclick="switchView('storeView')">💎 <span id="vipPointsBalance">0</span></div>
+      <div class="curr-pill curr-ticket" onclick="switchView('walletView')">🎫 <span id="voucherBalance">0</span></div>
+      <button onclick="toggleSound()" id="soundBtn" style="background:#1e2946; border:none; color:#fff; width:28px; height:28px; border-radius:50%; cursor:pointer;">🔊</button>
+    </div>
+  </div>
+
+  <!-- 1. القائمة الرئيسية للألعاب -->
+  <div class="view-section active" id="lobbyView">
+    <div class="download-app-banner" onclick="startAppDownloadAnim()">
+      <div style="font-weight:900; font-size:0.92rem; color:#fde047;">📲 تنزيل تطبيق اساطير رويل</div>
+      <div class="dl-icon-anim">⬇️</div>
+    </div>
+    <div class="games-grid" id="gamesGridContainer"></div>
+  </div>
+
+  <!-- 2. المتجر -->
+  <div class="view-section" id="storeView">
+    <div class="section-title">
+      <span>🛒 المتجر</span>
+      <span style="font-size:0.78rem; color:#38bdf8;">نقاطك: <strong id="storePointsText">0</strong> 💎</span>
+    </div>
+
+    <div class="store-tabs">
+      <button class="store-tab-btn active" id="tabStoreGold" onclick="switchStoreTab('gold')">🪙 شراء الذهب</button>
+      <button class="store-tab-btn" id="tabStorePts" onclick="switchStoreTab('points')">💎 شراء نقاط VIP</button>
+    </div>
+
+    <div class="store-grid" id="storeGoldContainer"></div>
+    <div class="store-grid" id="storePointsContainer" style="display:none;"></div>
+  </div>
+
+  <!-- 3. مستويات VIP -->
+  <div class="view-section" id="vipView">
+    <div class="vip-progress-header">
+      <div style="display:flex; justify-content:space-between; font-weight:900; font-size:0.84rem;">
+        <span style="color:var(--gold);" id="vipCurrentLvlLabel">المستوى الحالي: VIP 0</span>
+        <span style="color:#38bdf8;"><span id="vipViewPoints">0</span> نقطة 💎</span>
+      </div>
+      <div class="vip-bar-track">
+        <div class="vip-bar-fill" id="vipProgressBarFill"></div>
+      </div>
+    </div>
+    <div id="vipListContainer"></div>
+  </div>
+
+  <!-- 4. المهام اليومية (720 قسيمة فقط كل 24 ساعة + حماية الوقت بالسيرفر) -->
+  <div class="view-section" id="tasksView">
+    <div class="section-title">
+      <span>🎯 المهام اليومية</span>
+      <span style="color:var(--ticket); font-size:0.82rem;"><span id="dailyVoucherEarned">0</span> / 720 🎫</span>
+    </div>
+    <div style="background:#090d1a; border:1px solid #263354; border-radius:12px; padding:8px 12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-size:0.76rem;">
+      <span style="color:#94a3b8;">⏳ تتجدد المهام تلقائياً كل 24 ساعة:</span>
+      <strong style="color:var(--gold);" id="tasksCountdownTimer">24:00:00</strong>
+    </div>
+    <div id="dailyTasksContainer"></div>
+  </div>
+
+  <!-- 5. المحفظة وسحب القسائم (كل 5000 قسيمة = 1 دولار / 1,000 د.ع) -->
+  <div class="view-section" id="walletView">
+    <div class="section-title">🎫 استبدال وسحب القسائم</div>
+    <div class="auth-card" style="margin-bottom:12px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#060913; padding:8px 12px; border-radius:10px; border:1px solid rgba(236,72,153,0.3);">
+        <span>رصيد قسائمك المتاح:</span>
+        <strong style="color:var(--ticket); font-size:1.1rem;"><span id="walletVouchers">0</span> 🎫</strong>
+      </div>
+
+      <div style="background:rgba(251,191,36,0.08); border:1px solid var(--gold); border-radius:10px; padding:7px 10px; font-size:0.76rem; color:var(--gold); margin-bottom:10px; text-align:center;">
+        ⚡ التسعيرة المعتمدة: كل <strong>5,000 قسيمة = 1 دولار (1,000 دينار عراقي)</strong>
+      </div>
+
+      <div class="form-group">
+        <label>طريقة السحب المطلوبة</label>
+        <select id="redeemMethodSelect" class="form-input">
+          <option value="زين كاش">📱 سحب زين كاش (Zain Cash)</option>
+          <option value="رصيد آسياسيل">📶 تحويل رصيد آسياسيل (Asiacell)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>رقم هاتف المحفظة / الخط المستلم</label>
+        <input type="tel" id="phoneInput" class="form-input" placeholder="078XXXXXXXX / 077XXXXXXXX">
+      </div>
+
+      <div class="form-group">
+        <label>فئة ومبلغ السحب</label>
+        <select id="rechargeSelect" class="form-input" onchange="updateRedeemCostHint()">
+          <option value="1">1$ أو 1,000 د.ع (5,000 قسيمة)</option>
+          <option value="2">2$ أو 2,000 د.ع (10,000 قسيمة)</option>
+          <option value="3">3$ أو 3,000 د.ع (15,000 قسيمة)</option>
+          <option value="5" selected>5$ أو 5,000 د.ع (25,000 قسيمة)</option>
+          <option value="10">10$ أو 10,000 د.ع (50,000 قسيمة)</option>
+          <option value="20">20$ أو 20,000 د.ع (100,000 قسيمة)</option>
+        </select>
+      </div>
+
+      <div style="font-size:0.76rem; color:#94a3b8; margin-bottom:10px;" id="redeemCostHint">
+        المطلوب خصمه: <strong style="color:var(--ticket);">25,000</strong> قسيمة
+      </div>
+
+      <button class="btn-primary" onclick="redeemPhoneCredit()">تأكيد طلب السحب 🚀</button>
+    </div>
+
+    <div class="section-title">📜 سجل طلبات السحب</div>
+    <div id="requestsHistoryBox" style="font-size:0.78rem; color:#94a3b8;"></div>
+  </div>
+
+  <!-- 6. الدردشة الحية العامة بين جميع اللاعبين -->
+  <div class="view-section" id="chatView">
+    <div class="section-title">
+      <span>💬 الدردشة العامة المباشرة</span>
+      <span style="font-size:0.75rem; color:#34d399;">🟢 متصل بالسيرفر</span>
+    </div>
+    <div class="chat-container">
+      <div class="chat-messages-box" id="liveChatMessagesBox">
+        <div style="text-align:center; color:#64748b; font-size:0.78rem; margin-top:20px;">جاري تحميل المحادثات...</div>
+      </div>
+      <div class="chat-input-bar">
+        <input type="text" id="liveChatInput" class="form-input" placeholder="اكتب رسالتك لجميع اللاعبين..." maxlength="250" onkeydown="if(event.key==='Enter') sendLiveChatMessage()">
+        <button class="btn-primary" style="width:auto; padding:0 14px; font-size:0.85rem;" onclick="sendLiveChatMessage()">إرسال 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. الأصدقاء والبحث بالاسم أو المعرف الفريد -->
+  <div class="view-section" id="friendsView">
+    <div class="section-title">
+      <span>👥 قائمة الأصدقاء</span>
+      <span style="font-size:0.75rem; color:var(--gold);" id="friendsCountDisplay">0 صديق</span>
+    </div>
+
+    <div class="auth-card" style="margin-bottom:12px;">
+      <div style="font-size:0.8rem; font-weight:900; color:var(--gold); margin-bottom:6px;">🔍 البحث عن لاعب وإضافته:</div>
+      <div class="friends-search-box">
+        <input type="text" id="friendSearchQuery" class="form-input" placeholder="اسم المستخدم أو المعرف الفريد (7 أرقام)...">
+        <button class="btn-primary" style="width:auto; padding:0 14px; font-size:0.85rem;" onclick="searchPlayerToFriend()">بحث 🔎</button>
+      </div>
+      <div id="friendSearchResultBox" style="display:none; margin-top:8px;"></div>
+    </div>
+
+    <div class="section-title">قائمتك:</div>
+    <div id="myFriendsListContainer">
+      <div style="text-align:center; color:#64748b; font-size:0.78rem; padding:15px;">لا يوجد أصدقاء مضافون بعد. ابحث عن صديق أو أضفه من الدردشة!</div>
+    </div>
+  </div>
+
+  <!-- 8. الملف الشخصي -->
+  <div class="view-section" id="profileView">
+    <div class="profile-hero-cover" id="profileCoverBanner">
+      <label class="change-cover-btn">
+        📷 تغيير الغلاف
+        <input type="file" accept="image/*" style="display:none;" onchange="uploadCoverPhoto(event)">
+      </label>
+      <div class="profile-main-avatar frame-vip-0" id="profileAvatarBig">🦁</div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:0 4px;">
+      <div>
+        <h3 id="profName" style="font-size:1.1rem; color:var(--gold);">لاعب</h3>
+        <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
+          <span id="profRoleBadge" style="font-size:0.75rem; color:#38bdf8;">عضو ملكي</span>
+          <span class="uid-badge" id="profUidBadge">#0000000</span>
+          <button onclick="copyMyUid()" style="background:#1e2946; color:#94a3b8; border:1px solid #334155; border-radius:6px; padding:1px 5px; font-size:0.65rem; cursor:pointer;">نسخ 📋</button>
+        </div>
+      </div>
+      <button onclick="switchView('friendsView')" style="background:#1e2946; color:#fff; border:1px solid var(--gold); padding:5px 10px; border-radius:9px; font-size:0.74rem; font-weight:700; cursor:pointer;">👥 أصدقائي</button>
+    </div>
+
+    <div class="info-grid-cards">
+      <div class="info-stat-box">
+        <div class="info-stat-label">👑 مستوى VIP</div>
+        <div class="info-stat-val" style="color:var(--gold);" id="infoVip">VIP 0</div>
+      </div>
+      <div class="info-stat-box">
+        <div class="info-stat-label">🪙 الذهب</div>
+        <div class="info-stat-val" style="color:var(--gold);" id="infoGold">1,000,000</div>
+      </div>
+      <div class="info-stat-box">
+        <div class="info-stat-label">🎫 القسائم</div>
+        <div class="info-stat-val" style="color:var(--ticket);" id="infoVouchers">0</div>
+      </div>
+      <div class="info-stat-box">
+        <div class="info-stat-label">👥 الأصدقاء</div>
+        <div class="info-stat-val" style="color:#38bdf8;" id="infoFriends">0</div>
+      </div>
+    </div>
+
+    <div class="auth-card" style="margin-bottom:12px;">
+      <div style="font-size:0.78rem; font-weight:900; color:var(--gold); margin-bottom:6px;">💬 إطار الدردشة:</div>
+      <div id="vipChatPreviewBox" class="chat-frame-0" style="padding:10px 14px; border-radius:14px; font-size:0.82rem; display:flex; align-items:center; gap:8px;">
+        <span id="chatPreviewIcon">🦁</span>
+        <div>
+          <strong id="chatPreviewUser" style="color:var(--gold);">لاعب:</strong>
+          <span>اساطير رويل 👑</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-card" style="margin-bottom:12px;">
+      <div style="font-weight:900; font-size:0.8rem; margin-bottom:8px; color:var(--gold);">
+        🖼️ تغيير الصورة الشخصية (<span id="avatarQuotaText">2/2</span>):
+      </div>
+      <div style="display:flex; gap:6px; justify-content:center; margin-bottom:8px;">
+        <button onclick="changeAvatarPreset('🦁')" class="tier-chip">🦁</button>
+        <button onclick="changeAvatarPreset('🐺')" class="tier-chip">🐺</button>
+        <button onclick="changeAvatarPreset('🦅')" class="tier-chip">🦅</button>
+        <button onclick="changeAvatarPreset('👑')" class="tier-chip">👑</button>
+        <button onclick="changeAvatarPreset('🐉')" class="tier-chip">🐉</button>
+      </div>
+      <label class="btn-primary" style="display:block; text-align:center; background:#1e2946; color:#fff; border:1px solid var(--gold); font-size:0.8rem;">
+        📤 اختيار صورة من الهاتف
+        <input type="file" accept="image/*" style="display:none;" onchange="uploadCustomAvatar(event)">
+      </label>
+    </div>
+
+    <button class="btn-primary" style="background:var(--red); color:#fff;" onclick="logoutUser()">تسجيل الخروج 🚪</button>
+  </div>
+
+  <!-- شريط التنقل السفلي الشامل (8 أقسام رئيسية مع المتجر وVIP) -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="switchView('lobbyView', this)"><span class="nav-icon">🎰</span><span>الألعاب</span></div>
+    <div class="nav-item" onclick="switchView('storeView', this)"><span class="nav-icon">🛒</span><span>المتجر</span></div>
+    <div class="nav-item" onclick="switchView('vipView', this)"><span class="nav-icon">👑</span><span>VIP</span></div>
+    <div class="nav-item" onclick="switchView('chatView', this)"><span class="nav-icon">💬</span><span>الدردشة</span></div>
+    <div class="nav-item" onclick="switchView('friendsView', this)"><span class="nav-icon">👥</span><span>الأصدقاء</span></div>
+    <div class="nav-item" onclick="switchView('tasksView', this)"><span class="nav-icon">🎯</span><span>المهام</span></div>
+    <div class="nav-item" onclick="switchView('walletView', this)"><span class="nav-icon">🎫</span><span>المحفظة</span></div>
+    <div class="nav-item" onclick="switchView('profileView', this)"><span class="nav-icon">👤</span><span>ملفي</span></div>
+  </div>
+</div>
+
+<!-- نافذة اللعب المباشر -->
+<div class="game-modal" id="gameModal">
+  <div class="modal-header">
+    <div>
+      <strong id="modalTitle" style="color:var(--gold); font-size:0.92rem;">اللعبة</strong>
+      <div style="font-size:0.72rem; color:#cbd5e1;">
+        🪙 <strong style="color:var(--gold);" id="modalGoldText">1.0M</strong> | 🎫 <strong style="color:var(--ticket);" id="modalVoucherText">0</strong>
+      </div>
+    </div>
+    <button onclick="closeGameModal()" style="background:var(--red); color:#fff; border:none; padding:5px 12px; border-radius:9px; font-weight:700; cursor:pointer;">خروج ✖</button>
+  </div>
+
+  <div class="game-stage">
+    <div class="stage-display" id="stageDisplay">
+      <!-- شريط وأيقونة تجميع ربح الـ 8 جولات مجانية -->
+      <div class="free-spins-hud" id="freeSpinHud">
+        <div style="font-weight:900; font-size:0.78rem; color:#fde047;">
+          🔔 الدورات المجانية: <span id="freeSpinCount">8</span> / 8
+        </div>
+        <div class="fs-pot-collector" id="fsPotCollectorBox">
+          <span>🎁 مجمع المجاني:</span>
+          <strong id="freeSpinPotValue">0</strong>
+        </div>
+      </div>
+
+      <!-- نافذة SCATTER الاحتفالية -->
+      <div class="scatter-celebration-overlay" id="scatterOverlay">
+        <div style="font-size:3.5rem; margin-bottom:4px;">👑🔔👑</div>
+        <div class="scatter-en-title">SCATTER</div>
+        <div style="font-size:1.25rem; font-weight:900; color:#fff; margin:8px 0;">لقد ربحت 8 دورات مجانية!</div>
+      </div>
+
+      <div id="stageInnerContent" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
+    </div>
+
+    <div id="gameStatusMsg" style="text-align:center; font-weight:900; font-size:0.84rem; color:var(--gold); margin:5px 0; min-height:20px;"></div>
+
+    <div class="bet-controls" id="standardBetControls">
+      <div class="bet-tiers-scroll" id="betTiersBar"></div>
+
+      <div class="auto-spin-bar">
+        <button class="auto-btn" onclick="startAutoSpins(10)">10 دورات</button>
+        <button class="auto-btn" onclick="startAutoSpins(100)">100 دورة</button>
+        <button class="auto-btn" onclick="startAutoSpins(500)">500 دورة</button>
+        <button class="auto-btn" onclick="startAutoSpins(999999)">تلقائي ∞</button>
+        <button class="auto-btn" id="stopAutoBtn" style="background:var(--red); color:#fff; display:none;" onclick="stopAutoSpins()">إيقاف ⏹</button>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button class="btn-primary" id="playMainBtn" onclick="executeGameTurn()">دوران 🚀</button>
+        <button class="btn-primary" id="cashoutMainBtn" style="display:none; background:var(--green); color:#fff;" onclick="cashoutStepGame()">سحب الربح 💰</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة الدفع (زين كاش / رصيد) -->
+<div class="popup-overlay" id="zaincashModal">
+  <div class="popup-box">
+    <h3 style="color:var(--gold); text-align:center; margin-bottom:6px;">💳 إتمام الشراء</h3>
+    <p style="font-size:0.84rem; color:#fde047; font-weight:900; text-align:center; margin-bottom:10px;" id="zcOrderSummaryText"></p>
+
+    <div style="background:#060913; border:1.5px dashed var(--gold); border-radius:14px; padding:11px; text-align:center; margin-bottom:10px;">
+      <div style="font-size:1rem; font-weight:900; color:var(--green); margin:3px 0;">
+        📱 زين كاش: 07824361868
+      </div>
+      <div style="font-size:1rem; font-weight:900; color:#38bdf8; margin:3px 0;">
+        📱 تحويل رصيد: 07766788450
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>رقم هاتفك المحول منه:</label>
+      <input type="tel" id="zcSenderPhone" class="form-input" placeholder="078XXXXXXXX / 077XXXXXXXX">
+    </div>
+
+    <div class="form-group">
+      <label class="btn-primary" style="display:block; text-align:center; background:#1e2946; color:#fff; border:1px solid var(--cyan); font-size:0.8rem; margin-top:4px;">
+        📸 إرفاق صورة التحويل
+        <input type="file" accept="image/*" style="display:none;" onchange="handleReceiptUpload(event)">
+      </label>
+      <div id="receiptPreviewBox" style="display:none; text-align:center; margin-top:8px;">
+        <img id="receiptPreviewImg" src="" style="max-height:100px; border-radius:10px; border:2px solid var(--green);">
+      </div>
+    </div>
+
+    <div style="display:flex; gap:8px;">
+      <button class="btn-primary" onclick="submitStorePurchaseOrder()">إرسال الطلب ✅</button>
+      <button class="btn-primary" style="background:#334155; color:#fff; width:35%;" onclick="document.getElementById('zaincashModal').classList.remove('open')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- نافذة الإبلاغ عن الرسائل -->
+<div class="popup-overlay" id="reportChatModal">
+  <div class="popup-box">
+    <h3 style="color:var(--gold); text-align:center; margin-bottom:10px;">🚩 إبلاغ عن رسالة</h3>
+    <p style="font-size:0.82rem; color:#cbd5e1; margin-bottom:8px;" id="reportTargetUserText">إبلاغ عن مخالفة:</p>
+    <div class="form-group">
+      <label>سبب الإبلاغ</label>
+      <input type="text" id="reportReasonInput" class="form-input" placeholder="اكتب سبب المخالفة (سب، احتيال، الخ)...">
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn-primary" onclick="submitChatMessageReport()">إرسال البلاغ 🚩</button>
+      <button class="btn-primary" style="background:#334155; color:#fff; width:35%;" onclick="closeReportModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- لوحة الأدمن (admin / 12345) مع إدارة الحظر والشحن -->
+<div class="popup-overlay" id="adminModal">
+  <div class="popup-box">
+    <h3 style="color:var(--gold); margin-bottom:10px;">👑 لوحة الأدمن - اساطير رويل</h3>
+
+    <!-- إدارة الحظر وفك الحظر -->
+    <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px; background:#1a0f1f; padding:8px; border-radius:10px;">
+      <h4 style="color:var(--red); margin-bottom:6px; font-size:0.84rem;">🚫 إدارة حظر اللاعبين:</h4>
+      <input type="text" id="adminBanTarget" class="form-input" placeholder="اسم المستخدم أو المعرف (7 أرقام)" style="font-size:0.76rem; margin-bottom:6px;">
+      <div style="display:flex; gap:6px;">
+        <button class="btn-primary" style="background:var(--red); font-size:0.75rem; padding:7px;" onclick="adminSetBan(true)">حظر اللاعب 🔒</button>
+        <button class="btn-primary" style="background:var(--green); font-size:0.75rem; padding:7px;" onclick="adminSetBan(false)">فك الحظر 🔓</button>
+      </div>
+    </div>
+
+    <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px;">
+      <h4 style="color:#38bdf8; margin-bottom:6px; font-size:0.84rem;">⏳ طلبات الشراء المعلقة:</h4>
+      <div id="adminPendingOrdersList" style="max-height:180px; overflow-y:auto; font-size:0.75rem;"></div>
+    </div>
+
+    <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px;">
+      <h4 style="color:var(--gold); font-size:0.82rem; margin-bottom:6px;">🎁 شحن مباشر للاعب:</h4>
+      <div style="display:flex; gap:5px; margin-bottom:6px;">
+        <input type="text" id="adminTargetUser" class="form-input" placeholder="اسم المستخدم" style="font-size:0.76rem;">
+        <input type="number" id="adminGiveGold" class="form-input" placeholder="ذهب" style="font-size:0.76rem;">
+        <input type="number" id="adminGivePts" class="form-input" placeholder="نقاط VIP" style="font-size:0.76rem;">
+      </div>
+      <button class="btn-primary" style="background:var(--green); font-size:0.78rem; padding:8px;" onclick="adminModifyUser()">تنفيذ الشحن ⚡</button>
+    </div>
+
+    <button class="btn-primary" style="background:var(--red); color:#fff;" onclick="document.getElementById('adminModal').classList.remove('open')">إغلاق</button>
+  </div>
+</div>
+
+<script>
+  /**************************************************************
+   * 1. ربط Firebase وحفظ ومزامنة الوقت الحقيقي من السيرفر
+   **************************************************************/
+  const firebaseConfig = {
+    apiKey: "AIzaSyC0JJggNN2S-bnZcPnf5hMHfrQwP_iivzU",
+    databaseURL: "https://bott-12bfe-default-rtdb.firebaseio.com",
+    projectId: "bott-12bfe",
+    storageBucket: "bott-12bfe.appspot.com",
+    messagingSenderId: "754139726838",
+    appId: "1:754139726838:android:10a02de5cd92e349da3dd7"
+  };
+
+  let db = null;
+  let serverTimeOffset = 0;
+  let isFirebaseConnected = false;
+
+  const bootPerfTime = performance.now();
+  const bootWallTime = Date.now();
+
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    db.ref('.info/serverTimeOffset').on('value', snap => {
+      serverTimeOffset = snap.val() || 0;
+    });
+    db.ref('.info/connected').on('value', snap => {
+      isFirebaseConnected = !!snap.val();
+    });
+  } catch (e) {}
+
+  // الحصول على توقيت السيرفر الموثوق بدون الاعتماد على وقت هاتف المستخدم
+  function getTrustedTimestamp() {
+    return Math.floor(bootWallTime + (performance.now() - bootPerfTime) + serverTimeOffset);
+  }
+
+  function getTrustedDayKey() {
+    const d = new Date(getTrustedTimestamp());
+    return `${d.getUTCFullYear()}-${d.getUTCMonth()+1}-${d.getUTCDate()}`;
+  }
+
+  function getTrustedMonthKey() {
+    const d = new Date(getTrustedTimestamp());
+    return `${d.getUTCFullYear()}-${d.getUTCMonth()+1}`;
+  }
+
+  function isTodayFriday() {
+    return new Date(getTrustedTimestamp()).getDay() === 5;
+  }
+
+  /**************************************************************
+   * 2. حماية ضد النواسخ (Cloners / Dual Space) وVPN والتلاعب
+   **************************************************************/
+  function checkSecurityAndIntegrity() {
+    const ua = (navigator.userAgent || '').toLowerCase();
+    const suspiciousKeywords = ['parallel', 'dualspace', 'virtualapp', 'clone', 'xposed', 'sandbox'];
+    const isClonerDetected = suspiciousKeywords.some(k => ua.includes(k)) || !!navigator.webdriver;
+
+    // فحص انحراف التوقيت الزمني (VPN Check / Time Drift)
+    const clientOffsetMin = -new Date().getTimezoneOffset(); // دقائق
+    const iraqOffsetMin = 180; // توقيت العراق UTC+3
+    const isVpnSuspect = Math.abs(clientOffsetMin - iraqOffsetMin) > 420; // اختلاف كبير عن التوقيت المحلي
+
+    return {
+      isClonerDetected,
+      isVpnSuspect,
+      isTimeTampered: Math.abs(serverTimeOffset) > 24 * 60 * 60 * 1000 // تلاعب كبير بساعة الجهاز
+    };
+  }
+
+  let lastActionPerfTime = 0;
+  let isActionLocked = false;
+
+  function guardAntiSpam(cooldownMs = 300) {
+    const now = performance.now();
+    if (isActionLocked || (now - lastActionPerfTime < cooldownMs)) return false;
+    lastActionPerfTime = now;
+    return true;
+  }
+
+  /**************************************************************
+   * 3. تنزيل التطبيق (أنميشن 100%)
+   **************************************************************/
+  const APK_DOWNLOAD_URL = "https://www.mediafire.com/file/bhhl4j2y1zjalbm/thology_roye.apk/file";
+
+  function startAppDownloadAnim() {
+    playGameSound('click');
+    const modal = document.getElementById('downloadAppModal');
+    const bar = document.getElementById('dlProgressBar');
+    const txt = document.getElementById('dlPercentText');
+    modal.classList.add('open');
+    let pct = 0;
+    bar.style.width = '0%';
+    txt.innerText = '0%';
+
+    const timer = setInterval(() => {
+      pct += 5;
+      if (pct > 100) pct = 100;
+      bar.style.width = pct + '%';
+      txt.innerText = pct + '%';
+      if (pct % 20 === 0) playGameSound('tick');
+
+      if (pct >= 100) {
+        clearInterval(timer);
+        playGameSound('win');
+        setTimeout(() => {
+          modal.classList.remove('open');
+          window.location.href = APK_DOWNLOAD_URL;
+        }, 400);
+      }
+    }, 80);
+  }
+
+  /**************************************************************
+   * 4. باقات المتجر ومستويات VIP
+   **************************************************************/
+  const GOLD_STORE_PACKAGES = [
+    { id: 'g1', label: '200 مليون ذهب',     goldAmount: 200000000,    priceUSD: 2,   icon: '🪙' },
+    { id: 'g2', label: '600 مليون ذهب',     goldAmount: 600000000,    priceUSD: 6,   icon: '💰' },
+    { id: 'g3', label: '1 مليار و300 مليون', goldAmount: 1300000000,   priceUSD: 12,  icon: '💎' },
+    { id: 'g4', label: '2 مليار و700 مليون', goldAmount: 2700000000,   priceUSD: 24,  icon: '🏆' },
+    { id: 'g5', label: '7 مليار و200 مليون', goldAmount: 7200000000,   priceUSD: 48,  icon: '👑' },
+    { id: 'g6', label: '15 مليار ذهب',       goldAmount: 15000000000,  priceUSD: 90,  icon: '🌟' },
+    { id: 'g7', label: '25 مليار ذهب',       goldAmount: 25000000000,  priceUSD: 135, icon: '🔥' },
+    { id: 'g8', label: '50 مليار ذهب',       goldAmount: 50000000000,  priceUSD: 220, icon: '⚡' },
+    { id: 'g9', label: '100 مليار ذهب',      goldAmount: 100000000000, priceUSD: 410, icon: '🐉' }
+  ];
+
+  const VIP_POINTS_PACKAGES = [
+    { id: 'p1',  points: 50,    priceUSD: 2,    icon: '🥉' },
+    { id: 'p2',  points: 350,   priceUSD: 14,   icon: '🥈' },
+    { id: 'p3',  points: 850,   priceUSD: 34,   icon: '🥇' },
+    { id: 'p4',  points: 1700,  priceUSD: 68,   icon: '⚔️' },
+    { id: 'p5',  points: 3100,  priceUSD: 124,  icon: '💎' },
+    { id: 'p6',  points: 6200,  priceUSD: 248,  icon: '🌟' },
+    { id: 'p7',  points: 8300,  priceUSD: 332,  icon: '🔥' },
+    { id: 'p8',  points: 15000, priceUSD: 600,  icon: '⚡' },
+    { id: 'p9',  points: 23000, priceUSD: 920,  icon: '🐉' },
+    { id: 'p10', points: 37000, priceUSD: 1480, icon: '👑' }
+  ];
+
+  const VIP_TIERS = [
+    { level: 1, reqPoints: 50,    goldBonus: 50000000,    extraAvatars: 1,  icon: '🥉', title: 'VIP 1' },
+    { level: 2, reqPoints: 350,   goldBonus: 150000000,   extraAvatars: 2,  icon: '🥈', title: 'VIP 2' },
+    { level: 3, reqPoints: 850,   goldBonus: 400000000,   extraAvatars: 3,  icon: '🥇', title: 'VIP 3' },
+    { level: 4, reqPoints: 1700,  goldBonus: 800000000,   extraAvatars: 4,  icon: '⚔️', title: 'VIP 4' },
+    { level: 5, reqPoints: 3100,  goldBonus: 1500000000,  extraAvatars: 5,  icon: '💎', title: 'VIP 5' },
+    { level: 6, reqPoints: 6200,  goldBonus: 3000000000,  extraAvatars: 6,  icon: '🌟', title: 'VIP 6' },
+    { level: 7, reqPoints: 8300,  goldBonus: 6000000000,  extraAvatars: 8,  icon: '🔥', title: 'VIP 7' },
+    { level: 8, reqPoints: 15000, goldBonus: 12000000000, extraAvatars: 10, icon: '⚡', title: 'VIP 8' },
+    { level: 9, reqPoints: 23000, goldBonus: 25000000000, extraAvatars: 12, icon: '🐉', title: 'VIP 9' },
+    { level: 10,reqPoints: 37000, goldBonus: 60000000000, extraAvatars: 20, icon: '👑', title: 'VIP 10' }
+  ];
+
+  const BET_TIERS = [
+    { label: '100K', val: 100000 },
+    { label: '300K', val: 300000 },
+    { label: '500K', val: 500000 },
+    { label: '1M',   val: 1000000 },
+    { label: '3M',   val: 3000000 },
+    { label: '5M',   val: 5000000 },
+    { label: '7M',   val: 7000000 },
+    { label: '10M',  val: 10000000 },
+    { label: '15M',  val: 15000000 },
+    { label: '25M',  val: 25000000 },
+    { label: '50M',  val: 50000000 },
+    { label: '100M', val: 100000000 },
+    { label: '300M', val: 300000000 },
+    { label: '500M', val: 500000000 },
+    { label: '700M', val: 700000000 },
+    { label: '1B',   val: 1000000000 }
+  ];
+  let selectedBetIndex = 0;
+
+  function formatCoins(num) {
+    if (currentUser && currentUser.isAdmin) return '∞';
+    if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+    if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+    if (num >= 1e3) return (num / 1e3).toFixed(0) + 'K';
+    return Math.floor(num).toLocaleString();
+  }
+
+  /**************************************************************
+   * 5. محرك الأصوات المخصص
+   **************************************************************/
+  let soundOn = true;
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+
+  const GAME_SOUND_PROFILES = {
+    olympus:     { base: 220, wave: 'sawtooth', winNotes: [440, 554, 659, 880] },
+    egypt:       { base: 293, wave: 'triangle', winNotes: [293, 311, 370, 440] },
+    hades:       { base: 140, wave: 'sawtooth', winNotes: [196, 233, 293, 392] },
+    princess:    { base: 523, wave: 'sine',     winNotes: [659, 784, 987, 1318] },
+    bonanza:     { base: 440, wave: 'sine',     winNotes: [587, 740, 880, 1174] },
+    wolf:        { base: 185, wave: 'triangle', winNotes: [246, 329, 392, 493] },
+    bookofra:    { base: 261, wave: 'square',   winNotes: [261, 277, 329, 392] },
+    tiger:       { base: 349, wave: 'triangle', winNotes: [392, 440, 523, 659] },
+    rocket:      { base: 310, wave: 'sawtooth', winNotes: [523, 659, 784, 1046] },
+    aviator:     { base: 250, wave: 'square',   winNotes: [440, 554, 659, 880] },
+    blimp:       { base: 380, wave: 'sine',     winNotes: [493, 659, 784, 987] },
+    comet:       { base: 480, wave: 'sawtooth', winNotes: [587, 880, 1174, 1480] },
+    apple:       { base: 420, wave: 'sine',     winNotes: [523, 659, 880, 1046] },
+    chicken1:    { base: 500, wave: 'triangle', winNotes: [587, 740, 880, 1174] },
+    chicken2:    { base: 560, wave: 'square',   winNotes: [659, 830, 987, 1318] },
+    goldmine:    { base: 210, wave: 'triangle', winNotes: [330, 440, 554, 659] },
+    diamondcave: { base: 620, wave: 'sine',     winNotes: [784, 987, 1174, 1567] },
+    piratebox:   { base: 175, wave: 'sawtooth', winNotes: [261, 329, 392, 523] },
+    pharaohtomb: { base: 240, wave: 'triangle', winNotes: [293, 370, 440, 587] },
+    wheel:       { base: 680, wave: 'triangle', winNotes: [523, 659, 784, 1046] }
+  };
+
+  function playGameSound(type) {
+    if (!soundOn) return;
+    try {
+      if (!audioCtx) audioCtx = new AudioCtx();
+      const now = audioCtx.currentTime;
+      const gid = activeGameObj ? activeGameObj.id : 'olympus';
+      const prof = GAME_SOUND_PROFILES[gid] || GAME_SOUND_PROFILES.olympus;
+
+      if (type === 'scatterBell') {
+        const freqs = [880, 1174.66, 1318.5, 1760, 2093];
+        freqs.forEach((f, idx) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, now + idx * 0.1);
+          g.gain.setValueAtTime(0.26, now + idx * 0.1);
+          g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.7);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(now + idx * 0.1); osc.stop(now + idx * 0.1 + 0.7);
+        });
+        return;
+      }
+
+      if (type === 'win') {
+        prof.winNotes.forEach((f, idx) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = prof.wave;
+          osc.frequency.setValueAtTime(f, now + idx * 0.08);
+          g.gain.setValueAtTime(0.18, now + idx * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.25);
+        });
+        return;
+      }
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = prof.wave;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'click') {
+        osc.frequency.setValueAtTime(prof.base * 1.6, now);
+        gain.gain.setValueAtTime(0.1, now);
+        osc.start(now); osc.stop(now + 0.05);
+      } else if (type === 'tick') {
+        osc.frequency.setValueAtTime(prof.base * 2.2, now);
+        gain.gain.setValueAtTime(0.12, now);
+        osc.start(now); osc.stop(now + 0.03);
+      } else if (type === 'drop') {
+        osc.frequency.setValueAtTime(prof.base * 1.3, now);
+        osc.frequency.exponentialRampToValueAtTime(prof.base * 0.6, now + 0.09);
+        gain.gain.setValueAtTime(0.15, now);
+        osc.start(now); osc.stop(now + 0.09);
+      } else if (type === 'lose') {
+        osc.frequency.setValueAtTime(prof.base * 0.8, now);
+        osc.frequency.linearRampToValueAtTime(prof.base * 0.35, now + 0.28);
+        gain.gain.setValueAtTime(0.15, now);
+        osc.start(now); osc.stop(now + 0.28);
+      }
+    } catch (e) {}
+  }
+
+  function toggleSound() {
+    soundOn = !soundOn;
+    document.getElementById('soundBtn').innerText = soundOn ? '🔊' : '🔇';
+  }
+
+  function showToast(msg, bg = '#10b981') {
+    const el = document.getElementById('toast');
+    el.innerText = msg;
+    el.style.background = bg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3000);
+  }
+
+  /**************************************************************
+   * 6. قائمة الألعاب الـ 20
+   **************************************************************/
+  const GAMES_CATALOG = [
+    { id: 'olympus',     title: 'ملك أوليمبوس',          icon: '⚡🧔♂️', bg: 'linear-gradient(145deg,#1e3a8a,#4c1d95)', type: 'cascade', king: '👑', syms: ['💎','💍','⏳','🏆','🔮','⚡'] },
+    { id: 'egypt',       title: 'ملكة مصر',              icon: '👑🐍', bg: 'linear-gradient(145deg,#78350f,#d97706)', type: 'cascade', king: '👑', syms: ['🪲','👁️','🏺','🪙','🐍','🔱'] },
+    { id: 'hades',       title: 'ملك هاديس',             icon: '🔥👹', bg: 'linear-gradient(145deg,#0f172a,#b91c1c)', type: 'cascade', king: '👑', syms: ['🔥','💀','🐺','⛓️','🩸','🗡️'] },
+    { id: 'princess',    title: 'أميرة النجوم',          icon: '👸🌟', bg: 'linear-gradient(145deg,#831843,#7e22ce)', type: 'cascade', king: '👑', syms: ['🌟','🌙','💖','🎀','🔮','💎'] },
+    { id: 'bonanza',     title: 'بونانزا الحلوى',        icon: '🍭🍬', bg: 'linear-gradient(145deg,#be185d,#2563eb)', type: 'cascade', king: '👑', syms: ['🍭','🍬','🍇','🍉','🍎','🍌'] },
+    { id: 'wolf',        title: 'ذئب الذهب',             icon: '🐺🌕', bg: 'linear-gradient(145deg,#1e293b,#047857)', type: 'cascade', king: '👑', syms: ['🐺','🦅','🐎','🦬','🌕','🪙'] },
+    { id: 'bookofra',    title: 'كتاب رع',               icon: '📖🏺', bg: 'linear-gradient(145deg,#451a03,#a16207)', type: 'cascade', king: '👑', syms: ['📖','🗿','🪲','🏺','🪙','🦅'] },
+    { id: 'tiger',       title: 'ثروة النمر',            icon: '🐯🧧', bg: 'linear-gradient(145deg,#991b1b,#ca8a04)', type: 'cascade', king: '👑', syms: ['🐯','🧧','🏮','🪙','🍊','💎'] },
+
+    { id: 'rocket',      title: 'صاروخ الفضاء',          icon: '🚀🤖', bg: 'linear-gradient(145deg,#311042,#e11d48)', type: 'rocket', vehicle: '🚀' },
+    { id: 'aviator',     title: 'طائرة أفياتور',         icon: '✈️🎖️', bg: 'linear-gradient(145deg,#7f1d1d,#1e293b)', type: 'rocket', vehicle: '✈️' },
+    { id: 'blimp',       title: 'منطاد الثروة',          icon: '🎈👑', bg: 'linear-gradient(145deg,#0c4a6e,#a21caf)', type: 'rocket', vehicle: '🎈' },
+    { id: 'comet',       title: 'مذنب المجرة',           icon: '☄️🌌', bg: 'linear-gradient(145deg,#1e1b4b,#ea580c)', type: 'rocket', vehicle: '☄️' },
+
+    { id: 'apple',       title: 'التفاحة الملكية',       icon: '🍎🌳', bg: 'linear-gradient(145deg,#7f1d1d,#15803d)', type: 'step', safeIcon: '🍎', trapIcon: '🪱' },
+    { id: 'chicken1',    title: 'طريق الدجاجة 1',        icon: '🐔🔥', bg: 'linear-gradient(145deg,#9a3412,#eab308)', type: 'step', safeIcon: '🐔', trapIcon: '🔥' },
+    { id: 'chicken2',    title: 'قفزة الدجاجة 2',        icon: '🐣🚗', bg: 'linear-gradient(145deg,#065f46,#ca8a04)', type: 'step', safeIcon: '🐣', trapIcon: '🚗' },
+    { id: 'goldmine',    title: 'منجم الذهب',            icon: '⛏️🪙', bg: 'linear-gradient(145deg,#78350f,#f59e0b)', type: 'step', safeIcon: '🪙', trapIcon: '💣' },
+    { id: 'diamondcave', title: 'كهف الألماس',           icon: '💎🦇', bg: 'linear-gradient(145deg,#0f172a,#0284c7)', type: 'step', safeIcon: '💎', trapIcon: '💣' },
+    { id: 'piratebox',   title: 'كنز القراصنة',          icon: '🏴☠️👑', bg: 'linear-gradient(145deg,#1f2937,#991b1b)', type: 'step', safeIcon: '👑', trapIcon: '💀' },
+    { id: 'pharaohtomb', title: 'هرم الكنوز',            icon: '🔺🏺', bg: 'linear-gradient(145deg,#451a03,#d97706)', type: 'step', safeIcon: '🏺', trapIcon: '🦂' },
+
+    { id: 'wheel',       title: 'عجلة الفواكه',          icon: '🎡🍉', bg: 'linear-gradient(145deg,#4c1d95,#10b981)', type: 'wheel' }
+  ];
+
+  function renderLobbyGames() {
+    const grid = document.getElementById('gamesGridContainer');
+    grid.innerHTML = GAMES_CATALOG.map(g => `
+      <div class="game-card" style="background:${g.bg};" onclick="openGame('${g.id}')">
+        <div class="game-card-art">${g.icon}</div>
+        <div class="game-card-overlay">
+          <div class="game-card-title">${g.title}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderStorePackages() {
+    const goldBox = document.getElementById('storeGoldContainer');
+    goldBox.innerHTML = GOLD_STORE_PACKAGES.map(p => `
+      <div class="store-pack-card">
+        <div class="store-pack-icon">${p.icon}</div>
+        <div class="store-pack-amount">${p.label}</div>
+        <button class="store-buy-btn" onclick="openStoreCheckout('GOLD', '${p.id}')">${p.priceUSD} دولار 💳</button>
+      </div>
+    `).join('');
+
+    const ptsBox = document.getElementById('storePointsContainer');
+    ptsBox.innerHTML = VIP_POINTS_PACKAGES.map(p => `
+      <div class="store-pack-card" style="border-color:rgba(56,189,248,0.45);">
+        <div class="store-pack-icon">${p.icon}</div>
+        <div class="store-pack-amount" style="color:#38bdf8;">${p.points.toLocaleString()} نقطة VIP</div>
+        <button class="store-buy-btn" style="background:linear-gradient(135deg,#0284c7,#4f46e5);" onclick="openStoreCheckout('POINTS', '${p.id}')">${p.priceUSD} دولار 💳</button>
+      </div>
+    `).join('');
+  }
+
+  function switchStoreTab(tab) {
+    playGameSound('click');
+    document.getElementById('tabStoreGold').classList.toggle('active', tab === 'gold');
+    document.getElementById('tabStorePts').classList.toggle('active', tab === 'points');
+    document.getElementById('storeGoldContainer').style.display = tab === 'gold' ? 'grid' : 'none';
+    document.getElementById('storePointsContainer').style.display = tab === 'points' ? 'grid' : 'none';
+  }
+
+  /**************************************************************
+   * 7. المهام اليومية (مقسمة على 720 قسيمة بالتمام وتتجدد كل 24 ساعة)
+   **************************************************************/
+  const DAILY_MISSIONS = [
+    { id: 'login',    title: 'تسجيل الدخول اليومي',                    target: 1,   reward: 50 },
+    { id: 'play20',   title: 'العب 20 دورة في أي لعبة',               target: 20,  reward: 70 },
+    { id: 'playKing', title: 'العب 50 دورة في ألعاب الملوك',          target: 50,  reward: 100 },
+    { id: 'win5',     title: 'اربح 5 جولات في الألعاب',               target: 5,   reward: 100 },
+    { id: 'stepWin',  title: 'فز في لعبة التفاحة أو الدجاجة',          target: 1,   reward: 100 },
+    { id: 'chatMsg',  title: 'أرسل رسالة في الدردشة العامة',           target: 1,   reward: 50 },
+    { id: 'play100',  title: 'العب 100 دورة في الصاروخ أو الألعاب',   target: 100, reward: 120 },
+    { id: 'play200',  title: 'أكمل 200 دورة لعب اليوم',               target: 200, reward: 130 }
+  ];
+
+  /**************************************************************
+   * 8. إدارة الحسابات، المعرف الرقمي 7 أرقام، وشاشة الحظر
+   **************************************************************/
+  let authMode = 'login';
+  let currentUser = null;
+  let regSelectedAvatar = '🦁';
+  let isPhoneWhatsappVerified = false;
+  let generatedWhatsappCode = '';
+
+  function generate7DigitUid() {
+    return Math.floor(1000000 + Math.random() * 9000000).toString();
+  }
+
+  function switchAuthTab(mode) {
+    authMode = mode;
+    const isReg = (mode === 'register');
+    document.getElementById('tabLogin').classList.toggle('active', !isReg);
+    document.getElementById('tabRegister').classList.toggle('active', isReg);
+    document.getElementById('authSubmitBtn').innerText = isReg ? 'إنشاء حساب 🎁' : 'دخول 🎮';
+
+    document.getElementById('regAvatarSection').classList.toggle('active', isReg);
+    document.getElementById('regFieldsSection').classList.toggle('active', isReg);
+    document.getElementById('usernameRuleHint').style.display = isReg ? 'block' : 'none';
+
+    const userLabel = document.getElementById('authUserLabel');
+    const userInput = document.getElementById('authUser');
+    if (isReg) {
+      userLabel.innerText = 'اسم المستخدم (عربي أو إنجليزي بدون زخرفة - أقصى 9 أحرف)';
+      userInput.placeholder = 'اسم المستخدم (أقصى 9 أحرف)';
+      userInput.maxLength = 9;
+      if (userInput.value.length > 9) userInput.value = userInput.value.slice(0, 9);
+      updateWhatsappVerifyHref();
+    } else {
+      userLabel.innerText = 'اسم المستخدم أو رقم الهاتف';
+      userInput.placeholder = 'اسم المستخدم أو رقم الهاتف';
+      userInput.removeAttribute('maxLength');
+    }
+  }
+
+  function selectRegAvatarPreset(emoji) {
+    playGameSound('click');
+    regSelectedAvatar = emoji;
+    const prev = document.getElementById('regAvatarPreview');
+    if (prev) prev.innerHTML = `<span>${emoji}</span>`;
+  }
+
+  function handleRegAvatarUpload(ev) {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const maxW = 240;
+        const scale = Math.min(1, maxW / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        regSelectedAvatar = canvas.toDataURL('image/jpeg', 0.8);
+        const prev = document.getElementById('regAvatarPreview');
+        if (prev) prev.innerHTML = `<img src="${regSelectedAvatar}">`;
+        showToast('🖼️ تم اختيار الصورة الشخصية للحساب!');
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // التحقق من اسم المستخدم: حروف عربية أو إنجليزية أو أرقام فقط بدون زخرفة أو تشكيل أو علامات تنقيط وبحد أقصى 9 أحرف
+  const VALID_USERNAME_REGEX = /^[a-zA-Z0-9ء-غف-ي]{1,9}$/;
+
+  function onAuthUserInput(inputEl) {
+    if (authMode === 'register') {
+      // إزالة الزخرفة والتشكيل وعلامات التنقيط والمسافات تلقائياً أثناء الكتابة في وضع التسجيل
+      const cleaned = inputEl.value.replace(/[^a-zA-Z0-9ء-غف-ي]/g, '').slice(0, 9);
+      if (inputEl.value !== cleaned) {
+        inputEl.value = cleaned;
+        showToast('⚠️ مسموح فقط بحروف عربية أو إنجليزية بدون زخرفة أو علامات تنقيط (أقصى 9 أحرف)', '#f59e0b');
+      }
+      updateWhatsappVerifyHref();
+    }
+  }
+
+  function onCountrySelectChange(val) {
+    const codeInput = document.getElementById('authCountryCode');
+    if (val === 'custom') {
+      codeInput.value = '+';
+      codeInput.focus();
+    } else {
+      codeInput.value = val;
+    }
+    isPhoneWhatsappVerified = false;
+    document.getElementById('whatsappVerifiedBadge').classList.remove('show');
+    updateWhatsappVerifyHref();
+  }
+
+  function onCountryCodeDirectInput(val) {
+    let cleaned = val.replace(/[^\d+]/g, '');
+    if (!cleaned.startsWith('+')) {
+      cleaned = '+' + cleaned.replace(/\+/g, '');
+    } else {
+      cleaned = '+' + cleaned.slice(1).replace(/\+/g, '');
+    }
+    const codeInput = document.getElementById('authCountryCode');
+    codeInput.value = cleaned;
+
+    const sel = document.getElementById('authCountrySelect');
+    const matchingOpt = Array.from(sel.options).find(o => o.value === cleaned);
+    if (matchingOpt) {
+      sel.value = cleaned;
+    } else {
+      sel.value = 'custom';
+    }
+    isPhoneWhatsappVerified = false;
+    document.getElementById('whatsappVerifiedBadge').classList.remove('show');
+    updateWhatsappVerifyHref();
+  }
+
+  function getFormattedFullPhone() {
+    const codeRaw = (document.getElementById('authCountryCode').value || '+964').replace(/[^\d]/g, '');
+    let localRaw = (document.getElementById('authPhoneInput').value || '').replace(/[^\d]/g, '');
+    if (localRaw.startsWith('0')) {
+      localRaw = localRaw.slice(1);
+    }
+    return {
+      codeDigits: codeRaw,
+      localDigits: localRaw,
+      fullDigits: codeRaw + localRaw,
+      fullDisplay: '+' + codeRaw + localRaw
+    };
+  }
+
+  function updateWhatsappVerifyHref() {
+    const linkEl = document.getElementById('whatsappVerifyLink');
+    if (!linkEl) return;
+    const phoneObj = getFormattedFullPhone();
+    const uName = (document.getElementById('authUser').value || '').trim() || 'لاعب';
+    if (!generatedWhatsappCode) {
+      generatedWhatsappCode = Math.floor(1000 + Math.random() * 9000).toString();
+    }
+    const message_text = `تأكيد رقم الهاتف في تطبيق اساطير رويل للحساب (${uName}) - رمز التأكيد: ${generatedWhatsappCode}`;
+    if (phoneObj.localDigits.length >= 6) {
+      linkEl.setAttribute('href', `whatsapp://send?text=${encodeURIComponent(message_text)}&phone=${phoneObj.fullDigits}`);
+    } else {
+      linkEl.setAttribute('href', 'whatsapp://send?text=message_text&phone=');
+    }
+  }
+
+  function handleWhatsappVerifyClick(ev) {
+    const phoneObj = getFormattedFullPhone();
+    if (!phoneObj.codeDigits) {
+      ev.preventDefault();
+      showToast('⚠️ يرجى إدخال مفتاح الدولة أولاً!', '#ef4444');
+      return;
+    }
+    if (phoneObj.localDigits.length < 7) {
+      ev.preventDefault();
+      showToast('⚠️ يرجى إدخال رقم هاتف صحيح أولاً!', '#ef4444');
+      return;
+    }
+    updateWhatsappVerifyHref();
+    isPhoneWhatsappVerified = true;
+    const badge = document.getElementById('whatsappVerifiedBadge');
+    if (badge) badge.classList.add('show');
+    playGameSound('win');
+    showToast('✅ تم توجيه رسالة التأكيد إلى واتساب وتفعيل رقم الهاتف!');
+  }
+
+  function normalizePhoneLookupCandidates(rawInput) {
+    const digits = rawInput.replace(/[^\d]/g, '');
+    if (!digits) return [];
+    const candidates = new Set([digits]);
+    if (digits.startsWith('00')) {
+      candidates.add(digits.slice(2));
+    }
+    if (digits.startsWith('0')) {
+      candidates.add(digits.slice(1));
+      candidates.add('964' + digits.slice(1));
+    } else {
+      candidates.add('0' + digits);
+    }
+    return Array.from(candidates);
+  }
+
+  function handleBanStatus(isBanned, reason) {
+    const banOverlay = document.getElementById('bannedScreenOverlay');
+    if (isBanned) {
+      document.getElementById('bannedUsername').innerText = currentUser ? currentUser.username : 'لاعب';
+      document.getElementById('bannedUserId').innerText = currentUser ? '#' + currentUser.numericId : '#0000000';
+      if (reason) document.getElementById('bannedReason').innerText = 'السبب: ' + reason;
+      banOverlay.classList.add('active');
+    } else {
+      banOverlay.classList.remove('active');
+    }
+  }
+
+  async function handleAuth() {
+    if (!guardAntiSpam(500)) return;
+    const u = document.getElementById('authUser').value.trim();
+    const p = document.getElementById('authPass').value.trim();
+    if (!u || !p) { showToast('أدخل اسم المستخدم وكلمة المرور!', '#ef4444'); return; }
+
+    const sec = checkSecurityAndIntegrity();
+    if (sec.isClonerDetected) {
+      showToast('⚠️ تم اكتشاف بيئة ناسخة غير مصرح بها!', '#ef4444');
+    }
+
+    if (u.toLowerCase() === 'admin') {
+      if (p !== '12345') {
+        showToast('⛔ كلمة مرور الأدمن غير صحيحة!', '#ef4444');
+        return;
+      }
+      const adminProfile = {
+        username: 'admin',
+        pass: '12345',
+        numericId: '1000001',
+        isAdmin: true,
+        isBanned: false,
+        gold: 999999999999999,
+        vipPoints: 999999,
+        vouchers: 999999999,
+        vip: 10,
+        friendsCount: 999,
+        friendsList: [],
+        avatar: '👑',
+        coverPhoto: '',
+        avatarMonth: getTrustedMonthKey(),
+        avatarChangesUsed: 0,
+        totalLostUnrecovered: 0,
+        lastDailyReset: getTrustedTimestamp(),
+        dailyState: { dayKey: getTrustedDayKey(), spins: 999, kingSpins: 999, wins: 999, stepWins: 999, chatMsgs: 999, vouchersToday: 0, claimed: {} },
+        requests: []
+      };
+      if (db) await db.ref('users/admin').set(adminProfile).catch(() => {});
+      localStorage.setItem('royal_pro_admin', JSON.stringify(adminProfile));
+      startUserSession('admin', adminProfile);
+      return;
+    }
+
+    const key = u.replace(/[.#$[\]\s]/g, '_');
+
+    if (authMode === 'register') {
+      if (!VALID_USERNAME_REGEX.test(u)) {
+        showToast('⚠️ اسم المستخدم يجب أن يكون عربي أو إنجليزي بدون زخرفة أو علامات تنقيط وبحد أقصى 9 أحرف!', '#ef4444');
+        return;
+      }
+      const pConfirm = document.getElementById('authPassConfirm').value.trim();
+      if (!pConfirm || p !== pConfirm) {
+        showToast('⚠️ كلمة المرور وتأكيد كلمة المرور غير متطابقتين!', '#ef4444');
+        return;
+      }
+      const phoneObj = getFormattedFullPhone();
+      if (!phoneObj.codeDigits || phoneObj.localDigits.length < 7) {
+        showToast('⚠️ يرجى اختيار الدولة أو كتابة مفتاح الدولة وإدخال رقم هاتف صحيح!', '#ef4444');
+        return;
+      }
+      if (!isPhoneWhatsappVerified) {
+        showToast('📲 يرجى تأكيد رقم الهاتف بالضغط على "إرسال رسالة واتساب" أولاً!', '#ef4444');
+        return;
+      }
+
+      const assignedUid = generate7DigitUid();
+      const rawPhoneInput = document.getElementById('authPhoneInput').value.trim().replace(/[^\d]/g, '');
+      const newUser = {
+        username: u,
+        pass: p,
+        phone: phoneObj.fullDisplay,
+        fullPhoneDigits: phoneObj.fullDigits,
+        localPhoneDigits: phoneObj.localDigits,
+        rawPhoneDigits: rawPhoneInput,
+        countryCode: '+' + phoneObj.codeDigits,
+        phoneVerified: true,
+        numericId: assignedUid,
+        isAdmin: false,
+        isBanned: false,
+        banReason: '',
+        gold: 1000000,
+        vipPoints: 0,
+        vouchers: 0,
+        vip: 0,
+        friendsCount: 0,
+        friendsList: [],
+        avatar: regSelectedAvatar || '🦁',
+        coverPhoto: '',
+        avatarMonth: getTrustedMonthKey(),
+        avatarChangesUsed: 0,
+        totalLostUnrecovered: 0,
+        lastDailyReset: getTrustedTimestamp(),
+        dailyState: { dayKey: getTrustedDayKey(), spins: 0, kingSpins: 0, wins: 0, stepWins: 0, chatMsgs: 0, vouchersToday: 0, claimed: {} },
+        requests: []
+      };
+      if (db) {
+        try {
+          const snap = await db.ref('users/' + key).once('value');
+          if (snap.exists()) { showToast('اسم المستخدم مسجل مسبقاً!', '#ef4444'); return; }
+          const phoneSnap = await db.ref('phone_to_user/' + phoneObj.fullDigits).once('value');
+          if (phoneSnap.exists()) { showToast('رقم الهاتف مسجل بحساب آخر مسبقاً!', '#ef4444'); return; }
+          await db.ref('users/' + key).set(newUser);
+          await db.ref('id_to_user/' + assignedUid).set(key);
+          await db.ref('phone_to_user/' + phoneObj.fullDigits).set(key);
+          if (phoneObj.localDigits) {
+            await db.ref('phone_to_user/' + phoneObj.localDigits).set(key);
+            await db.ref('phone_to_user/0' + phoneObj.localDigits).set(key);
+          }
+        } catch (e) {}
+      }
+      localStorage.setItem('royal_pro_' + key, JSON.stringify(newUser));
+      localStorage.setItem('royal_phone_' + phoneObj.fullDigits, key);
+      if (phoneObj.localDigits) {
+        localStorage.setItem('royal_phone_' + phoneObj.localDigits, key);
+        localStorage.setItem('royal_phone_0' + phoneObj.localDigits, key);
+      }
+      startUserSession(key, newUser);
+    } else {
+      let data = null;
+      let resolvedKey = key;
+
+      // 1. محاولة البحث المباشر باسم المستخدم
+      if (db) {
+        try {
+          const snap = await db.ref('users/' + resolvedKey).once('value');
+          if (snap.exists()) data = snap.val();
+        } catch (e) {}
+      }
+      if (!data) {
+        const local = localStorage.getItem('royal_pro_' + resolvedKey);
+        if (local) data = JSON.parse(local);
+      }
+
+      // 2. إذا لم يتم العثور عليه بالاسم، البحث برقم الهاتف (مع أو بدون مفتاح الدولة)
+      if (!data) {
+        const phoneCandidates = normalizePhoneLookupCandidates(u);
+        for (const cand of phoneCandidates) {
+          if (db && !data) {
+            try {
+              const pSnap = await db.ref('phone_to_user/' + cand).once('value');
+              if (pSnap.exists()) {
+                resolvedKey = pSnap.val();
+                const uSnap = await db.ref('users/' + resolvedKey).once('value');
+                if (uSnap.exists()) data = uSnap.val();
+              }
+            } catch (e) {}
+          }
+          if (!data) {
+            const localMappedKey = localStorage.getItem('royal_phone_' + cand);
+            if (localMappedKey) {
+              const localData = localStorage.getItem('royal_pro_' + localMappedKey);
+              if (localData) {
+                resolvedKey = localMappedKey;
+                data = JSON.parse(localData);
+              }
+            }
+          }
+          if (data) break;
+        }
+
+        // بحث شامل في قائمة المستخدمين في حال كان الرقم مخزناً داخل بيانات المستخدم
+        if (!data && db && phoneCandidates.length > 0) {
+          try {
+            const allUsersSnap = await db.ref('users').once('value');
+            if (allUsersSnap.exists()) {
+              const allUsers = allUsersSnap.val();
+              for (const k of Object.keys(allUsers)) {
+                const usr = allUsers[k];
+                const uPhones = [
+                  (usr.fullPhoneDigits || ''),
+                  (usr.localPhoneDigits || ''),
+                  (usr.rawPhoneDigits || ''),
+                  (usr.phone || '').replace(/[^\d]/g, '')
+                ];
+                if (phoneCandidates.some(c => c && uPhones.includes(c))) {
+                  resolvedKey = k;
+                  data = usr;
+                  break;
+                }
+              }
+            }
+          } catch (e) {}
+        }
+      }
+
+      if (!data || data.pass !== p) {
+        showToast('بيانات الدخول (اسم المستخدم/رقم الهاتف أو كلمة المرور) غير صحيحة!', '#ef4444');
+        return;
+      }
+      data.isAdmin = false;
+      startUserSession(resolvedKey, data);
+    }
+  }
+
+  function checkAutoVipLevelUp() {
+    if (!currentUser || currentUser.isAdmin) return;
+    const pts = currentUser.vipPoints || 0;
+    let currentLvl = currentUser.vip || 0;
+    let upgraded = false;
+    let totalBonusAdded = 0;
+
+    VIP_TIERS.forEach(tier => {
+      if (pts >= tier.reqPoints && currentLvl < tier.level) {
+        currentLvl = tier.level;
+        currentUser.gold = (currentUser.gold || 0) + tier.goldBonus;
+        totalBonusAdded += tier.goldBonus;
+        upgraded = true;
+      }
+    });
+
+    if (upgraded) {
+      currentUser.vip = currentLvl;
+      playGameSound('scatterBell');
+      showToast(`👑 ارتفع مستواك إلى VIP ${currentLvl}! حصلت على الإطار الملكي و +${formatCoins(totalBonusAdded)} ذهب!`);
+    }
+  }
+
+  function checkAndResetDailyTasks() {
+    if (!currentUser) return;
+    const now = getTrustedTimestamp();
+    const today = getTrustedDayKey();
+    const lastReset = currentUser.lastDailyReset || 0;
+
+    if (!currentUser.dailyState || (now - lastReset >= 24 * 60 * 60 * 1000) || currentUser.dailyState.dayKey !== today) {
+      currentUser.lastDailyReset = now;
+      currentUser.dailyState = {
+        dayKey: today,
+        spins: 0,
+        kingSpins: 0,
+        wins: 0,
+        stepWins: 0,
+        chatMsgs: 0,
+        vouchersToday: 0,
+        claimed: {}
+      };
+      saveUser();
+    }
+  }
+
+  function startUserSession(key, data) {
+    const isStrictlyAdmin = (key === 'admin' && data.pass === '12345');
+    currentUser = {
+      vipPoints: 0,
+      numericId: data.numericId || generate7DigitUid(),
+      isBanned: !!data.isBanned,
+      banReason: data.banReason || '',
+      friendsList: data.friendsList || [],
+      ...data,
+      key,
+      isAdmin: isStrictlyAdmin
+    };
+
+    if (isStrictlyAdmin) {
+      currentUser.gold = 999999999999999;
+      currentUser.vipPoints = 999999;
+      currentUser.vouchers = 999999999;
+      currentUser.vip = 10;
+      currentUser.isBanned = false;
+    }
+
+    if (!currentUser.numericId || currentUser.numericId.length !== 7) {
+      currentUser.numericId = generate7DigitUid();
+      if (db) db.ref('id_to_user/' + currentUser.numericId).set(currentUser.key).catch(() => {});
+    }
+
+    checkAndResetDailyTasks();
+
+    const thisMonth = getTrustedMonthKey();
+    if (currentUser.avatarMonth !== thisMonth) {
+      currentUser.avatarMonth = thisMonth;
+      currentUser.avatarChangesUsed = 0;
+    }
+
+    checkAutoVipLevelUp();
+    localStorage.setItem('royal_active_key', key);
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('exclusiveAdminBtn').style.display = isStrictlyAdmin ? 'inline-block' : 'none';
+
+    handleBanStatus(currentUser.isBanned, currentUser.banReason);
+
+    if (db && !isStrictlyAdmin) {
+      db.ref('users/' + key).on('value', snap => {
+        if (snap.exists()) {
+          const rem = snap.val();
+          currentUser.isBanned = !!rem.isBanned;
+          currentUser.banReason = rem.banReason || '';
+          handleBanStatus(currentUser.isBanned, currentUser.banReason);
+
+          currentUser.vipPoints = rem.vipPoints !== undefined ? rem.vipPoints : (currentUser.vipPoints || 0);
+          currentUser.gold = rem.gold !== undefined ? rem.gold : currentUser.gold;
+          currentUser.vouchers = rem.vouchers !== undefined ? rem.vouchers : (currentUser.vouchers || 0);
+          currentUser.vip = rem.vip || currentUser.vip || 0;
+          currentUser.requests = rem.requests || currentUser.requests || [];
+          currentUser.friendsList = rem.friendsList || currentUser.friendsList || [];
+          currentUser.friendsCount = currentUser.friendsList.length;
+          checkAutoVipLevelUp();
+          refreshAllUI();
+        }
+      });
+    }
+
+    saveUser();
+    refreshAllUI();
+    initLiveChat();
+    updateTasksCountdown();
+  }
+
+  function saveUser() {
+    if (!currentUser) return;
+    if (currentUser.isAdmin) {
+      currentUser.gold = 999999999999999;
+      currentUser.vipPoints = 999999;
+      currentUser.vouchers = 999999999;
+      currentUser.vip = 10;
+      currentUser.isBanned = false;
+    }
+    localStorage.setItem('royal_pro_' + currentUser.key, JSON.stringify(currentUser));
+    if (db) {
+      db.ref('users/' + currentUser.key).update({
+        username: currentUser.username,
+        phone: currentUser.phone || '',
+        fullPhoneDigits: currentUser.fullPhoneDigits || '',
+        localPhoneDigits: currentUser.localPhoneDigits || '',
+        rawPhoneDigits: currentUser.rawPhoneDigits || '',
+        countryCode: currentUser.countryCode || '',
+        numericId: currentUser.numericId,
+        isBanned: !!currentUser.isBanned,
+        banReason: currentUser.banReason || '',
+        gold: currentUser.gold,
+        vipPoints: currentUser.vipPoints || 0,
+        vouchers: currentUser.vouchers,
+        vip: currentUser.vip,
+        isAdmin: currentUser.isAdmin ? true : null,
+        friendsCount: (currentUser.friendsList ? currentUser.friendsList.length : 0),
+        friendsList: currentUser.friendsList || [],
+        avatar: currentUser.avatar || '🦁',
+        coverPhoto: currentUser.coverPhoto || '',
+        avatarMonth: currentUser.avatarMonth,
+        avatarChangesUsed: currentUser.avatarChangesUsed || 0,
+        totalLostUnrecovered: currentUser.totalLostUnrecovered || 0,
+        lastDailyReset: currentUser.lastDailyReset || getTrustedTimestamp(),
+        dailyState: currentUser.dailyState,
+        requests: currentUser.requests || []
+      }).catch(() => {});
+      if (currentUser.numericId) {
+        db.ref('id_to_user/' + currentUser.numericId).set(currentUser.key).catch(() => {});
+      }
+    }
+    refreshAllUI();
+  }
+
+  function refreshAllUI() {
+    if (!currentUser) return;
+    const vip = currentUser.isAdmin ? 10 : (currentUser.vip || 0);
+    const ptsNum = currentUser.vipPoints || 0;
+    const pts = currentUser.isAdmin ? '∞' : ptsNum.toLocaleString();
+    const tier = VIP_TIERS.find(t => t.level === vip);
+
+    document.getElementById('topUsername').innerText = currentUser.username;
+    document.getElementById('topUserUidMini').innerText = '#' + (currentUser.numericId || '0000000');
+    document.getElementById('profUidBadge').innerText = '#' + (currentUser.numericId || '0000000');
+    document.getElementById('goldBalance').innerText = formatCoins(currentUser.gold);
+    document.getElementById('vipPointsBalance').innerText = pts;
+    document.getElementById('storePointsText').innerText = pts;
+    document.getElementById('vipViewPoints').innerText = pts;
+    document.getElementById('voucherBalance').innerText = currentUser.isAdmin ? '∞' : currentUser.vouchers;
+    document.getElementById('modalGoldText').innerText = formatCoins(currentUser.gold);
+    document.getElementById('modalVoucherText').innerText = currentUser.isAdmin ? '∞' : currentUser.vouchers;
+    document.getElementById('walletVouchers').innerText = currentUser.isAdmin ? '∞' : currentUser.vouchers;
+
+    document.getElementById('topVipBadge').innerText = 'VIP ' + vip;
+    document.getElementById('topTitle').innerText = currentUser.isAdmin ? 'المدير العام' : (tier ? tier.title : 'اساطير رويل');
+
+    const frameCls = 'avatar-wrap frame-vip-' + vip;
+    document.getElementById('topAvatarFrame').className = frameCls;
+    document.getElementById('profileAvatarBig').className = 'profile-main-avatar frame-vip-' + vip;
+
+    const avHtml = currentUser.avatar && currentUser.avatar.startsWith('data:image')
+      ? `<img src="${currentUser.avatar}">`
+      : `<span>${currentUser.avatar || '🦁'}</span>`;
+    document.getElementById('topAvatarContent').innerHTML = avHtml;
+    document.getElementById('profileAvatarBig').innerHTML = avHtml;
+
+    const coverBox = document.getElementById('profileCoverBanner');
+    if (currentUser.coverPhoto) {
+      coverBox.style.backgroundImage = `url(${currentUser.coverPhoto})`;
+    } else {
+      coverBox.style.backgroundImage = 'linear-gradient(135deg, #1e1b4b, #7e22ce, #b45309)';
+    }
+
+    document.getElementById('profName').innerText = currentUser.username;
+    document.getElementById('profRoleBadge').innerText = currentUser.isAdmin ? '👑 المدير العام' : `المستوى VIP ${vip}`;
+    document.getElementById('infoVip').innerText = `VIP ${vip}`;
+    document.getElementById('infoGold').innerText = formatCoins(currentUser.gold);
+    document.getElementById('infoVouchers').innerText = currentUser.isAdmin ? '∞' : currentUser.vouchers;
+    const fCount = currentUser.friendsList ? currentUser.friendsList.length : 0;
+    document.getElementById('infoFriends').innerText = fCount;
+    document.getElementById('friendsCountDisplay').innerText = `${fCount} صديق`;
+
+    const chatBox = document.getElementById('vipChatPreviewBox');
+    chatBox.className = 'chat-frame-' + vip;
+    document.getElementById('chatPreviewUser').innerText = `[VIP ${vip}] ${currentUser.username} (#${currentUser.numericId}):`;
+    document.getElementById('chatPreviewIcon').innerText = tier ? tier.icon : '🦁';
+
+    const maxAv = currentUser.isAdmin ? 999 : (2 + (tier ? tier.extraAvatars : 0));
+    const usedAv = currentUser.avatarChangesUsed || 0;
+    document.getElementById('avatarQuotaText').innerText = currentUser.isAdmin ? '∞' : `${Math.max(0, maxAv - usedAv)}/${maxAv}`;
+
+    document.getElementById('vipCurrentLvlLabel').innerText = `المستوى الحالي: VIP ${vip}`;
+    const nextTier = VIP_TIERS.find(t => t.level === vip + 1);
+    const pctBar = currentUser.isAdmin || !nextTier ? 100 : Math.min(100, Math.floor((ptsNum / nextTier.reqPoints) * 100));
+    document.getElementById('vipProgressBarFill').style.width = pctBar + '%';
+
+    renderDailyTasks();
+    renderVipCards();
+    renderRequestsHistory();
+    renderMyFriendsList();
+    updateRedeemCostHint();
+  }
+
+  function copyMyUid() {
+    if (!currentUser) return;
+    const uid = currentUser.numericId || '';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(uid).then(() => showToast(`📋 تم نسخ معرفك: #${uid}`));
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = uid;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast(`📋 تم نسخ معرفك: #${uid}`);
+    }
+  }
+
+  function uploadCoverPhoto(ev) {
+    const file = ev.target.files[0];
+    if (!file || !currentUser) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      currentUser.coverPhoto = e.target.result;
+      saveUser();
+      showToast('🖼️ تم تحديث الغلاف!');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function logoutUser() {
+    localStorage.removeItem('royal_active_key');
+    currentUser = null;
+    document.getElementById('exclusiveAdminBtn').style.display = 'none';
+    document.getElementById('authScreen').style.display = 'flex';
+  }
+
+  /**************************************************************
+   * 9. عداد الـ 24 ساعة لتجدد المهام اليومية
+   **************************************************************/
+  function updateTasksCountdown() {
+    setInterval(() => {
+      if (!currentUser) return;
+      const now = getTrustedTimestamp();
+      const lastReset = currentUser.lastDailyReset || now;
+      const nextReset = lastReset + 24 * 60 * 60 * 1000;
+      const diff = Math.max(0, nextReset - now);
+
+      if (diff <= 0) {
+        checkAndResetDailyTasks();
+        refreshAllUI();
+      }
+
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      const pad = n => n.toString().padStart(2, '0');
+      const el = document.getElementById('tasksCountdownTimer');
+      if (el) el.innerText = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    }, 1000);
+  }
+
+  /**************************************************************
+   * 10. ألعاب الملوك الكاسكيد (إعادة الرهان لـ 100K + ربع الخسارة)
+   **************************************************************/
+  let activeGameObj = null;
+  let freeSpinsLeft = 0;
+  let freeSpinsPot = 0;
+  let scatterTargetReturn = 0;
+  let autoSpinsRemaining = 0;
+  let autoSpinTimer = null;
+
+  function renderBetTiersBar() {
+    const bar = document.getElementById('betTiersBar');
+    bar.innerHTML = BET_TIERS.map((t, idx) => `
+      <button class="tier-chip ${idx === selectedBetIndex ? 'active' : ''}" onclick="selectBetTier(${idx})">${t.label}</button>
+    `).join('');
+  }
+
+  function selectBetTier(idx) {
+    if (stepRoundActive || freeSpinsLeft > 0) return;
+    playGameSound('click');
+    selectedBetIndex = idx;
+    renderBetTiersBar();
+  }
+
+  function getCurrentBetAmount() {
+    return BET_TIERS[selectedBetIndex].val;
+  }
+
+  function openGame(gameId) {
+    if (currentUser && currentUser.isBanned) {
+      handleBanStatus(true);
+      return;
+    }
+    activeGameObj = GAMES_CATALOG.find(g => g.id === gameId);
+    playGameSound('click');
+    stopAutoSpins();
+    clearInterval(rocketLoop);
+    clearInterval(rocketCountdownLoop);
+    stepRoundActive = false;
+    freeSpinsLeft = 0;
+    freeSpinsPot = 0;
+
+    selectedBetIndex = 0;
+    rocketBets[0].tierIdx = 0;
+    rocketBets[0].amount = BET_TIERS[0].val;
+    rocketBets[1].tierIdx = 0;
+    rocketBets[1].amount = BET_TIERS[0].val;
+
+    document.getElementById('modalTitle').innerText = activeGameObj.title;
+    document.getElementById('gameModal').classList.add('open');
+    document.getElementById('freeSpinHud').classList.remove('active');
+    document.getElementById('scatterOverlay').classList.remove('show');
+    document.getElementById('cashoutMainBtn').style.display = 'none';
+    document.getElementById('playMainBtn').style.display = 'block';
+    document.getElementById('gameStatusMsg').innerText = '';
+    document.getElementById('standardBetControls').style.display = activeGameObj.type === 'rocket' ? 'none' : 'block';
+
+    renderBetTiersBar();
+    buildGameStageUI();
+  }
+
+  function closeGameModal() {
+    stopAutoSpins();
+    clearInterval(rocketLoop);
+    clearInterval(rocketCountdownLoop);
+    stepRoundActive = false;
+    freeSpinsLeft = 0;
+    document.getElementById('gameModal').classList.remove('open');
+  }
+
+  function startAutoSpins(count) {
+    playGameSound('click');
+    autoSpinsRemaining = count;
+    document.getElementById('stopAutoBtn').style.display = 'block';
+    runNextAutoSpin();
+  }
+
+  function stopAutoSpins() {
+    autoSpinsRemaining = 0;
+    clearTimeout(autoSpinTimer);
+    const btn = document.getElementById('stopAutoBtn');
+    if (btn) btn.style.display = 'none';
+  }
+
+  function runNextAutoSpin() {
+    if (autoSpinsRemaining <= 0 && freeSpinsLeft <= 0) {
+      stopAutoSpins();
+      return;
+    }
+    executeGameTurn();
+  }
+
+  function buildGameStageUI() {
+    const box = document.getElementById('stageInnerContent');
+    if (activeGameObj.type === 'cascade') {
+      const syms = activeGameObj.syms;
+      box.innerHTML = `
+        <div class="cascade-wrapper">
+          <div class="cascade-grid" id="cascadeGrid">
+            ${Array.from({length: 30}, (_, i) => `<div class="stone-cell">${syms[i % syms.length]}</div>`).join('')}
+          </div>
+        </div>
+      `;
+    } else if (activeGameObj.type === 'rocket') {
+      buildMultiplayerRocketUI(box);
+    } else if (activeGameObj.type === 'step') {
+      buildStepClimb35UI(box);
+    } else if (activeGameObj.type === 'wheel') {
+      buildAccurateFruitWheel(box);
+    }
+  }
+
+  function executeGameTurn() {
+    if (!guardAntiSpam(300) || !activeGameObj) return;
+    if (activeGameObj.type === 'cascade') runCascadeSpin();
+    else if (activeGameObj.type === 'step') startStepClimb35Round();
+    else if (activeGameObj.type === 'wheel') spinBigFruitWheel();
+  }
+
+  function generateCascadeBoard(syms, kingSym, shouldWin, trigger4Kings) {
+    const pool = [];
+    for (let i = 0; i < 30; i++) {
+      pool.push(syms[i % syms.length]);
+    }
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+
+    if (trigger4Kings) {
+      [0, 1, 3, 4].forEach(col => {
+        pool[col + 6] = kingSym;
+      });
+      return pool;
+    }
+
+    if (shouldWin) {
+      const winningSym = syms[Math.floor(Math.random() * syms.length)];
+      let added = 0;
+      for (let i = 0; i < 30 && added < 3; i++) {
+        if (pool[i] !== winningSym) {
+          pool[i] = winningSym;
+          added++;
+        }
+      }
+    }
+    return pool;
+  }
+
+  function runCascadeSpin() {
+    const bet = getCurrentBetAmount();
+    const isFree = freeSpinsLeft > 0;
+
+    if (!isFree) {
+      if (!currentUser.isAdmin && currentUser.gold < bet) {
+        stopAutoSpins();
+        showToast('⚠️ رصيد الذهب غير كافٍ!', '#ef4444');
+        return;
+      }
+      if (!currentUser.isAdmin) {
+        currentUser.gold -= bet;
+        currentUser.totalLostUnrecovered = (currentUser.totalLostUnrecovered || 0) + bet;
+      }
+      recordGameProgress(1, false, true);
+    } else {
+      freeSpinsLeft--;
+      document.getElementById('freeSpinCount').innerText = freeSpinsLeft;
+    }
+
+    isActionLocked = true;
+    playGameSound('drop');
+    const syms = activeGameObj.syms;
+
+    const hasLossToRecover = (currentUser.totalLostUnrecovered || 0) >= bet * 3;
+    const trigger4Kings = !isFree && hasLossToRecover && (Math.random() < 0.14);
+
+    const winRate = isTodayFriday() ? 0.42 : 0.32;
+    const shouldWinWave1 = !trigger4Kings && (isFree ? (Math.random() < 0.50) : (Math.random() < winRate));
+
+    let rareMultOrb = null;
+    if (shouldWinWave1 && Math.random() < 0.05) {
+      const multOptions = [2, 4, 6, 10];
+      rareMultOrb = multOptions[Math.floor(Math.random() * multOptions.length)];
+    }
+
+    const board = generateCascadeBoard(syms, activeGameObj.king, shouldWinWave1, trigger4Kings);
+    renderCascadeCells(board, rareMultOrb);
+
+    setTimeout(() => {
+      if (trigger4Kings) {
+        triggerFourKingsScatterAnimation(board, bet);
+      } else {
+        processTumbleWave(board, bet, 1, 0, isFree, rareMultOrb);
+      }
+    }, 440);
+  }
+
+  function renderCascadeCells(board, rareMultOrb) {
+    const gridEl = document.getElementById('cascadeGrid');
+    if (!gridEl) return;
+    gridEl.innerHTML = board.map((s, idx) => {
+      if (rareMultOrb && idx === 14) {
+        return `<div class="stone-cell stone-drop mult-orb-cell" id="sc_${idx}">x${rareMultOrb}</div>`;
+      }
+      return `<div class="stone-cell stone-drop" id="sc_${idx}" style="animation-delay:${(idx % 6) * 0.03}s">${s}</div>`;
+    }).join('');
+  }
+
+  function triggerFourKingsScatterAnimation(board, bet) {
+    playGameSound('scatterBell');
+    const kingCols = [0, 1, 3, 4];
+    for (let r = 0; r < 5; r++) {
+      kingCols.forEach(c => {
+        const cell = document.getElementById('sc_' + (r * 6 + c));
+        if (cell) {
+          cell.className = 'stone-cell king-full-column';
+          cell.innerText = '👑';
+        }
+      });
+    }
+
+    scatterTargetReturn = Math.max(bet, Math.floor((currentUser.totalLostUnrecovered || 0) * 0.25));
+    currentUser.totalLostUnrecovered = 0;
+    freeSpinsPot = 0;
+
+    setTimeout(() => {
+      const scatterModal = document.getElementById('scatterOverlay');
+      scatterModal.classList.add('show');
+      playGameSound('scatterBell');
+
+      setTimeout(() => {
+        scatterModal.classList.remove('show');
+        freeSpinsLeft = 8;
+        document.getElementById('freeSpinHud').classList.add('active');
+        document.getElementById('freeSpinCount').innerText = freeSpinsLeft;
+        document.getElementById('freeSpinPotValue').innerText = '0';
+        isActionLocked = false;
+        runNextAutoSpin();
+      }, 2400);
+    }, 950);
+  }
+
+  function processTumbleWave(board, bet, waveNum, accumulatedWin, isFree, rareMultOrb) {
+    const counts = {};
+    board.forEach((s, idx) => {
+      if (s !== activeGameObj.king && !(rareMultOrb && idx === 14)) {
+        counts[s] = (counts[s] || 0) + 1;
+      }
+    });
+    const matchedSyms = Object.keys(counts).filter(s => counts[s] >= 8);
+
+    if (matchedSyms.length > 0) {
+      playGameSound('win');
+      let matchedStonesTotal = 0;
+      board.forEach((s, idx) => {
+        if (matchedSyms.includes(s)) {
+          matchedStonesTotal++;
+          const el = document.getElementById('sc_' + idx);
+          if (el) el.classList.add('stone-match');
+        }
+      });
+
+      let waveWin = 0;
+      if (isFree) {
+        waveWin = Math.floor(scatterTargetReturn / 4);
+      } else {
+        const baseStoneValue = bet / 16;
+        waveWin = Math.floor(baseStoneValue * matchedStonesTotal);
+      }
+
+      accumulatedWin += waveWin;
+      document.getElementById('gameStatusMsg').innerHTML = `✨ تطابق ${matchedStonesTotal} أحجار! المجموع: <strong style="color:#10b981;">+${formatCoins(accumulatedWin)}</strong>`;
+
+      setTimeout(() => {
+        const syms = activeGameObj.syms;
+        const allowSecondWave = (waveNum === 1 && !isFree && Math.random() < 0.18);
+
+        const currentCounts = {};
+        syms.forEach(s => currentCounts[s] = 0);
+        board.forEach((s, idx) => {
+          if (!matchedSyms.includes(s) && currentCounts[s] !== undefined) currentCounts[s]++;
+        });
+
+        const nextTargetSym = syms.find(s => !matchedSyms.includes(s)) || syms[0];
+
+        board.forEach((s, idx) => {
+          if (matchedSyms.includes(s)) {
+            let newSym;
+            if (allowSecondWave && currentCounts[nextTargetSym] < 8) {
+              newSym = nextTargetSym;
+              currentCounts[nextTargetSym]++;
+            } else {
+              const safeSyms = syms.filter(sym => (currentCounts[sym] || 0) < 6 && !matchedSyms.includes(sym));
+              newSym = safeSyms.length > 0 ? safeSyms[Math.floor(Math.random() * safeSyms.length)] : syms[idx % syms.length];
+              currentCounts[newSym] = (currentCounts[newSym] || 0) + 1;
+            }
+            board[idx] = newSym;
+            const el = document.getElementById('sc_' + idx);
+            if (el) {
+              el.className = 'stone-cell stone-drop';
+              el.innerText = newSym;
+            }
+          }
+        });
+        playGameSound('drop');
+
+        setTimeout(() => {
+          processTumbleWave(board, bet, waveNum + 1, accumulatedWin, isFree, rareMultOrb);
+        }, 430);
+      }, 420);
+
+    } else {
+      if (accumulatedWin > 0) {
+        if (rareMultOrb) {
+          accumulatedWin = accumulatedWin * rareMultOrb;
+          showToast(`⚡ مضاعف نادر x${rareMultOrb}! تضاعف ربح الجولة إلى +${formatCoins(accumulatedWin)}!`);
+        }
+
+        if (isFree) {
+          freeSpinsPot += accumulatedWin;
+          document.getElementById('freeSpinPotValue').innerText = formatCoins(freeSpinsPot);
+          document.getElementById('gameStatusMsg').innerHTML = `🎁 أُضيف للوعاء المجاني: <strong style="color:#34d399;">+${formatCoins(accumulatedWin)}</strong>`;
+        } else {
+          if (!currentUser.isAdmin) {
+            currentUser.gold += accumulatedWin;
+            currentUser.totalLostUnrecovered = Math.max(0, (currentUser.totalLostUnrecovered || 0) - accumulatedWin);
+          }
+          recordGameProgress(0, true, false);
+        }
+      } else {
+        playGameSound('lose');
+        document.getElementById('gameStatusMsg').innerText = '';
+      }
+
+      if (isFree && freeSpinsLeft === 0) {
+        if (freeSpinsPot <= 0) freeSpinsPot = scatterTargetReturn;
+        if (!currentUser.isAdmin) currentUser.gold += freeSpinsPot;
+        playGameSound('scatterBell');
+        showToast(`🎉 انتهت الـ 8 جولات مجانية! تم إدراج إجمالي الربح دفعة واحدة: +${formatCoins(freeSpinsPot)} ذهب!`);
+        document.getElementById('gameStatusMsg').innerHTML = `🏆 إجمالي المجاني المضاف لرصيدك دفعة واحدة: <strong style="color:#fde047;">+${formatCoins(freeSpinsPot)}</strong>`;
+        setTimeout(() => {
+          document.getElementById('freeSpinHud').classList.remove('active');
+          freeSpinsPot = 0;
+        }, 2200);
+      }
+
+      isActionLocked = false;
+      saveUser();
+      if (freeSpinsLeft > 0 || autoSpinsRemaining > 0) {
+        if (autoSpinsRemaining > 0 && freeSpinsLeft === 0) autoSpinsRemaining--;
+        autoSpinTimer = setTimeout(runNextAutoSpin, 680);
+      }
+    }
+  }
+
+  /**************************************************************
+   * 11. ألعاب الصاروخ ومشابهاتها
+   **************************************************************/
+  const ROCKET_INDEPENDENT_DATA = {
+    rocket:  { speed: 0.04, history: [1.45, 2.10, 1.15, 3.40, 1.05, 1.90, 2.60, 1.25, 4.10, 1.50, 2.05] },
+    aviator: { speed: 0.05, history: [1.10, 1.75, 2.80, 1.30, 1.95, 3.10, 1.02, 2.25, 1.60, 2.90, 1.40] },
+    blimp:   { speed: 0.03, history: [2.20, 1.35, 1.80, 2.50, 1.12, 1.65, 3.80, 1.40, 2.00, 1.20, 2.75] },
+    comet:   { speed: 0.06, history: [1.05, 3.20, 1.40, 1.85, 2.40, 1.18, 1.70, 4.50, 1.30, 2.15, 1.55] }
+  };
+
+  let rocketState = 'waiting';
+  let rocketMult = 1.00;
+  let rocketCrashTarget = 1.80;
+  let rocketLoop = null;
+  let rocketCountdownLoop = null;
+  let rocketBets = [
+    { active: false, cashed: false, tierIdx: 0, amount: 100000 },
+    { active: false, cashed: false, tierIdx: 0, amount: 100000 }
+  ];
+  let activeBots = [];
+
+  function buildMultiplayerRocketUI(box) {
+    box.innerHTML = `
+      <div class="crash-history-strip" id="crashHistoryStrip"></div>
+
+      <div class="rocket-tall-screen">
+        <div class="center-pro-timer" id="centerProTimer">
+          <div style="font-size:2rem; font-weight:900; color:var(--gold);" id="rcCountdown">5.0s</div>
+        </div>
+
+        <div id="rocketFlightZone" style="display:none; flex-direction:column; align-items:center;">
+          <div id="rocketVisual" style="font-size:4.6rem; filter:drop-shadow(0 0 20px #ef4444);">${activeGameObj.vehicle || '🚀'}</div>
+          <div id="rocketLiveMult" style="font-size:2.7rem; font-weight:900; color:var(--gold); margin-top:4px;">1.00x</div>
+        </div>
+
+        <div id="botsCabin" style="position:absolute; bottom:10px; display:flex; gap:5px; flex-wrap:wrap; justify-content:center; width:95%;"></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; width:100%; margin-top:8px;">
+        ${[0, 1].map(idx => `
+          <div style="background:#080d1a; border:1px solid #263354; padding:8px; border-radius:12px;">
+            <select id="rcTierSelect_${idx}" class="form-input" style="padding:5px; font-size:0.78rem; margin-bottom:6px;" onchange="updateRocketTier(${idx}, this.value)">
+              ${BET_TIERS.map((t, i) => `<option value="${i}" ${i === 0 ? 'selected' : ''}>${t.label}</option>`).join('')}
+            </select>
+            <button class="btn-primary" id="rcActionBtn_${idx}" style="padding:8px; font-size:0.78rem;" onclick="toggleRocketBet(${idx})">رهان 🚀</button>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    renderCrashHistory11();
+    startRocketCountdownCycle();
+  }
+
+  function getActiveRocketData() {
+    const id = activeGameObj ? activeGameObj.id : 'rocket';
+    return ROCKET_INDEPENDENT_DATA[id] || ROCKET_INDEPENDENT_DATA.rocket;
+  }
+
+  function renderCrashHistory11() {
+    const strip = document.getElementById('crashHistoryStrip');
+    if (!strip) return;
+    const hist = getActiveRocketData().history;
+    strip.innerHTML = hist.slice(0, 11).map(val => `
+      <span class="crash-pill ${val < 1.8 ? 'low' : 'high'}">${val.toFixed(2)}x</span>
+    `).join('');
+  }
+
+  function updateRocketTier(panelIdx, tierIdx) {
+    rocketBets[panelIdx].tierIdx = parseInt(tierIdx);
+    rocketBets[panelIdx].amount = BET_TIERS[rocketBets[panelIdx].tierIdx].val;
+  }
+
+  function toggleRocketBet(panelIdx) {
+    if (!guardAntiSpam(200)) return;
+    const b = rocketBets[panelIdx];
+    const btn = document.getElementById('rcActionBtn_' + panelIdx);
+
+    if (rocketState === 'flying' && b.active && !b.cashed) {
+      b.cashed = true;
+      const winVal = Math.floor(b.amount * rocketMult);
+      if (!currentUser.isAdmin) currentUser.gold += winVal;
+      recordGameProgress(1, true, false);
+      playGameSound('win');
+      btn.innerText = `تم (${rocketMult.toFixed(2)}x) ✅`;
+      btn.style.background = '#334155';
+      saveUser();
+      return;
+    }
+
+    if (rocketState !== 'waiting') return;
+
+    if (!b.active) {
+      const amt = BET_TIERS[b.tierIdx].val;
+      if (!currentUser.isAdmin && currentUser.gold < amt) { showToast('رصيد الذهب غير كافٍ!', '#ef4444'); return; }
+      if (!currentUser.isAdmin) currentUser.gold -= amt;
+      b.amount = amt;
+      b.active = true;
+      b.cashed = false;
+      saveUser();
+      btn.innerText = `مؤكد (${BET_TIERS[b.tierIdx].label}) ⏳`;
+      btn.style.background = '#0284c7';
+      btn.style.color = '#fff';
+    }
+  }
+
+  function startRocketCountdownCycle() {
+    clearInterval(rocketLoop);
+    clearInterval(rocketCountdownLoop);
+    rocketState = 'waiting';
+    rocketMult = 1.00;
+    let timeLeft = 4.5;
+
+    const timerBox = document.getElementById('centerProTimer');
+    const flightZone = document.getElementById('rocketFlightZone');
+    const cabin = document.getElementById('botsCabin');
+    if (!timerBox) return;
+
+    timerBox.style.display = 'flex';
+    flightZone.style.display = 'none';
+
+    activeBots = [
+      { name: '🤖 فهد', target: (1.2 + Math.random() * 1.1).toFixed(2), jumped: false },
+      { name: '🤖 حيدر', target: (1.5 + Math.random() * 1.6).toFixed(2), jumped: false },
+      { name: '🤖 مريم', target: (1.8 + Math.random() * 2.0).toFixed(2), jumped: false },
+      { name: '🤖 زين', target: (2.1 + Math.random() * 2.5).toFixed(2), jumped: false }
+    ];
+    cabin.innerHTML = activeBots.map((bot, i) => `
+      <div id="botRider_${i}" style="background:rgba(255,255,255,0.1); padding:2px 7px; border-radius:10px; font-size:0.68rem; border:1px solid #38bdf8;">${bot.name}</div>
+    `).join('');
+
+    [0, 1].forEach(idx => {
+      rocketBets[idx].active = false;
+      rocketBets[idx].cashed = false;
+      const btn = document.getElementById('rcActionBtn_' + idx);
+      if (btn) {
+        btn.innerText = 'رهان 🚀';
+        btn.style.background = 'linear-gradient(135deg, var(--gold), var(--gold-dark))';
+        btn.style.color = '#000';
+      }
+    });
+
+    rocketCountdownLoop = setInterval(() => {
+      timeLeft -= 0.1;
+      const cdEl = document.getElementById('rcCountdown');
+      if (cdEl) cdEl.innerText = Math.max(0, timeLeft).toFixed(1) + 's';
+      if (timeLeft <= 0) {
+        clearInterval(rocketCountdownLoop);
+        launchMultiplayerRocket();
+      }
+    }, 100);
+  }
+
+  function launchMultiplayerRocket() {
+    rocketState = 'flying';
+    const timerBox = document.getElementById('centerProTimer');
+    const flightZone = document.getElementById('rocketFlightZone');
+    const visual = document.getElementById('rocketVisual');
+    const multEl = document.getElementById('rocketLiveMult');
+    if (!timerBox) return;
+
+    timerBox.style.display = 'none';
+    flightZone.style.display = 'flex';
+    visual.innerText = activeGameObj.vehicle || '🚀';
+    multEl.style.color = 'var(--gold)';
+
+    const rData = getActiveRocketData();
+    const roll = Math.random();
+    if (roll < 0.45) {
+      rocketCrashTarget = +(1.02 + Math.random() * 0.55).toFixed(2);
+    } else if (roll < 0.85) {
+      rocketCrashTarget = +(1.60 + Math.random() * 1.65).toFixed(2);
+    } else {
+      rocketCrashTarget = +(3.30 + Math.random() * 3.20).toFixed(2);
+    }
+
+    rocketLoop = setInterval(() => {
+      rocketMult += rData.speed;
+      if (multEl) multEl.innerText = rocketMult.toFixed(2) + 'x';
+
+      [0, 1].forEach(idx => {
+        if (rocketBets[idx].active && !rocketBets[idx].cashed) {
+          const btn = document.getElementById('rcActionBtn_' + idx);
+          if (btn) {
+            btn.style.background = 'var(--green)';
+            btn.innerText = `سحب ${formatCoins(rocketBets[idx].amount * rocketMult)}`;
+          }
+        }
+      });
+
+      activeBots.forEach((bot, i) => {
+        if (!bot.jumped && rocketMult >= bot.target) {
+          bot.jumped = true;
+          const bEl = document.getElementById('botRider_' + i);
+          if (bEl) {
+            bEl.innerText = `🪂 ${bot.name} (${bot.target}x)`;
+            bEl.style.background = 'rgba(16,185,129,0.3)';
+          }
+        }
+      });
+
+      if (rocketMult >= rocketCrashTarget) {
+        clearInterval(rocketLoop);
+        rocketState = 'crashed';
+        playGameSound('lose');
+        if (visual) visual.innerText = '💥';
+        if (multEl) {
+          multEl.innerText = rocketCrashTarget.toFixed(2) + 'x';
+          multEl.style.color = 'var(--red)';
+        }
+        rData.history.unshift(rocketCrashTarget);
+        if (rData.history.length > 11) rData.history.pop();
+        renderCrashHistory11();
+
+        setTimeout(() => {
+          if (activeGameObj && activeGameObj.type === 'rocket') startRocketCountdownCycle();
+        }, 2600);
+      }
+    }, 105);
+  }
+
+  /**************************************************************
+   * 12. ألعاب الدجاج والتفاحة والخطوات (المضاعفات المعدلة المطلوبة)
+   * X1.05 | X1.30 | X1.80 | X2.0 | X2.50 | X3.10 | X5
+   **************************************************************/
+  let stepRoundActive = false;
+  let stepRowIndex = 0;
+  let stepMultiplier = 1.0;
+  let stepBetLocked = 100000;
+  const STEP_HIGH_MULTS = [1.05, 1.30, 1.80, 2.00, 2.50, 3.10, 5.00];
+
+  function buildStepClimb35UI(box) {
+    box.innerHTML = `
+      <div class="expanded-step-grid" id="stepClimbGrid35">
+        ${Array.from({length: 35}, (_, i) => {
+          const r = Math.floor(i / 5);
+          return `<div class="step-cell-35" id="stTile_${i}" onclick="clickStepTile35(${i})">
+            <div>❓</div>
+            <div class="step-mult-badge">X${STEP_HIGH_MULTS[r].toFixed(2).replace(/\.00$/, '').replace(/(\.[1-9])0$/, '$1')}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  function startStepClimb35Round() {
+    const bet = getCurrentBetAmount();
+    if (!currentUser.isAdmin && currentUser.gold < bet) {
+      showToast('رصيد الذهب غير كافٍ!', '#ef4444');
+      return;
+    }
+    if (!currentUser.isAdmin) currentUser.gold -= bet;
+    stepBetLocked = bet;
+    stepRoundActive = true;
+    stepRowIndex = 0;
+    stepMultiplier = 1.0;
+    saveUser();
+    recordGameProgress(1, false, false);
+
+    buildStepClimb35UI(document.getElementById('stageInnerContent'));
+    highlightActiveStepRow35();
+    document.getElementById('playMainBtn').style.display = 'none';
+    document.getElementById('cashoutMainBtn').style.display = 'block';
+  }
+
+  function highlightActiveStepRow35() {
+    for (let i = 0; i < 35; i++) {
+      const el = document.getElementById('stTile_' + i);
+      if (el) el.classList.toggle('active-row', Math.floor(i / 5) === stepRowIndex);
+    }
+  }
+
+  function clickStepTile35(idx) {
+    if (!stepRoundActive || Math.floor(idx / 5) !== stepRowIndex) return;
+    const el = document.getElementById('stTile_' + idx);
+    const winStep = Math.random() < 0.78;
+
+    if (!winStep) {
+      el.innerHTML = `<div style="font-size:1.25rem;">${activeGameObj.trapIcon}</div>`;
+      el.style.background = '#7f1d1d';
+      playGameSound('lose');
+      stepRoundActive = false;
+      document.getElementById('playMainBtn').style.display = 'block';
+      document.getElementById('cashoutMainBtn').style.display = 'none';
+      document.getElementById('gameStatusMsg').innerText = '💥 حاولت فتعثرت!';
+    } else {
+      el.innerHTML = `<div style="font-size:1.25rem;">${activeGameObj.safeIcon}</div>`;
+      el.style.background = '#065f46';
+      playGameSound('win');
+      stepMultiplier = STEP_HIGH_MULTS[stepRowIndex];
+      stepRowIndex++;
+      const currentWinCoins = Math.floor(stepBetLocked * stepMultiplier);
+      document.getElementById('cashoutMainBtn').innerText = `سحب (${formatCoins(currentWinCoins)}) 💰`;
+
+      if (stepRowIndex >= 7) cashoutStepGame();
+      else highlightActiveStepRow35();
+    }
+  }
+
+  function cashoutStepGame() {
+    if (!stepRoundActive || stepRowIndex === 0) return;
+    stepRoundActive = false;
+    const winVal = Math.floor(stepBetLocked * stepMultiplier);
+    if (!currentUser.isAdmin) currentUser.gold += winVal;
+    playGameSound('win');
+
+    // تسجيل فوز في الدجاج أو التفاحة
+    if (!currentUser.dailyState) currentUser.dailyState = {};
+    currentUser.dailyState.stepWins = (currentUser.dailyState.stepWins || 0) + 1;
+    recordGameProgress(0, true, false);
+
+    saveUser();
+    document.getElementById('playMainBtn').style.display = 'block';
+    document.getElementById('cashoutMainBtn').style.display = 'none';
+    document.getElementById('cashoutMainBtn').innerText = 'سحب الربح 💰';
+    document.getElementById('gameStatusMsg').innerHTML = `🎉 ربحت بالمضاعف X${stepMultiplier}: <strong style="color:#10b981;">+${formatCoins(winVal)}</strong>!`;
+  }
+
+  /**************************************************************
+   * 13. عجلة الفواكه
+   **************************************************************/
+  const WHEEL_SEGMENTS = [
+    { icon: '🍉', mult: 2.5 }, { icon: '🍓', mult: 0 }, { icon: '🍌', mult: 2.0 }, { icon: '🍒', mult: 4.0 },
+    { icon: '🍇', mult: 0 },   { icon: '🍍', mult: 6.0 }, { icon: '🍎', mult: 1.8 }, { icon: '👑', mult: 15.0 }
+  ];
+  let wheelRotation = 0;
+
+  function buildAccurateFruitWheel(box) {
+    const radius = 86;
+    const labelsHtml = WHEEL_SEGMENTS.map((seg, i) => {
+      const angleDeg = i * 45 + 22.5 - 90;
+      const rad = angleDeg * (Math.PI / 180);
+      const x = 130 + radius * Math.cos(rad);
+      const y = 130 + radius * Math.sin(rad);
+      return `
+        <div class="wheel-item-label" style="left:${x}px; top:${y}px; transform:rotate(${i * 45 + 22.5}deg);">
+          <span style="font-size:1.4rem;">${seg.icon}</span>
+          <span>${seg.mult}x</span>
+        </div>
+      `;
+    }).join('');
+
+    box.innerHTML = `
+      <div class="wheel-wrapper">
+        <div class="wheel-pointer">🔻</div>
+        <div class="fruit-wheel-big" id="bigFruitWheel">${labelsHtml}</div>
+      </div>
+    `;
+  }
+
+  function spinBigFruitWheel() {
+    const bet = getCurrentBetAmount();
+    if (!currentUser.isAdmin && currentUser.gold < bet) {
+      stopAutoSpins();
+      showToast('رصيد الذهب غير كافٍ!', '#ef4444');
+      return;
+    }
+    if (!currentUser.isAdmin) currentUser.gold -= bet;
+    isActionLocked = true;
+    saveUser();
+    recordGameProgress(1, false, false);
+
+    const winTurn = Math.random() < 0.52;
+    const winIndices = [0, 2, 3, 5, 6, 7];
+    const loseIndices = [1, 4];
+    const segIndex = winTurn
+      ? winIndices[Math.floor(Math.random() * winIndices.length)]
+      : loseIndices[Math.floor(Math.random() * loseIndices.length)];
+
+    const targetSliceAngle = 360 - (segIndex * 45 + 22.5);
+    wheelRotation += 1440 + targetSliceAngle - (wheelRotation % 360);
+
+    const wheelEl = document.getElementById('bigFruitWheel');
+    if (wheelEl) wheelEl.style.transform = `rotate(${wheelRotation}deg)`;
+
+    let ticks = 0;
+    const tickInterval = setInterval(() => {
+      playGameSound('tick');
+      ticks++;
+      if (ticks > 18) clearInterval(tickInterval);
+    }, 150);
+
+    setTimeout(() => {
+      const chosen = WHEEL_SEGMENTS[segIndex];
+      if (chosen.mult > 0) {
+        const winVal = Math.floor(bet * chosen.mult);
+        if (!currentUser.isAdmin) currentUser.gold += winVal;
+        playGameSound('win');
+        recordGameProgress(0, true, false);
+        document.getElementById('gameStatusMsg').innerHTML = `🎉 ${chosen.icon} (${chosen.mult}x): <strong style="color:#10b981;">+${formatCoins(winVal)}</strong>!`;
+      } else {
+        playGameSound('lose');
+        document.getElementById('gameStatusMsg').innerText = `${chosen.icon} (0x)`;
+      }
+      isActionLocked = false;
+      saveUser();
+    }, 3200);
+  }
+
+  /**************************************************************
+   * 14. نظام الدردشة الحية العامة بين جميع اللاعبين
+   **************************************************************/
+  let chatListenerAttached = false;
+
+  function initLiveChat() {
+    if (!db || chatListenerAttached) return;
+    chatListenerAttached = true;
+
+    db.ref('chat_messages').limitToLast(60).on('value', snap => {
+      const box = document.getElementById('liveChatMessagesBox');
+      if (!snap.exists()) {
+        box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.8rem; margin-top:20px;">لا توجد رسائل بعد. كن أول من يكتب! 💬</div>';
+        return;
+      }
+      const msgs = snap.val();
+      const list = Object.keys(msgs).map(k => ({ ...msgs[k], msgKey: k }));
+
+      box.innerHTML = list.map(m => {
+        const isMe = currentUser && (m.userKey === currentUser.key);
+        const canDelete = isMe || (currentUser && currentUser.isAdmin);
+        const vipLvl = m.vip || 0;
+        const uidStr = m.numericId ? `#${m.numericId}` : '';
+
+        return `
+          <div class="chat-msg-row">
+            <div class="avatar-wrap frame-vip-${vipLvl}" style="width:34px; height:34px; font-size:1.1rem; flex-shrink:0;">
+              ${m.avatar && m.avatar.startsWith('data:image') ? `<img src="${m.avatar}">` : (m.avatar || '🦁')}
+            </div>
+            <div class="chat-bubble chat-frame-${vipLvl}">
+              <div class="chat-msg-header">
+                <div>
+                  <strong style="color:var(--gold);">${escapeHtml(m.username)}</strong>
+                  <span class="uid-badge" style="font-size:0.58rem; padding:1px 3px;">${uidStr}</span>
+                  <span style="font-size:0.65rem; color:#38bdf8;">[VIP ${vipLvl}]</span>
+                </div>
+                <span style="font-size:0.62rem; color:#94a3b8;">${formatMsgTime(m.timestamp)}</span>
+              </div>
+              <div class="chat-msg-text">${escapeHtml(m.text)}</div>
+              <div class="chat-actions-strip">
+                ${!isMe ? `<button class="chat-action-btn" onclick="addFriendFromChat('${escapeHtml(m.userKey)}', '${escapeHtml(m.username)}', '${m.numericId || ''}', '${m.avatar || '🦁'}', ${vipLvl})">➕ إضافة صديق</button>` : ''}
+                <button class="chat-action-btn" onclick="reportChatMessage('${m.msgKey}', '${escapeHtml(m.username)}')">🚩 إبلاغ</button>
+                ${canDelete ? `<button class="chat-action-btn" style="color:var(--red); border-color:rgba(239,68,68,0.4);" onclick="deleteChatMessage('${m.msgKey}')">🗑️ حذف</button>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      box.scrollTop = box.scrollHeight;
+    });
+  }
+
+  function formatMsgTime(ts) {
+    if (!ts) return '';
+    const d = new Date(ts);
+    return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return text.toString()
+      .replace(/&/g, "&")
+      .replace(/</g, "<")
+      .replace(/>/g, ">")
+      .replace(/"/g, """)
+      .replace(/'/g, "'");
+  }
+
+  async function sendLiveChatMessage() {
+    if (!guardAntiSpam(400) || !currentUser) return;
+    if (currentUser.isBanned) {
+      handleBanStatus(true);
+      return;
+    }
+    const input = document.getElementById('liveChatInput');
+    const txt = input.value.trim();
+    if (!txt) return;
+
+    const msgObj = {
+      userKey: currentUser.key,
+      username: currentUser.username,
+      numericId: currentUser.numericId || '0000000',
+      vip: currentUser.vip || 0,
+      avatar: currentUser.avatar || '🦁',
+      text: txt,
+      timestamp: getTrustedTimestamp()
+    };
+
+    if (db) {
+      await db.ref('chat_messages').push(msgObj).catch(() => {});
+    }
+
+    input.value = '';
+
+    // تسجيل مهمة إرسال رسالة في الدردشة
+    if (!currentUser.dailyState) currentUser.dailyState = {};
+    currentUser.dailyState.chatMsgs = (currentUser.dailyState.chatMsgs || 0) + 1;
+    saveUser();
+  }
+
+  async function deleteChatMessage(msgKey) {
+    if (!guardAntiSpam(300) || !currentUser) return;
+    if (db) {
+      await db.ref('chat_messages/' + msgKey).remove().catch(() => {});
+      showToast('🗑️ تم حذف الرسالة بنجاح');
+    }
+  }
+
+  let currentReportingMsgKey = null;
+  let currentReportingUser = null;
+
+  function reportChatMessage(msgKey, targetUser) {
+    currentReportingMsgKey = msgKey;
+    currentReportingUser = targetUser;
+    document.getElementById('reportTargetUserText').innerText = `إبلاغ عن رسالة اللاعب: ${targetUser}`;
+    document.getElementById('reportReasonInput').value = '';
+    document.getElementById('reportChatModal').classList.add('open');
+  }
+
+  function closeReportModal() {
+    document.getElementById('reportChatModal').classList.remove('open');
+  }
+
+  async function submitChatMessageReport() {
+    if (!guardAntiSpam(300) || !currentUser || !currentReportingMsgKey) return;
+    const reason = document.getElementById('reportReasonInput').value.trim();
+    if (!reason) {
+      showToast('يرجى كتابة سبب الإبلاغ!', '#ef4444');
+      return;
+    }
+    if (db) {
+      await db.ref('chat_reports/' + currentReportingMsgKey).push({
+        reportedBy: currentUser.username,
+        reportedUser: currentReportingUser,
+        reason: reason,
+        timestamp: getTrustedTimestamp()
+      }).catch(() => {});
+    }
+    closeReportModal();
+    showToast('🚩 تم إرسال البلاغ للإدارة بنجاح!');
+  }
+
+  /**************************************************************
+   * 15. نظام الأصدقاء والبحث بالاسم أو المعرف الفريد 7 أرقام
+   **************************************************************/
+  function renderMyFriendsList() {
+    const box = document.getElementById('myFriendsListContainer');
+    if (!box || !currentUser) return;
+    const list = currentUser.friendsList || [];
+    if (list.length === 0) {
+      box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.78rem; padding:15px;">لا يوجد أصدقاء بعد. يمكنك البحث عن أصدقائك أو إضافتهم من الدردشة العامة!</div>';
+      return;
+    }
+
+    box.innerHTML = list.map(f => `
+      <div class="friend-card">
+        <div style="display:flex; align-items:center; gap:9px;">
+          <div class="avatar-wrap frame-vip-${f.vip || 0}" style="width:38px; height:38px; font-size:1.2rem;">
+            ${f.avatar && f.avatar.startsWith('data:image') ? `<img src="${f.avatar}">` : (f.avatar || '🦁')}
+          </div>
+          <div>
+            <div style="font-weight:900; font-size:0.86rem; color:#fff;">${escapeHtml(f.username)}</div>
+            <div style="display:flex; align-items:center; gap:5px; margin-top:2px;">
+              <span class="uid-badge" style="font-size:0.62rem;">#${f.numericId || '0000000'}</span>
+              <span style="font-size:0.68rem; color:#38bdf8;">VIP ${f.vip || 0}</span>
+            </div>
+          </div>
+        </div>
+        <button class="chat-action-btn" style="color:var(--red); border-color:rgba(239,68,68,0.3); padding:4px 8px;" onclick="removeFriend('${f.key}')">حذف ✖</button>
+      </div>
+    `).join('');
+  }
+
+  async function searchPlayerToFriend() {
+    if (!guardAntiSpam(400) || !currentUser) return;
+    const q = document.getElementById('friendSearchQuery').value.trim();
+    const resultBox = document.getElementById('friendSearchResultBox');
+    resultBox.style.display = 'block';
+
+    if (!q) {
+      resultBox.innerHTML = '<div style="color:var(--red); font-size:0.75rem;">أدخل اسم اللاعب أو المعرف الرقمي المكون من 7 أرقام!</div>';
+      return;
+    }
+
+    resultBox.innerHTML = '<div style="color:#38bdf8; font-size:0.75rem;">جاري البحث... ⏳</div>';
+
+    let foundUser = null;
+    let foundKey = null;
+
+    if (db) {
+      try {
+        // البحث بالمعرف 7 أرقام
+        if (/^\d{7}$/.test(q)) {
+          const idSnap = await db.ref('id_to_user/' + q).once('value');
+          if (idSnap.exists()) {
+            foundKey = idSnap.val();
+            const uSnap = await db.ref('users/' + foundKey).once('value');
+            if (uSnap.exists()) foundUser = uSnap.val();
+          }
+        }
+        // البحث بالاسم
+        if (!foundUser) {
+          const targetKey = q.replace(/[.#$[\]\s]/g, '_');
+          const uSnap = await db.ref('users/' + targetKey).once('value');
+          if (uSnap.exists()) {
+            foundUser = uSnap.val();
+            foundKey = targetKey;
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (!foundUser) {
+      resultBox.innerHTML = '<div style="color:#ef4444; font-size:0.76rem; background:#060913; padding:8px; border-radius:8px;">❌ لم يتم العثور على لاعب بهذا الاسم أو المعرف!</div>';
+      return;
+    }
+
+    const isAlreadyFriend = (currentUser.friendsList || []).some(f => f.key === foundKey);
+    const isMyself = (foundKey === currentUser.key);
+
+    resultBox.innerHTML = `
+      <div class="friend-card" style="background:#060a17; border-color:var(--gold);">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="avatar-wrap frame-vip-${foundUser.vip || 0}" style="width:36px; height:36px; font-size:1.15rem;">
+            ${foundUser.avatar && foundUser.avatar.startsWith('data:image') ? `<img src="${foundUser.avatar}">` : (foundUser.avatar || '🦁')}
+          </div>
+          <div>
+            <div style="font-weight:900; color:var(--gold); font-size:0.86rem;">${escapeHtml(foundUser.username)}</div>
+            <div style="font-size:0.68rem; color:#94a3b8;">المعرف: <span class="uid-badge" style="font-size:0.6rem;">#${foundUser.numericId || '0000000'}</span> | VIP ${foundUser.vip || 0}</div>
+          </div>
+        </div>
+        ${isMyself ? '<span style="font-size:0.72rem; color:#94a3b8;">(حسابك)</span>' : `
+          <button class="btn-primary" style="width:auto; padding:5px 10px; font-size:0.72rem; ${isAlreadyFriend ? 'background:#334155;' : ''}"
+            onclick="addFriendDirect('${foundKey}', '${escapeHtml(foundUser.username)}', '${foundUser.numericId || ''}', '${foundUser.avatar || '🦁'}', ${foundUser.vip || 0})"
+            ${isAlreadyFriend ? 'disabled' : ''}>
+            ${isAlreadyFriend ? 'صديقك ✅' : '➕ إضافة'}
+          </button>
+        `}
+      </div>
+    `;
+  }
+
+  function addFriendFromChat(userKey, username, numericId, avatar, vip) {
+    addFriendDirect(userKey, username, numericId, avatar, vip);
+  }
+
+  function addFriendDirect(key, username, numericId, avatar, vip) {
+    if (!currentUser) return;
+    if (key === currentUser.key) {
+      showToast('لا يمكنك إضافة نفسك!', '#ef4444');
+      return;
+    }
+    if (!currentUser.friendsList) currentUser.friendsList = [];
+    if (currentUser.friendsList.some(f => f.key === key)) {
+      showToast('هذا اللاعب مضاف مسبقاً لديك!', '#ef4444');
+      return;
+    }
+    currentUser.friendsList.push({
+      key,
+      username,
+      numericId: numericId || '0000000',
+      avatar: avatar || '🦁',
+      vip: vip || 0
+    });
+    currentUser.friendsCount = currentUser.friendsList.length;
+    saveUser();
+    playGameSound('win');
+    showToast(`👥 تمت إضافة ${username} إلى أصدقائك بنجاح!`);
+    renderMyFriendsList();
+  }
+
+  function removeFriend(key) {
+    if (!currentUser || !currentUser.friendsList) return;
+    currentUser.friendsList = currentUser.friendsList.filter(f => f.key !== key);
+    currentUser.friendsCount = currentUser.friendsList.length;
+    saveUser();
+    showToast('تمت إزالة الصديق.');
+    renderMyFriendsList();
+  }
+
+  /**************************************************************
+   * 16. سحب القسائم (كل 5000 قسيمة = 1 دولار أو 1,000 دينار عراقي)
+   **************************************************************/
+  function updateRedeemCostHint() {
+    const usd = parseInt(document.getElementById('rechargeSelect').value) || 1;
+    const cost = usd * 5000;
+    const hint = document.getElementById('redeemCostHint');
+    if (hint) {
+      hint.innerHTML = `المطلوب خصمه: <strong style="color:var(--ticket);">${cost.toLocaleString()}</strong> قسيمة (تساوي ${usd}$ أو ${(usd * 1000).toLocaleString()} د.ع)`;
+    }
+  }
+
+  function redeemPhoneCredit() {
+    if (!guardAntiSpam(500) || !currentUser) return;
+    if (currentUser.isBanned) {
+      handleBanStatus(true);
+      return;
+    }
+    const method = document.getElementById('redeemMethodSelect').value;
+    const phone = document.getElementById('phoneInput').value.trim();
+    const usd = parseInt(document.getElementById('rechargeSelect').value);
+    const cost = usd * 5000;
+    const iqdVal = usd * 1000;
+
+    if (!phone || phone.length < 10) {
+      showToast('أدخل رقم هاتف صحيح!', '#ef4444');
+      return;
+    }
+
+    if (!currentUser.isAdmin && (currentUser.vouchers || 0) < cost) {
+      showToast(`تحتاج إلى ${cost.toLocaleString()} قسيمة لإتمام هذا السحب!`, '#ef4444');
+      return;
+    }
+
+    if (!currentUser.isAdmin) currentUser.vouchers -= cost;
+
+    const r = {
+      id: 'wd_' + getTrustedTimestamp(),
+      title: `${method} (${phone})`,
+      amountUSD: usd,
+      amountIQD: iqdVal,
+      costVouchers: cost,
+      method: method,
+      phone: phone,
+      status: 'قيد المراجعة والإرسال ⏳',
+      timestamp: getTrustedTimestamp()
+    };
+
+    if (!currentUser.requests) currentUser.requests = [];
+    currentUser.requests.unshift(r);
+
+    if (db) {
+      db.ref('voucher_redeems/' + r.id).set({
+        userKey: currentUser.key,
+        username: currentUser.username,
+        numericId: currentUser.numericId || '0000000',
+        ...r
+      }).catch(() => {});
+    }
+
+    saveUser();
+    playGameSound('win');
+    showToast(`✅ تم إرسال طلب سحب ${usd}$ (${iqdVal.toLocaleString()} د.ع) بنجاح!`);
+  }
+
+  function renderRequestsHistory() {
+    const box = document.getElementById('requestsHistoryBox');
+    if (!box || !currentUser) return;
+    const list = currentUser.requests || [];
+    if (list.length === 0) {
+      box.innerHTML = 'لا توجد عمليات سابقة.';
+      return;
+    }
+    box.innerHTML = list.map(r => `
+      <div style="background:#060913; padding:8px 10px; border-radius:9px; margin-bottom:5px; display:flex; justify-content:space-between; align-items:center; border:1px solid #1e2946;">
+        <div>
+          <strong style="color:#fff;">${r.title}</strong>
+          <div style="font-size:0.68rem; color:#94a3b8;">خصم: ${r.costVouchers ? r.costVouchers.toLocaleString() : (r.priceUSD ? r.priceUSD * 5000 : 0)} قسيمة</div>
+        </div>
+        <div style="color:var(--gold); font-weight:700;">${r.status}</div>
+      </div>
+    `).join('');
+  }
+
+  /**************************************************************
+   * 17. لوحة الأدمن ومستويات VIP
+   **************************************************************/
+  function renderVipCards() {
+    const box = document.getElementById('vipListContainer');
+    if (!box || !currentUser) return;
+
+    box.innerHTML = VIP_TIERS.map(t => {
+      const unlocked = (currentUser.vip || 0) >= t.level || currentUser.isAdmin;
+
+      return `
+        <div class="task-card" style="border-color:${unlocked ? 'var(--green)' : 'rgba(251,191,36,0.3)'};">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="avatar-wrap frame-vip-${t.level}" style="font-size:1.35rem;">${t.icon}</div>
+            <div>
+              <div style="font-weight:900; color:var(--gold); font-size:0.86rem;">المستوى ${t.title} (${t.reqPoints.toLocaleString()} نقطة)</div>
+              <div style="font-size:0.7rem; color:#cbd5e1;">🎁 +${formatCoins(t.goldBonus)} ذهب + إطار صورة + إطار دردشة</div>
+            </div>
+          </div>
+          <button class="btn-primary" style="width:auto; padding:6px 11px; font-size:0.74rem; ${unlocked ? 'background:var(--green); color:#000;' : ''}"
+            onclick="goToBuyVipPoints()" ${unlocked ? 'disabled' : ''}>
+            ${unlocked ? 'مفتوح ✅' : 'شراء نقاط 💎'}
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function goToBuyVipPoints() {
+    switchView('storeView');
+    switchStoreTab('points');
+  }
+
+  let currentCheckoutItem = null;
+  let attachedReceiptBase64 = "";
+
+  function openStoreCheckout(category, packId) {
+    playGameSound('click');
+    attachedReceiptBase64 = "";
+    document.getElementById('receiptPreviewBox').style.display = 'none';
+    document.getElementById('zcSenderPhone').value = '';
+
+    if (category === 'GOLD') {
+      const p = GOLD_STORE_PACKAGES.find(x => x.id === packId);
+      currentCheckoutItem = {
+        category: 'GOLD',
+        title: p.label,
+        goldAmount: p.goldAmount,
+        pointsAmount: 0,
+        priceUSD: p.priceUSD
+      };
+    } else {
+      const p = VIP_POINTS_PACKAGES.find(x => x.id === packId);
+      currentCheckoutItem = {
+        category: 'POINTS',
+        title: `${p.points.toLocaleString()} نقطة VIP`,
+        goldAmount: 0,
+        pointsAmount: p.points,
+        priceUSD: p.priceUSD
+      };
+    }
+
+    document.getElementById('zcOrderSummaryText').innerText = `${currentCheckoutItem.title} — ${currentCheckoutItem.priceUSD}$`;
+    document.getElementById('zaincashModal').classList.add('open');
+  }
+
+  function handleReceiptUpload(ev) {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const maxW = 450;
+        const scale = Math.min(1, maxW / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        attachedReceiptBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        document.getElementById('receiptPreviewImg').src = attachedReceiptBase64;
+        document.getElementById('receiptPreviewBox').style.display = 'block';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function submitStorePurchaseOrder() {
+    if (!guardAntiSpam(500) || !currentCheckoutItem || !currentUser) return;
+    const sender = document.getElementById('zcSenderPhone').value.trim();
+    if (!sender || sender.length < 8) {
+      showToast('⚠️ أدخل رقم الهاتف المحول منه!', '#ef4444');
+      return;
+    }
+    if (!attachedReceiptBase64) {
+      showToast('📸 يرجى إرفاق صورة التحويل!', '#ef4444');
+      return;
+    }
+
+    const orderObj = {
+      id: 'ord_' + getTrustedTimestamp(),
+      userKey: currentUser.key,
+      username: currentUser.username,
+      numericId: currentUser.numericId || '0000000',
+      category: currentCheckoutItem.category,
+      title: currentCheckoutItem.title,
+      goldAmount: currentCheckoutItem.goldAmount,
+      pointsAmount: currentCheckoutItem.pointsAmount,
+      priceUSD: currentCheckoutItem.priceUSD,
+      senderPhone: sender,
+      receiptImg: attachedReceiptBase64,
+      status: 'قيد المراجعة ⏳'
+    };
+
+    if (!currentUser.requests) currentUser.requests = [];
+    currentUser.requests.unshift({
+      id: orderObj.id,
+      title: orderObj.title,
+      priceUSD: orderObj.priceUSD,
+      status: orderObj.status
+    });
+
+    if (db) {
+      db.ref('store_orders/' + orderObj.id).set(orderObj).catch(() => {});
+    }
+
+    saveUser();
+    document.getElementById('zaincashModal').classList.remove('open');
+    playGameSound('win');
+    showToast('✅ تم إرسال الطلب للأدمن!');
+  }
+
+  function recordGameProgress(spinsAdded, wonRound, isKingGame) {
+    if (!currentUser) return;
+    checkAndResetDailyTasks();
+    if (!currentUser.dailyState) currentUser.dailyState = {};
+    const st = currentUser.dailyState;
+    st.spins = (st.spins || 0) + spinsAdded;
+    if (isKingGame) st.kingSpins = (st.kingSpins || 0) + spinsAdded;
+    if (wonRound) st.wins = (st.wins || 0) + 1;
+    saveUser();
+  }
+
+  function renderDailyTasks() {
+    if (!currentUser) return;
+    const st = currentUser.dailyState || {};
+    document.getElementById('dailyVoucherEarned').innerText = st.vouchersToday || 0;
+    const box = document.getElementById('dailyTasksContainer');
+
+    box.innerHTML = DAILY_MISSIONS.map(m => {
+      let prog = 0;
+      if (m.id === 'login') prog = 1;
+      else if (m.id === 'play20' || m.id === 'play100' || m.id === 'play200') prog = st.spins || 0;
+      else if (m.id === 'playKing') prog = st.kingSpins || 0;
+      else if (m.id === 'win5') prog = st.wins || 0;
+      else if (m.id === 'stepWin') prog = st.stepWins || 0;
+      else if (m.id === 'chatMsg') prog = st.chatMsgs || 0;
+
+      const done = prog >= m.target;
+      const claimed = st.claimed && st.claimed[m.id];
+
+      return `
+        <div class="task-card">
+          <div>
+            <div style="font-weight:900; font-size:0.84rem;">${m.title}</div>
+            <div style="font-size:0.72rem; color:#94a3b8;">${Math.min(prog, m.target)}/${m.target} | +${m.reward} 🎫</div>
+          </div>
+          <button class="btn-primary" style="width:auto; padding:6px 12px; font-size:0.75rem; ${claimed ? 'background:#334155;' : ''}"
+            onclick="claimDailyTask('${m.id}', ${m.reward})" ${(!done || claimed) ? 'disabled' : ''}>
+            ${claimed ? 'تم ✅' : (done ? 'استلام 🎁' : 'قيد اللعب')}
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function claimDailyTask(id, reward) {
+    if (!currentUser) return;
+    checkAndResetDailyTasks();
+    const st = currentUser.dailyState;
+    if (!st.claimed) st.claimed = {};
+    if (st.claimed[id]) return;
+    if ((st.vouchersToday || 0) + reward > 720) {
+      showToast('⚠️ لقد وصلت للحد الأقصى اليومي (720 قسيمة)!', '#ef4444');
+      return;
+    }
+    st.claimed[id] = true;
+    st.vouchersToday = (st.vouchersToday || 0) + reward;
+    if (!currentUser.isAdmin) currentUser.vouchers += reward;
+    playGameSound('win');
+    saveUser();
+    showToast(`🎉 +${reward} قسيمة! المجموع اليومي: ${st.vouchersToday}/720`);
+  }
+
+  function openAdminModal() {
+    if (!currentUser || !currentUser.isAdmin || currentUser.key !== 'admin') return;
+    document.getElementById('adminModal').classList.add('open');
+    loadAdminPendingStoreOrders();
+  }
+
+  // ميزة الحظر وفك الحظر المباشرة من لوحة الأدمن
+  async function adminSetBan(isBanned) {
+    if (!currentUser || !currentUser.isAdmin) return;
+    const target = document.getElementById('adminBanTarget').value.trim();
+    if (!target) { showToast('أدخل اسم اللاعب أو المعرف الرقمي!', '#ef4444'); return; }
+
+    let targetKey = target.replace(/[.#$[\]\s]/g, '_');
+    if (db) {
+      if (/^\d{7}$/.test(target)) {
+        const idSnap = await db.ref('id_to_user/' + target).once('value');
+        if (idSnap.exists()) targetKey = idSnap.val();
+      }
+      await db.ref('users/' + targetKey).update({
+        isBanned: isBanned,
+        banReason: isBanned ? 'حظر بواسطة الأدمن لمخالفة سياسات اللعب النظيف' : ''
+      });
+      showToast(isBanned ? `🔒 تم حظر الحساب ${targetKey} بنجاح!` : `🔓 تم فك الحظر عن الحساب ${targetKey}!`);
+    }
+  }
+
+  function loadAdminPendingStoreOrders() {
+    if (!currentUser || !currentUser.isAdmin) return;
+    const box = document.getElementById('adminPendingOrdersList');
+    if (db) {
+      db.ref('store_orders').once('value', snap => {
+        if (!snap.exists()) { box.innerHTML = 'لا توجد طلبات.'; return; }
+        const list = Object.values(snap.val()).filter(r => r.status && r.status.includes('قيد المراجعة'));
+        if (list.length === 0) { box.innerHTML = 'لا توجد طلبات.'; return; }
+        box.innerHTML = list.map(r => `
+          <div style="background:#060913; padding:9px; border-radius:10px; margin-bottom:8px; border:1px solid #334155;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <div>
+                <strong style="color:var(--gold);">${r.username}</strong> (#${r.numericId || ''}) — ${r.title} (${r.priceUSD}$)<br>
+                <span style="color:#38bdf8;">${r.senderPhone}</span>
+              </div>
+              <button class="btn-primary" style="width:auto; padding:5px 10px; font-size:0.72rem; background:var(--green);"
+                onclick="approveStoreOrder('${r.id}','${r.userKey}',${r.goldAmount || 0},${r.pointsAmount || 0})">موافقة ✅</button>
+            </div>
+            ${r.receiptImg ? `<div style="text-align:center;"><img src="${r.receiptImg}" style="max-height:110px; border-radius:8px;"></div>` : ''}
+          </div>
+        `).join('');
+      });
+    }
+  }
+
+  async function approveStoreOrder(ordId, userKey, addGold, addPoints) {
+    if (!currentUser || !currentUser.isAdmin) return;
+    if (db) {
+      await db.ref('store_orders/' + ordId).update({ status: 'تمت الموافقة ✅' });
+      const snap = await db.ref('users/' + userKey).once('value');
+      if (snap.exists()) {
+        const d = snap.val();
+        const newPts = (d.vipPoints || 0) + addPoints;
+        let newVip = d.vip || 0;
+        let extraGoldBonus = 0;
+        VIP_TIERS.forEach(t => {
+          if (newPts >= t.reqPoints && newVip < t.level) {
+            newVip = t.level;
+            extraGoldBonus += t.goldBonus;
+          }
+        });
+        const updatedReqs = (d.requests || []).map(r => r.id === ordId ? { ...r, status: 'تمت الموافقة ✅' } : r);
+        await db.ref('users/' + userKey).update({
+          gold: (d.gold || 0) + addGold + extraGoldBonus,
+          vipPoints: newPts,
+          vip: newVip,
+          requests: updatedReqs
+        });
+      }
+    }
+    loadAdminPendingStoreOrders();
+    showToast('✅ تمت الموافقة وفتح المستوى والذهب تلقائياً!');
+  }
+
+  async function adminModifyUser() {
+    if (!currentUser || !currentUser.isAdmin) return;
+    const target = document.getElementById('adminTargetUser').value.trim().replace(/[.#$[\]\s]/g, '_');
+    const addG = parseFloat(document.getElementById('adminGiveGold').value) || 0;
+    const addP = parseInt(document.getElementById('adminGivePts').value) || 0;
+    if (!target) return;
+
+    if (db) {
+      const snap = await db.ref('users/' + target).once('value');
+      if (snap.exists()) {
+        const d = snap.val();
+        const newPts = (d.vipPoints || 0) + addP;
+        let newVip = d.vip || 0;
+        let bonusG = 0;
+        VIP_TIERS.forEach(t => {
+          if (newPts >= t.reqPoints && newVip < t.level) {
+            newVip = t.level;
+            bonusG += t.goldBonus;
+          }
+        });
+        await db.ref('users/' + target).update({
+          gold: (d.gold || 0) + addG + bonusG,
+          vipPoints: newPts,
+          vip: newVip,
+          isAdmin: null
+        });
+        showToast(`✅ تم شحن حساب ${target}!`);
+      }
+    }
+  }
+
+  function canChangeAvatar() {
+    if (currentUser.isAdmin) return true;
+    const tier = VIP_TIERS.find(t => t.level === (currentUser.vip || 0));
+    const maxAllowed = 2 + (tier ? tier.extraAvatars : 0);
+    if ((currentUser.avatarChangesUsed || 0) >= maxAllowed) {
+      showToast('⚠️ استنفدت الحد الشهري!', '#ef4444');
+      return false;
+    }
+    return true;
+  }
+
+  function changeAvatarPreset(emoji) {
+    if (!canChangeAvatar()) return;
+    currentUser.avatar = emoji;
+    if (!currentUser.isAdmin) currentUser.avatarChangesUsed = (currentUser.avatarChangesUsed || 0) + 1;
+    saveUser();
+    showToast('✅ تم تغيير الصورة!');
+  }
+
+  function uploadCustomAvatar(ev) {
+    const file = ev.target.files[0];
+    if (!file || !canChangeAvatar()) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      currentUser.avatar = e.target.result;
+      if (!currentUser.isAdmin) currentUser.avatarChangesUsed = (currentUser.avatarChangesUsed || 0) + 1;
+      saveUser();
+      showToast('✅ تم رفع صورتك!');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function switchView(id, navEl) {
+    playGameSound('click');
+    document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (navEl) {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      navEl.classList.add('active');
+    }
+  }
+
+  window.onload = async () => {
+    renderLobbyGames();
+    renderStorePackages();
+    const savedKey = localStorage.getItem('royal_active_key');
+    if (savedKey) {
+      let data = null;
+      const local = localStorage.getItem('royal_pro_' + savedKey);
+      if (local) data = JSON.parse(local);
+      if (db) {
+        try {
+          const snap = await db.ref('users/' + savedKey).once('value');
+          if (snap.exists()) data = snap.val();
+        } catch (e) {}
+      }
+      if (data) startUserSession(savedKey, data);
+    }
+  };
+</script>
+</body>
+</html>
