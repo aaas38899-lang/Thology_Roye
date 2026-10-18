@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="referrer" content="no-referrer">
   <title>اساطير رويل</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -95,7 +96,7 @@
       font-weight: 900;
       padding: 10px 18px;
       border-radius: 25px;
-      z-index: 7000;
+      z-index: 9500;
       display: none;
       font-size: 0.84rem;
       box-shadow: 0 8px 25px rgba(0,0,0,0.8);
@@ -171,7 +172,7 @@
       font-weight: 900;
       font-size: 0.95rem;
       cursor: pointer;
-      transition: transform 0.12s;
+      transition: transform 0.12s, box-shadow 0.2s;
     }
     .btn-primary:active { transform: scale(0.96); }
 
@@ -207,7 +208,7 @@
       font-size: 1.3rem;
       overflow: hidden;
     }
-    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 
     .vip-badge-mini {
       position: absolute;
@@ -282,7 +283,7 @@
 
     @keyframes pulseGlow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     @keyframes rainbowSpin { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-    @keyframes floatAnim { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-7px) scale(1.06); } }
+    @keyframes floatAnim { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.04); } }
 
     .view-section { display: none; padding: 12px; }
     .view-section.active { display: block; }
@@ -297,6 +298,80 @@
       color: var(--gold);
     }
 
+    /* فلاتر وسحب الألعاب يمين ويسار وعزل الأقسام */
+    .lobby-category-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      scrollbar-width: none;
+    }
+    .lobby-category-tabs::-webkit-scrollbar { display: none; }
+    .lobby-cat-btn {
+      background: #0b1224;
+      color: #cbd5e1;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      font-weight: 900;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lobby-cat-btn.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+      border-color: #fff;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
+    }
+
+    .lobby-section-box {
+      background: rgba(14, 21, 38, 0.65);
+      border: 1px solid rgba(251, 191, 36, 0.22);
+      border-radius: 18px;
+      padding: 10px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+
+    .lobby-row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+      padding: 0 4px;
+    }
+    .lobby-row-title {
+      font-size: 0.84rem;
+      font-weight: 900;
+      color: #fde047;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .swipe-hint-badge {
+      font-size: 0.65rem;
+      color: #38bdf8;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .horizontal-games-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 4px 2px 8px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .horizontal-games-row::-webkit-scrollbar { display: none; }
+
     .games-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -304,30 +379,66 @@
     }
 
     .game-card {
+      flex: 0 0 138px;
+      min-width: 138px;
       border-radius: 16px;
-      height: 132px;
+      height: 142px;
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      border: 2px solid rgba(251, 191, 36, 0.35);
+      border: 2px solid rgba(251, 191, 36, 0.45);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 8px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.65);
+      padding: 7px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.75);
+      background-color: #090e1c;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .game-card:hover {
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.55);
     }
     .game-card:active { transform: scale(0.95); }
 
-    .game-card-art {
+    /* ضبط صور الألعاب والأيقونات فيت سنتر بدون قص أو صعود أو نزول */
+    .game-card-bg-blur {
       position: absolute;
       inset: 0;
+      background-size: cover;
+      background-position: center center;
+      filter: blur(8px) brightness(0.45);
+      transform: scale(1.1);
+      z-index: 0;
+    }
+    .game-card-fit-img {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      bottom: 34px;
+      width: calc(100% - 8px);
+      height: calc(100% - 38px);
+      object-fit: contain;
+      object-position: center center;
+      z-index: 1;
+      border-radius: 10px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.7));
+    }
+
+    .game-card-art {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      bottom: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3.5rem;
+      font-size: 3.1rem;
+      line-height: 1;
       z-index: 1;
       animation: floatAnim 2.8s infinite ease-in-out;
-      padding-bottom: 20px;
+      text-align: center;
     }
 
     .game-card::after {
@@ -341,19 +452,20 @@
       transform: rotate(25deg);
       animation: shineSweep 3.5s infinite;
       z-index: 2;
+      pointer-events: none;
     }
     @keyframes shineSweep { 0% { left: -60%; } 40%, 100% { left: 130%; } }
 
     .game-card-overlay {
       position: relative;
       z-index: 3;
-      background: rgba(4, 7, 17, 0.85);
+      background: rgba(4, 7, 17, 0.9);
       border-radius: 10px;
-      padding: 5px;
+      padding: 4px 5px;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(251, 191, 36, 0.25);
     }
-    .game-card-title { font-weight: 900; font-size: 0.84rem; color: #fff; }
+    .game-card-title { font-weight: 900; font-size: 0.78rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .store-tabs {
       display: flex;
@@ -465,7 +577,7 @@
 
     .stage-display {
       background: radial-gradient(circle, #162244 0%, #050814 90%);
-      border: 2px solid rgba(251, 191, 36, 0.35);
+      border: 2px solid rgba(251, 191, 36, 0.45);
       border-radius: 18px;
       padding: 8px;
       min-height: 345px;
@@ -475,6 +587,89 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      box-shadow: inset 0 0 35px rgba(0,0,0,0.85), 0 0 20px rgba(251, 191, 36, 0.15);
+    }
+
+    /* خلفية داخل اللعبة فيت سنتر بدون قص */
+    .stage-bg-blur {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center center;
+      filter: blur(12px) brightness(0.32);
+      transform: scale(1.1);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .stage-bg-fit {
+      position: absolute;
+      inset: 0;
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* مؤثرات بصرية واحتفالية */
+    .fx-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 40;
+      overflow: hidden;
+    }
+    .fx-coin {
+      position: absolute;
+      font-size: 1.4rem;
+      animation: coinFall 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    @keyframes coinFall {
+      0% { transform: translateY(-30px) scale(0.5) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(340px) scale(1.2) rotate(360deg); opacity: 0; }
+    }
+    .stage-win-flash {
+      animation: stageWinGlow 0.55s ease-in-out 2;
+    }
+    @keyframes stageWinGlow {
+      0%, 100% { box-shadow: inset 0 0 35px rgba(0,0,0,0.85), 0 0 20px rgba(251, 191, 36, 0.2); border-color: var(--gold); }
+      50% { box-shadow: inset 0 0 55px rgba(16, 185, 129, 0.55), 0 0 35px #fde047; border-color: #10b981; }
+    }
+
+    /* عداد الدورات التلقائية التنازلي (10 / 100 / 500) */
+    .auto-countdown-hud {
+      width: 100%;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, rgba(14, 116, 144, 0.9), rgba(30, 58, 138, 0.95), rgba(14, 116, 144, 0.9));
+      border: 1.5px solid #38bdf8;
+      border-radius: 12px;
+      padding: 5px 12px;
+      margin-bottom: 7px;
+      z-index: 15;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+    .auto-countdown-hud.active { display: flex; }
+    .auto-start-countdown-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 7, 17, 0.82);
+      z-index: 60;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .auto-start-countdown-overlay.show { display: flex; }
+    .countdown-big-num {
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: var(--gold);
+      text-shadow: 0 0 25px #ef4444, 0 0 45px var(--gold);
+      animation: pulseGlow 0.4s infinite;
     }
 
     /* أيقونة وصندوق تجميع أرباح الـ 8 جولات المجانية */
@@ -489,6 +684,7 @@
       padding: 6px 12px;
       margin-bottom: 8px;
       box-shadow: 0 0 18px rgba(251, 191, 36, 0.5);
+      z-index: 15;
     }
     .free-spins-hud.active { display: flex; }
     .fs-pot-collector {
@@ -504,7 +700,7 @@
       color: #34d399;
     }
 
-    .cascade-wrapper { position: relative; width: 100%; }
+    .cascade-wrapper { position: relative; width: 100%; z-index: 5; }
     .cascade-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -513,14 +709,27 @@
     }
     .stone-cell {
       aspect-ratio: 1;
-      background: linear-gradient(145deg, #1e2946, #0f172a);
-      border: 1px solid rgba(251, 191, 36, 0.35);
-      border-radius: 8px;
+      background: radial-gradient(circle, rgba(30, 41, 70, 0.92), rgba(10, 15, 29, 0.96));
+      border: 1.5px solid rgba(251, 191, 36, 0.45);
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.4rem;
       position: relative;
+      overflow: hidden;
+      padding: 2px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.6);
+    }
+    .stone-cell img.stone-fit-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center center;
+      border-radius: 6px;
+      display: block;
+      margin: auto;
+      pointer-events: none;
     }
     .stone-drop { animation: dropFromTop 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
     @keyframes dropFromTop {
@@ -530,11 +739,12 @@
     .stone-match {
       background: radial-gradient(circle, #fbbf24, #dc2626) !important;
       border-color: #fff !important;
-      animation: explodeGem 0.4s ease forwards;
+      box-shadow: 0 0 18px #fde047 !important;
+      animation: explodeGem 0.42s ease forwards;
     }
     @keyframes explodeGem {
       0% { transform: scale(1); }
-      50% { transform: scale(1.25) rotate(10deg); filter: brightness(2); }
+      50% { transform: scale(1.22) rotate(8deg); filter: brightness(2); }
       100% { transform: scale(0); opacity: 0; }
     }
 
@@ -598,6 +808,7 @@
       margin-bottom: 6px;
       border: 1px solid rgba(255,255,255,0.1);
       scrollbar-width: none;
+      z-index: 5;
     }
     .crash-history-strip::-webkit-scrollbar { display: none; }
     .crash-pill {
@@ -622,6 +833,7 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      z-index: 5;
     }
 
     .center-pro-timer {
@@ -638,33 +850,221 @@
       z-index: 10;
     }
 
-    /* شبكة ألعاب الخطوات 35 (الدجاج والتفاح وغيرها) بالمضاعفات المعدلة */
+    /* شبكة ألعاب الخطوات 35 (الدجاج والتفاح وغيرها) بحجم متناسق غير متداخل */
     .expanded-step-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 5px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 4px;
       width: 100%;
+      max-width: 335px;
+      margin: 0 auto;
+      padding: 2px;
+      z-index: 5;
     }
     .step-cell-35 {
-      padding: 7px 4px;
-      background: #162038;
+      height: 38px;
+      padding: 2px;
+      background: linear-gradient(145deg, #162038, #0c1324);
       border: 1.5px solid #263354;
-      border-radius: 9px;
+      border-radius: 8px;
       text-align: center;
-      font-size: 1.1rem;
+      font-size: 0.88rem;
+      line-height: 1;
       cursor: pointer;
       transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
     .step-cell-35.active-row {
       border-color: var(--gold);
-      background: #233256;
-      box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+      background: linear-gradient(145deg, #233256, #172340);
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.45);
+      transform: scale(1.02);
     }
     .step-mult-badge {
-      font-size: 0.62rem;
+      font-size: 0.53rem;
       font-weight: 900;
       color: var(--gold);
-      margin-top: 2px;
+      margin-top: 1px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    /* تحسينات صفحة تسجيل الدخول الاحترافية وزر العين والدخول التلقائي */
+    .auth-hero-badge {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      background: radial-gradient(circle, #fde047 0%, #d97706 60%, #78350f 100%);
+      border: 3px solid #fff;
+      box-shadow: 0 0 28px rgba(251, 191, 36, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      animation: floatAnim 2.5s infinite;
+    }
+    .input-with-icon-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-with-icon-wrap .form-input {
+      padding-left: 42px;
+    }
+    .pass-eye-btn {
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(251, 191, 36, 0.14);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      color: var(--gold);
+      width: 30px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      cursor: pointer;
+      z-index: 4;
+    }
+    .auto-login-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(6, 9, 19, 0.75);
+      border: 1px solid #263354;
+      border-radius: 10px;
+      padding: 7px 10px;
+      margin-bottom: 12px;
+      font-size: 0.76rem;
+      color: #cbd5e1;
+    }
+
+    /* شاشة تحميل اللعبة 0% إلى 100% عند الدخول */
+    .game-entry-loader {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, #162244 0%, #040711 90%);
+      z-index: 250;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+    .game-entry-loader.show {
+      display: flex;
+    }
+    .game-loader-thumb {
+      width: 115px;
+      height: 115px;
+      border-radius: 22px;
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
+      margin-bottom: 14px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.4rem;
+      background: #0b1326;
+    }
+    .game-loader-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    /* قائمة اللاعبين على اليمين في لعبة الصاروخ */
+    .rocket-right-players-panel {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      bottom: 6px;
+      width: 152px;
+      background: rgba(6, 10, 22, 0.84);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 15;
+      backdrop-filter: blur(4px);
+    }
+    .rocket-right-header {
+      background: linear-gradient(90deg, #1e2946, #0f172a);
+      padding: 4px 7px;
+      font-size: 0.66rem;
+      font-weight: 900;
+      color: var(--gold);
+      border-bottom: 1px solid rgba(251, 191, 36, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .rocket-right-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      scrollbar-width: none;
+    }
+    .rocket-right-list::-webkit-scrollbar { display: none; }
+    .rc-player-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3px 5px;
+      border-radius: 7px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255,255,255,0.07);
+      font-size: 0.62rem;
+      transition: all 0.2s;
+    }
+    .rc-player-row.is-me {
+      border-color: var(--gold);
+      background: rgba(180, 83, 9, 0.28);
+    }
+    .rc-player-row.cashed-out {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: #10b981;
+    }
+    .rc-live-cashout-banner {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 164px;
+      background: rgba(16, 185, 129, 0.92);
+      color: #000;
+      font-weight: 900;
+      font-size: 0.68rem;
+      padding: 4px 8px;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 18;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    }
+
+    /* تطاير الذهب إلى مكان الرصيد فوق */
+    .flying-gold-coin {
+      position: fixed;
+      z-index: 99999;
+      font-size: 1.65rem;
+      pointer-events: none;
+      transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.85s ease;
+      filter: drop-shadow(0 0 10px #fde047);
     }
 
     .profile-hero-cover {
@@ -705,7 +1105,7 @@
       font-size: 2.5rem;
       overflow: hidden;
     }
-    .profile-main-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-main-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 
     .info-grid-cards {
       display: grid;
@@ -722,50 +1122,95 @@
     .info-stat-label { font-size: 0.7rem; color: #94a3b8; }
     .info-stat-val { font-size: 0.88rem; font-weight: 900; color: #fff; margin-top: 2px; }
 
+    /* تصميم احترافي ملكي للرهانات */
     .bet-controls {
-      background: var(--bg-card);
-      padding: 9px;
-      border-radius: 14px;
-      border: 1px solid #1e2946;
+      background: linear-gradient(180deg, #111a30 0%, #070b16 100%);
+      padding: 10px;
+      border-radius: 16px;
+      border: 1.5px solid rgba(251, 191, 36, 0.45);
       margin-top: 6px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1);
     }
+    .pro-bet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #050811;
+      border: 1px solid #263354;
+      border-radius: 12px;
+      padding: 5px 10px;
+      margin-bottom: 8px;
+    }
+    .pro-bet-step-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid var(--gold);
+      background: linear-gradient(135deg, #1e2946, #0f172a);
+      color: var(--gold);
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pro-bet-step-btn:active { transform: scale(0.92); }
     .bet-tiers-scroll {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       overflow-x: auto;
-      padding-bottom: 5px;
+      padding: 4px 2px 7px;
       margin-bottom: 6px;
       scrollbar-width: none;
     }
     .bet-tiers-scroll::-webkit-scrollbar { display: none; }
     .tier-chip {
-      background: #070b16;
-      color: #cbd5e1;
-      border: 1px solid #334155;
-      padding: 4px 9px;
-      border-radius: 8px;
+      background: linear-gradient(145deg, #162038, #080d1a);
+      color: #e2e8f0;
+      border: 1.5px solid #334155;
+      padding: 5px 11px;
+      border-radius: 20px;
       font-weight: 900;
       font-size: 0.74rem;
       white-space: nowrap;
       cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tier-chip::before {
+      content: "🪙";
+      font-size: 0.68rem;
     }
     .tier-chip.active {
-      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      background: linear-gradient(135deg, #fde047 0%, #f59e0b 55%, #b45309 100%);
       color: #000;
       border-color: #fff;
+      box-shadow: 0 0 14px rgba(251, 191, 36, 0.75);
+      transform: translateY(-2px) scale(1.04);
     }
 
-    .auto-spin-bar { display: flex; gap: 5px; margin-bottom: 7px; }
+    .auto-spin-bar { display: flex; gap: 5px; margin-bottom: 8px; }
     .auto-btn {
       flex: 1;
-      background: #17213a;
+      background: linear-gradient(145deg, #1e2946, #0f172a);
       color: #e2e8f0;
-      border: 1px solid #334155;
-      padding: 5px 4px;
-      border-radius: 8px;
+      border: 1px solid #38bdf8;
+      padding: 6px 4px;
+      border-radius: 10px;
       font-size: 0.72rem;
-      font-weight: 700;
+      font-weight: 900;
       cursor: pointer;
+      transition: all 0.15s;
+    }
+    .auto-btn.active-auto {
+      background: linear-gradient(135deg, #0284c7, #1d4ed8);
+      color: #fff;
+      border-color: #fde047;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
     }
 
     .wheel-wrapper {
@@ -775,6 +1220,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 5;
     }
     .wheel-pointer {
       position: absolute;
@@ -832,6 +1278,21 @@
       padding: 16px;
       max-height: 92vh;
       overflow-y: auto;
+    }
+
+    /* شارة نجمة التوثيق الخاصة بـ VIP 6 فما فوق */
+    .verified-star-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: linear-gradient(135deg, #fde047, #f59e0b);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 900;
+      padding: 1px 6px;
+      border-radius: 10px;
+      border: 1px solid #fff;
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.7);
     }
 
     /* شريط التنقل السفلي */
@@ -927,6 +1388,7 @@
       gap: 6px;
       margin-top: 5px;
       justify-content: flex-end;
+      flex-wrap: wrap;
     }
     .chat-action-btn {
       background: rgba(0,0,0,0.35);
@@ -1009,6 +1471,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
     }
     .phone-input-row {
       display: flex;
@@ -1096,24 +1559,24 @@
   </div>
 </div>
 
-<!-- شاشة تسجيل الدخول وإنشاء الحساب -->
+<!-- شاشة تسجيل الدخول وإنشاء الحساب الاحترافية -->
 <div class="auth-screen" id="authScreen">
-  <div style="text-align:center; margin-bottom:16px;">
-    <div style="font-size:3.6rem; animation:floatAnim 2.5s infinite;">👑</div>
-    <h1 style="color:var(--gold); font-size:1.6rem;">اساطير رويل</h1>
-    <p style="color:#94a3b8; font-size:0.78rem; margin-top:2px;">العالم الملكي للألعاب والجوائز</p>
+  <div style="text-align:center; margin-bottom:14px;">
+    <div class="auth-hero-badge">👑</div>
+    <h1 style="color:var(--gold); font-size:1.65rem; font-weight:900; text-shadow:0 0 18px rgba(251,191,36,0.45);">اساطير رويل</h1>
+    <p style="color:#cbd5e1; font-size:0.78rem; margin-top:2px;">البوابة الملكية للألعاب والجوائز المباشرة</p>
   </div>
 
-  <div class="auth-card">
+  <div class="auth-card" style="border:1.5px solid rgba(251,191,36,0.5); background:linear-gradient(165deg, rgba(16,24,45,0.97) 0%, rgba(7,11,22,0.98) 100%);">
     <div class="auth-tabs">
-      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">تسجيل دخول</div>
-      <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">حساب جديد</div>
+      <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">🔑 تسجيل دخول</div>
+      <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">✨ حساب جديد</div>
     </div>
 
     <!-- إضافة صورة شخصية عند تسجيل حساب جديد -->
     <div class="reg-extra-box" id="regAvatarSection">
       <div class="reg-avatar-picker">
-        <div style="font-size:0.76rem; color:var(--gold); font-weight:900; margin-bottom:6px;">🖼️ الصورة الشخصية للحساب الجديد</div>
+        <div style="font-size:0.76rem; color:var(--gold); font-weight:900; margin-bottom:6px;">🖼️ اختر صورتك الرمزية</div>
         <div class="reg-avatar-preview" id="regAvatarPreview"><span>🦁</span></div>
         <div style="display:flex; gap:5px; justify-content:center; margin-bottom:8px;">
           <button type="button" onclick="selectRegAvatarPreset('🦁')" class="tier-chip">🦁</button>
@@ -1130,27 +1593,33 @@
     </div>
 
     <div class="form-group">
-      <label id="authUserLabel">اسم المستخدم أو رقم الهاتف</label>
-      <input type="text" id="authUser" class="form-input" placeholder="اسم المستخدم أو رقم الهاتف" oninput="onAuthUserInput(this)">
-      <div id="usernameRuleHint" style="display:none; font-size:0.68rem; color:#94a3b8; margin-top:3px;">
-        * حروف عربية أو إنجليزية فقط بدون زخرفة أو علامات تنقيط (أقصى 9 أحرف)
+      <label id="authUserLabel">📱 رقم الهاتف أو 👤 اسم المستخدم</label>
+      <input type="text" id="authUser" class="form-input" placeholder="أدخل رقم الهاتف أو اسم المستخدم" oninput="onAuthUserInput(this)" onkeydown="if(event.key==='Enter') handleAuth()">
+      <div id="usernameRuleHint" style="display:none; font-size:0.68rem; color:#38bdf8; margin-top:3px;">
+        * يمكنك التسجيل باسم مستخدم (عربي أو إنجليزي) أو رقم هاتفك مباشرة
       </div>
     </div>
 
     <div class="form-group">
-      <label>كلمة المرور</label>
-      <input type="password" id="authPass" class="form-input" placeholder="******">
+      <label>🔒 كلمة المرور</label>
+      <div class="input-with-icon-wrap">
+        <input type="password" id="authPass" class="form-input" placeholder="أدخل كلمة المرور" onkeydown="if(event.key==='Enter') handleAuth()">
+        <button type="button" class="pass-eye-btn" onclick="togglePasswordVisibility('authPass', this)" title="إظهار / إخفاء كلمة المرور">👁️</button>
+      </div>
     </div>
 
-    <!-- حقول التسجيل الإضافية: تأكيد كلمة المرور + الدولة ومفتاح الدولة ورقم الهاتف + تأكيد واتساب -->
+    <!-- حقول التسجيل الإضافية: تأكيد كلمة المرور + الدولة ومفتاح الدولة ورقم الهاتف -->
     <div class="reg-extra-box" id="regFieldsSection">
       <div class="form-group">
-        <label>تأكيد كلمة المرور</label>
-        <input type="password" id="authPassConfirm" class="form-input" placeholder="أعد كتابة كلمة المرور">
+        <label>🔒 تأكيد كلمة المرور</label>
+        <div class="input-with-icon-wrap">
+          <input type="password" id="authPassConfirm" class="form-input" placeholder="أعد كتابة كلمة المرور" onkeydown="if(event.key==='Enter') handleAuth()">
+          <button type="button" class="pass-eye-btn" onclick="togglePasswordVisibility('authPassConfirm', this)" title="إظهار / إخفاء كلمة المرور">👁️</button>
+        </div>
       </div>
 
       <div class="form-group">
-        <label>اختر الدولة أو اكتب مفتاح الدولة مباشرة</label>
+        <label>🌍 الدولة ورقم الهاتف (لربط الحساب واسترجاعه)</label>
         <select id="authCountrySelect" class="form-input" style="margin-bottom:6px;" onchange="onCountrySelectChange(this.value)">
           <option value="+964" selected>🇮🇶 العراق (+964)</option>
           <option value="+966">🇸🇦 السعودية (+966)</option>
@@ -1179,20 +1648,28 @@
 
         <div class="phone-input-row">
           <input type="text" id="authCountryCode" class="form-input country-code-input" value="+964" placeholder="+964" oninput="onCountryCodeDirectInput(this.value)">
-          <input type="tel" id="authPhoneInput" class="form-input" style="direction:ltr; text-align:right;" placeholder="78XXXXXXXX" oninput="updateWhatsappVerifyHref()">
+          <input type="tel" id="authPhoneInput" class="form-input" style="direction:ltr; text-align:right;" placeholder="78XXXXXXXX (اختياري إذا كتبت رقمك فوق)" oninput="updateWhatsappVerifyHref()">
         </div>
       </div>
 
       <div class="form-group">
-        <label>تأكيد رقم الهاتف عبر واتساب</label>
-        <a id="whatsappVerifyLink" class="whatsapp-verify-btn" href="whatsapp://send?text=message_text&phone=" onclick="handleWhatsappVerifyClick(event)">إرسال رسالة واتساب</a>
+        <a id="whatsappVerifyLink" class="whatsapp-verify-btn" href="whatsapp://send?text=message_text&phone=" onclick="handleWhatsappVerifyClick(event)">💬 تأكيد عبر واتساب (اختياري)</a>
         <div id="whatsappVerifiedBadge" class="whatsapp-verified-badge">
-          ✅ تم تأكيد رقم الهاتف عبر رسالة واتساب بنجاح
+          ✅ تم تفعيل وتأكيد رقم الهاتف بنجاح
         </div>
       </div>
     </div>
 
+    <div class="auto-login-bar">
+      <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-weight:700;">
+        <input type="checkbox" id="autoLoginCheck" checked style="accent-color:var(--gold); width:16px; height:16px;">
+        <span>حفظ الحساب والدخول التلقائي</span>
+      </label>
+      <span style="color:var(--gold); font-size:0.7rem; font-weight:900;">⚡ سريع وآمن</span>
+    </div>
+
     <button class="btn-primary" id="authSubmitBtn" onclick="handleAuth()">دخول 🎮</button>
+    <button type="button" class="btn-primary" id="quickAutoLoginBtn" style="display:none; margin-top:8px; background:linear-gradient(135deg,#10b981,#059669); color:#fff; font-size:0.84rem;" onclick="triggerSavedAutoLogin()">⚡ دخول تلقائي بحسابك المحفوظ</button>
   </div>
 </div>
 
@@ -1207,6 +1684,7 @@
       <div>
         <div style="display:flex; align-items:center; gap:4px;">
           <span style="font-weight:900; font-size:0.84rem;" id="topUsername">لاعب</span>
+          <span id="topVerifiedStar" class="verified-star-badge" style="display:none;">🌟</span>
           <span class="uid-badge" style="font-size:0.6rem; padding:1px 4px;" id="topUserUidMini">#0000000</span>
         </div>
         <div style="font-size:0.65rem; color:var(--gold);" id="topTitle">اساطير رويل</div>
@@ -1222,13 +1700,21 @@
     </div>
   </div>
 
-  <!-- 1. القائمة الرئيسية للألعاب -->
+  <!-- 1. القائمة الرئيسية للألعاب (مقسمة ومعزولة وسحب يمين ويسار) -->
   <div class="view-section active" id="lobbyView">
     <div class="download-app-banner" onclick="startAppDownloadAnim()">
       <div style="font-weight:900; font-size:0.92rem; color:#fde047;">📲 تنزيل تطبيق اساطير رويل</div>
       <div class="dl-icon-anim">⬇️</div>
     </div>
-    <div class="games-grid" id="gamesGridContainer"></div>
+
+    <div class="lobby-category-tabs">
+      <button class="lobby-cat-btn active" id="catBtn_all" onclick="filterLobbyCategory('all')">🔥 جميع الأقسام</button>
+      <button class="lobby-cat-btn" id="catBtn_kings" onclick="filterLobbyCategory('kings')">👑 ألعاب الملوك</button>
+      <button class="lobby-cat-btn" id="catBtn_rocket_apple" onclick="filterLobbyCategory('rocket_apple')">🚀🍎 الصاروخ والتفاحة</button>
+      <button class="lobby-cat-btn" id="catBtn_others" onclick="filterLobbyCategory('others')">💎🎡 الألعاب الأخرى</button>
+    </div>
+
+    <div id="gamesGridContainer"></div>
   </div>
 
   <!-- 2. المتجر -->
@@ -1327,7 +1813,7 @@
   <div class="view-section" id="chatView">
     <div class="section-title">
       <span>💬 الدردشة العامة المباشرة</span>
-      <span style="font-size:0.75rem; color:#34d399;">🟢 متصل بالسيرفر</span>
+      <span style="font-size:0.72rem; color:#fde047;">💡 اضغط على أي لاعب لعرض ملفه الشخصي</span>
     </div>
     <div class="chat-container">
       <div class="chat-messages-box" id="liveChatMessagesBox">
@@ -1362,7 +1848,7 @@
     </div>
   </div>
 
-  <!-- 8. الملف الشخصي -->
+  <!-- 8. الملف الشخصي (مع السيرة الذاتية 100 حرف وخيارات التاجر الموثق VIP 6+) -->
   <div class="view-section" id="profileView">
     <div class="profile-hero-cover" id="profileCoverBanner">
       <label class="change-cover-btn">
@@ -1374,7 +1860,10 @@
 
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding:0 4px;">
       <div>
-        <h3 id="profName" style="font-size:1.1rem; color:var(--gold);">لاعب</h3>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <h3 id="profName" style="font-size:1.1rem; color:var(--gold);">لاعب</h3>
+          <span id="profVerifiedStarBadge" class="verified-star-badge" style="display:none;">🌟 موثق</span>
+        </div>
         <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
           <span id="profRoleBadge" style="font-size:0.75rem; color:#38bdf8;">عضو ملكي</span>
           <span class="uid-badge" id="profUidBadge">#0000000</span>
@@ -1382,6 +1871,46 @@
         </div>
       </div>
       <button onclick="switchView('friendsView')" style="background:#1e2946; color:#fff; border:1px solid var(--gold); padding:5px 10px; border-radius:9px; font-size:0.74rem; font-weight:700; cursor:pointer;">👥 أصدقائي</button>
+    </div>
+
+    <!-- السيرة الذاتية (بحد أقصى 100 حرف) -->
+    <div class="auth-card" style="margin-bottom:12px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span style="font-size:0.8rem; font-weight:900; color:var(--gold);">📝 السيرة الذاتية (النبذة الشخصية):</span>
+        <span style="font-size:0.7rem; color:#94a3b8;"><span id="bioCharCount">0</span> / 100 حرف</span>
+      </div>
+      <input type="text" id="profileBioInput" class="form-input" maxlength="100" placeholder="اكتب سيرتك الذاتية هنا (الحد الأقصى 100 حرف)..." oninput="updateBioCharCounter()">
+      <button class="btn-primary" style="margin-top:8px; padding:8px; font-size:0.8rem;" onclick="saveProfileBio()">حفظ السيرة الذاتية 💾</button>
+    </div>
+
+    <!-- قسم خاص لـ VIP 6 فما فوق (مع نجمة التوثيق): إضافة رقم هاتف / معرف تلكرام / عرض بيع الذهب أو نقاط VIP -->
+    <div class="auth-card" id="vip6TraderConfigCard" style="margin-bottom:12px; display:none; border-color:#fde047; box-shadow:0 0 20px rgba(251,191,36,0.2);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <span style="font-size:0.82rem; font-weight:900; color:#fde047;">🌟 خصائص التاجر الموثق (VIP 6 فما فوق)</span>
+        <span class="verified-star-badge">★ موثق</span>
+      </div>
+      <p style="font-size:0.72rem; color:#cbd5e1; margin-bottom:10px;">
+        يمكنك إضافة رقم هاتفك أو معرف التلكرام وعرض بيع الذهب أو نقاط VIP ليظهر لجميع اللاعبين عند الضغط على اسمك في المحادثة للتواصل معك مباشرة.
+      </p>
+      <div class="form-group">
+        <label>📱 رقم الهاتف للتواصل المباشر (واتساب / اتصال)</label>
+        <input type="text" id="vipTraderPhoneInput" class="form-input" maxlength="25" placeholder="مثال: +96478XXXXXXXX">
+      </div>
+      <div class="form-group">
+        <label>✈️ معرف التلكرام (Telegram)</label>
+        <input type="text" id="vipTraderTelegramInput" class="form-input" maxlength="40" placeholder="مثال: @username">
+      </div>
+      <div class="form-group">
+        <label>💰 عرض بيع الذهب أو نقاط VIP</label>
+        <input type="text" id="vipTraderOfferInput" class="form-input" maxlength="120" placeholder="مثال: متوفر بيع ذهب ونقاط VIP بأسعار مميزة وتحويل فوري">
+      </div>
+      <button class="btn-primary" style="padding:9px; font-size:0.82rem; background:linear-gradient(135deg,#10b981,#059669); color:#fff;" onclick="saveVipTraderDetails()">حفظ بيانات التواصل والعرض ✅</button>
+    </div>
+
+    <div id="vip6LockedNoticeCard" class="auth-card" style="margin-bottom:12px; background:rgba(14,21,38,0.6); border-color:#334155;">
+      <div style="font-size:0.76rem; color:#94a3b8; text-align:center;" id="vip6LockedNoticeText">
+        🔒 ميزة إضافة رقم الهاتف أو معرف التلكرام وعرض بيع الذهب أو نقاط VIP متاحة فقط لأصحاب <strong style="color:var(--gold);">VIP 6 فما فوق</strong> الحاملين لنجمة التوثيق 🌟.
+      </div>
     </div>
 
     <div class="info-grid-cards">
@@ -1447,6 +1976,47 @@
   </div>
 </div>
 
+<!-- نافذة استعراض الملف الشخصي لأي لاعب عند الضغط عليه في الدردشة -->
+<div class="popup-overlay" id="playerProfileModal">
+  <div class="popup-box" style="padding:14px;">
+    <div id="pubProfCover" style="height:110px; border-radius:14px; background:linear-gradient(135deg,#1e1b4b,#7e22ce,#b45309); background-size:cover; background-position:center; position:relative; margin-bottom:42px; border:1.5px solid var(--gold);">
+      <div id="pubProfAvatar" class="profile-main-avatar frame-vip-0" style="width:74px; height:74px; bottom:-34px; right:14px; font-size:2.1rem;">🦁</div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+      <div>
+        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <h3 id="pubProfName" style="color:var(--gold); font-size:1.05rem;">لاعب</h3>
+          <span id="pubProfVerifiedBadge" class="verified-star-badge" style="display:none;">🌟 موثق</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
+          <span class="uid-badge" id="pubProfUid">#0000000</span>
+          <span id="pubProfVipBadge" style="background:#1e2946; color:#fde047; border:1px solid var(--gold); padding:1px 8px; border-radius:8px; font-size:0.72rem; font-weight:900;">VIP 0</span>
+        </div>
+      </div>
+      <div id="pubProfFriendBtnWrap"></div>
+    </div>
+
+    <!-- السيرة الذاتية للاعب -->
+    <div style="background:#060913; border:1px solid #263354; border-radius:12px; padding:9px 12px; margin-bottom:10px;">
+      <div style="font-size:0.7rem; color:#94a3b8; margin-bottom:3px;">📝 السيرة الذاتية:</div>
+      <div id="pubProfBioText" style="font-size:0.82rem; color:#f1f5f9; word-break:break-word;">لا توجد سيرة ذاتية مضافة.</div>
+    </div>
+
+    <!-- قسم التاجر الموثق (يظهر فقط لمن مفعل VIP 6 فما فوق ولديه نجمة التوثيق غير المسحوبة) -->
+    <div id="pubProfTraderSection" style="display:none; background:linear-gradient(145deg, rgba(120,53,15,0.35), rgba(6,9,19,0.95)); border:1.5px solid #fde047; border-radius:14px; padding:11px; margin-bottom:12px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span style="font-size:0.8rem; font-weight:900; color:#fde047;">💎 عروض بيع الذهب ونقاط VIP</span>
+        <span class="verified-star-badge">★ VIP 6+</span>
+      </div>
+      <div id="pubProfOfferBox" style="background:#060913; border:1px dashed rgba(251,191,36,0.5); border-radius:10px; padding:8px; font-size:0.8rem; color:#fff; margin-bottom:8px; font-weight:700;"></div>
+      <div id="pubProfContactsList" style="display:flex; flex-direction:column; gap:6px;"></div>
+    </div>
+
+    <button class="btn-primary" style="background:#334155; color:#fff; padding:9px;" onclick="document.getElementById('playerProfileModal').classList.remove('open')">إغلاق ✖</button>
+  </div>
+</div>
+
 <!-- نافذة اللعب المباشر -->
 <div class="game-modal" id="gameModal">
   <div class="modal-header">
@@ -1461,6 +2031,27 @@
 
   <div class="game-stage">
     <div class="stage-display" id="stageDisplay">
+      <!-- خلفية اللعبة من الداخل فيت سنتر -->
+      <div class="stage-bg-blur" id="stageBgBlur"></div>
+      <div class="stage-bg-fit" id="stageBgFit"></div>
+      <div class="fx-layer" id="stageFxLayer"></div>
+
+      <!-- عداد تنازلي عند بدء 10 أو 100 أو 500 دورة -->
+      <div class="auto-countdown-hud" id="autoCountdownHud">
+        <div style="font-weight:900; font-size:0.78rem; color:#fde047;">
+          🔄 العد التنازلي للدورات التلقائية:
+        </div>
+        <div style="background:#060913; border:1px solid #fde047; padding:2px 10px; border-radius:10px; font-weight:900; font-size:0.84rem; color:#38bdf8;">
+          متبقي: <span id="autoRemainingCountText">0</span> / <span id="autoTotalCountText">0</span> ⏳
+        </div>
+      </div>
+
+      <!-- شاشة العد التنازلي اللحظي عند ضغط 10 أو 100 أو 500 دورة -->
+      <div class="auto-start-countdown-overlay" id="autoStartCountdownOverlay">
+        <div style="font-size:0.95rem; font-weight:900; color:#38bdf8; margin-bottom:6px;" id="autoStartCountdownLabel">بدء الدورات التلقائية خلال...</div>
+        <div class="countdown-big-num" id="autoStartCountdownNum">3</div>
+      </div>
+
       <!-- شريط وأيقونة تجميع ربح الـ 8 جولات مجانية -->
       <div class="free-spins-hud" id="freeSpinHud">
         <div style="font-weight:900; font-size:0.78rem; color:#fde047;">
@@ -1472,31 +2063,65 @@
         </div>
       </div>
 
-      <!-- نافذة SCATTER الاحتفالية -->
-      <div class="scatter-celebration-overlay" id="scatterOverlay">
-        <div style="font-size:3.5rem; margin-bottom:4px;">👑🔔👑</div>
-        <div class="scatter-en-title">SCATTER</div>
-        <div style="font-size:1.25rem; font-weight:900; color:#fff; margin:8px 0;">لقد ربحت 8 دورات مجانية!</div>
+      <!-- شاشة التحميل التصاعدية 0% -> 100% عند دخول أي لعبة -->
+      <div class="game-entry-loader" id="gameEntryLoaderOverlay">
+        <div class="game-loader-thumb" id="gameLoaderThumbBox">👑</div>
+        <div style="font-size:1.1rem; font-weight:900; color:var(--gold); margin-bottom:8px;" id="gameLoaderTitleText">جاري فتح اللعبة...</div>
+        <div style="width:82%; max-width:260px; height:16px; background:#060913; border-radius:12px; border:1.5px solid var(--gold); overflow:hidden; margin-bottom:6px;">
+          <div id="gameEntryProgressBar" style="width:0%; height:100%; background:linear-gradient(90deg, #10b981, #fde047); transition:width 0.05s linear;"></div>
+        </div>
+        <div id="gameEntryPercentText" style="font-size:1.35rem; font-weight:900; color:#34d399;">0%</div>
       </div>
 
-      <div id="stageInnerContent" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
+      <!-- نافذة SCATTER الاحتفالية بصور ملوك اللعبة المتشابهة -->
+      <div class="scatter-celebration-overlay" id="scatterOverlay">
+        <div style="font-size:0.9rem; font-weight:900; color:#fde047; margin-bottom:6px;" id="scatterGameNameBanner">👑 ملوك الأسطورة 👑</div>
+        <div id="scatterKingsImagesRow" style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:10px;">
+          <div style="font-size:3rem;">👑</div>
+        </div>
+        <div class="scatter-en-title">4 SCATTER</div>
+        <div style="font-size:1.2rem; font-weight:900; color:#fff; margin:8px 0;">🎉 لقد ربحت 8 دورات مجانية تلقائية!</div>
+      </div>
+
+      <!-- دايلوك إجمالي الربح بعد انتهاء الـ 8 جولات المجانية -->
+      <div class="scatter-celebration-overlay" id="freeSpinsWinDialog" style="background:radial-gradient(circle, rgba(6,95,70,0.97) 0%, rgba(4,7,17,0.98) 88%);">
+        <div style="font-size:3.2rem; margin-bottom:6px;">🏆🪙🏆</div>
+        <div style="font-size:1.1rem; font-weight:900; color:#fde047; margin-bottom:4px;">انتهت الـ 8 جولات المجانية!</div>
+        <div style="font-size:0.95rem; color:#fff; font-weight:700; margin-bottom:6px;">لقد ربحت إجمالي ذهب:</div>
+        <div id="freeSpinsDialogAmount" style="font-size:2.1rem; font-weight:900; color:#34d399; text-shadow:0 0 18px rgba(16,185,129,0.8); margin-bottom:14px;">+10,000,000 🪙</div>
+        <button type="button" class="btn-primary" style="width:auto; padding:9px 24px; font-size:0.9rem;" onclick="collectFreeSpinsDialogGold()">استلام الذهب 🪙</button>
+      </div>
+
+      <div id="stageInnerContent" style="width:100%; display:flex; flex-direction:column; align-items:center; position:relative; z-index:5;"></div>
     </div>
 
     <div id="gameStatusMsg" style="text-align:center; font-weight:900; font-size:0.84rem; color:var(--gold); margin:5px 0; min-height:20px;"></div>
 
     <div class="bet-controls" id="standardBetControls">
+      <div class="pro-bet-header">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button type="button" class="pro-bet-step-btn" onclick="stepBetTier(-1)">➖</button>
+          <div>
+            <div style="font-size:0.64rem; color:#94a3b8;">الرهان المختار</div>
+            <div style="font-size:0.92rem; font-weight:900; color:var(--gold);" id="currentBetLabelDisplay">100K 🪙</div>
+          </div>
+          <button type="button" class="pro-bet-step-btn" onclick="stepBetTier(1)">➕</button>
+        </div>
+        <button type="button" onclick="selectMaxBetTier()" style="background:linear-gradient(135deg,#7e22ce,#ec4899); color:#fff; border:1px solid #fde047; padding:5px 10px; border-radius:10px; font-size:0.72rem; font-weight:900; cursor:pointer;">🔥 أقصى رهان (10B)</button>
+      </div>
+
       <div class="bet-tiers-scroll" id="betTiersBar"></div>
 
       <div class="auto-spin-bar">
-        <button class="auto-btn" onclick="startAutoSpins(10)">10 دورات</button>
-        <button class="auto-btn" onclick="startAutoSpins(100)">100 دورة</button>
-        <button class="auto-btn" onclick="startAutoSpins(500)">500 دورة</button>
-        <button class="auto-btn" onclick="startAutoSpins(999999)">تلقائي ∞</button>
-        <button class="auto-btn" id="stopAutoBtn" style="background:var(--red); color:#fff; display:none;" onclick="stopAutoSpins()">إيقاف ⏹</button>
+        <button class="auto-btn" id="autoBtn10" onclick="startAutoSpins(10)">⏳ 10 دورات</button>
+        <button class="auto-btn" id="autoBtn100" onclick="startAutoSpins(100)">⏳ 100 دورة</button>
+        <button class="auto-btn" id="autoBtn500" onclick="startAutoSpins(500)">⏳ 500 دورة</button>
+        <button class="auto-btn" id="autoBtnInf" onclick="startAutoSpins(999999)">تلقائي ∞</button>
+        <button class="auto-btn" id="stopAutoBtn" style="background:var(--red); color:#fff; border-color:#fff; display:none;" onclick="stopAutoSpins()">إيقاف ⏹</button>
       </div>
 
       <div style="display:flex; gap:8px;">
-        <button class="btn-primary" id="playMainBtn" onclick="executeGameTurn()">دوران 🚀</button>
+        <button class="btn-primary" id="playMainBtn" onclick="executeGameTurn()">دوران الملك 🎰</button>
         <button class="btn-primary" id="cashoutMainBtn" style="display:none; background:var(--green); color:#fff;" onclick="cashoutStepGame()">سحب الربح 💰</button>
       </div>
     </div>
@@ -1540,7 +2165,6 @@
   </div>
 </div>
 
-
 <!-- نافذة الإبلاغ عن الرسائل -->
 <div class="popup-overlay" id="reportChatModal">
   <div class="popup-box">
@@ -1557,7 +2181,7 @@
   </div>
 </div>
 
-<!-- لوحة الأدمن (admin / 12345) مع إدارة الحظر والشحن -->
+<!-- لوحة الأدمن (admin / 12345) مع إدارة الحظر والشحن ونجمة التوثيق -->
 <div class="popup-overlay" id="adminModal">
   <div class="popup-box">
     <h3 style="color:var(--gold); margin-bottom:10px;">👑 لوحة الأدمن - اساطير رويل</h3>
@@ -1569,6 +2193,16 @@
       <div style="display:flex; gap:6px;">
         <button class="btn-primary" style="background:var(--red); font-size:0.75rem; padding:7px;" onclick="adminSetBan(true)">حظر اللاعب 🔒</button>
         <button class="btn-primary" style="background:var(--green); font-size:0.75rem; padding:7px;" onclick="adminSetBan(false)">فك الحظر 🔓</button>
+      </div>
+    </div>
+
+    <!-- إدارة نجمة التوثيق وصلاحية التجار VIP 6+ -->
+    <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px; background:#0f1b2d; padding:8px; border-radius:10px; border:1px solid rgba(251,191,36,0.35);">
+      <h4 style="color:#fde047; margin-bottom:6px; font-size:0.84rem;">🌟 نجمة التوثيق وصلاحية التجار (VIP 6+):</h4>
+      <input type="text" id="adminVerifyTarget" class="form-input" placeholder="اسم المستخدم أو المعرف (7 أرقام)" style="font-size:0.76rem; margin-bottom:6px;">
+      <div style="display:flex; gap:6px;">
+        <button class="btn-primary" style="background:linear-gradient(135deg,#fbbf24,#d97706); color:#000; font-size:0.74rem; padding:7px;" onclick="adminToggleTraderStar(true)">🌟 منح نجمة التوثيق</button>
+        <button class="btn-primary" style="background:#be123c; color:#fff; font-size:0.74rem; padding:7px;" onclick="adminToggleTraderStar(false)">🚫 سحب نجمة التوثيق</button>
       </div>
     </div>
 
@@ -1593,7 +2227,7 @@
 
 <script>
   /**************************************************************
-   * 1. ربط Firebase وحفظ ومزامنة الوقت الحقيقي من السيرفر
+   * 1. ربط Firebase وحفظ ومزامنة الوقت الحقيقي من السيرفر (مع حماية عدم التعليق)
    **************************************************************/
   const firebaseConfig = {
     apiKey: "AIzaSyC0JJggNN2S-bnZcPnf5hMHfrQwP_iivzU",
@@ -1612,15 +2246,53 @@
   const bootWallTime = Date.now();
 
   try {
-    firebase.initializeApp(firebaseConfig);
-    db = firebase.database();
-    db.ref('.info/serverTimeOffset').on('value', snap => {
-      serverTimeOffset = snap.val() || 0;
-    });
-    db.ref('.info/connected').on('value', snap => {
-      isFirebaseConnected = !!snap.val();
-    });
+    if (typeof firebase !== 'undefined') {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.database();
+      db.ref('.info/serverTimeOffset').on('value', snap => {
+        serverTimeOffset = snap.val() || 0;
+      });
+      db.ref('.info/connected').on('value', snap => {
+        isFirebaseConnected = !!snap.val();
+      });
+    }
   } catch (e) {}
+
+  // دوال آمنة للتخزين المحلي وقاعدة البيانات لمنع تعليق صفحة الدخول
+  function safeStorageGet(k) {
+    try { return localStorage.getItem(k); } catch (e) { return null; }
+  }
+  function safeStorageSet(k, v) {
+    try { localStorage.setItem(k, v); } catch (e) {}
+  }
+  function safeStorageRemove(k) {
+    try { localStorage.removeItem(k); } catch (e) {}
+  }
+
+  function dbOnceWithTimeout(path, timeoutMs = 2200) {
+    if (!db) return Promise.resolve(null);
+    return new Promise(resolve => {
+      let done = false;
+      const timer = setTimeout(() => {
+        if (!done) { done = true; resolve(null); }
+      }, timeoutMs);
+      db.ref(path).once('value')
+        .then(snap => {
+          if (!done) { done = true; clearTimeout(timer); resolve(snap); }
+        })
+        .catch(() => {
+          if (!done) { done = true; clearTimeout(timer); resolve(null); }
+        });
+    });
+  }
+
+  function dbWriteWithTimeout(promiseObj, timeoutMs = 2000) {
+    if (!promiseObj) return Promise.resolve();
+    return Promise.race([
+      promiseObj.catch(() => {}),
+      new Promise(res => setTimeout(res, timeoutMs))
+    ]);
+  }
 
   // الحصول على توقيت السيرفر الموثوق بدون الاعتماد على وقت هاتف المستخدم
   function getTrustedTimestamp() {
@@ -1649,15 +2321,14 @@
     const suspiciousKeywords = ['parallel', 'dualspace', 'virtualapp', 'clone', 'xposed', 'sandbox'];
     const isClonerDetected = suspiciousKeywords.some(k => ua.includes(k)) || !!navigator.webdriver;
 
-    // فحص انحراف التوقيت الزمني (VPN Check / Time Drift)
-    const clientOffsetMin = -new Date().getTimezoneOffset(); // دقائق
-    const iraqOffsetMin = 180; // توقيت العراق UTC+3
-    const isVpnSuspect = Math.abs(clientOffsetMin - iraqOffsetMin) > 420; // اختلاف كبير عن التوقيت المحلي
+    const clientOffsetMin = -new Date().getTimezoneOffset();
+    const iraqOffsetMin = 180;
+    const isVpnSuspect = Math.abs(clientOffsetMin - iraqOffsetMin) > 420;
 
     return {
       isClonerDetected,
       isVpnSuspect,
-      isTimeTampered: Math.abs(serverTimeOffset) > 24 * 60 * 60 * 1000 // تلاعب كبير بساعة الجهاز
+      isTimeTampered: Math.abs(serverTimeOffset) > 24 * 60 * 60 * 1000
     };
   }
 
@@ -1705,7 +2376,7 @@
   }
 
   /**************************************************************
-   * 4. باقات المتجر ومستويات VIP
+   * 4. باقات المتجر ومستويات VIP والرهانات (حتى 5 مليار و10 مليار)
    **************************************************************/
   const GOLD_STORE_PACKAGES = [
     { id: 'g1', label: '200 مليون ذهب',     goldAmount: 200000000,    priceUSD: 2,   icon: '🪙' },
@@ -1761,20 +2432,22 @@
     { label: '300M', val: 300000000 },
     { label: '500M', val: 500000000 },
     { label: '700M', val: 700000000 },
-    { label: '1B',   val: 1000000000 }
+    { label: '1B',   val: 1000000000 },
+    { label: '5B',   val: 5000000000 },
+    { label: '10B',  val: 10000000000 }
   ];
   let selectedBetIndex = 0;
 
   function formatCoins(num) {
     if (currentUser && currentUser.isAdmin) return '∞';
-    if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
-    if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+    if (num >= 1e9) return (num / 1e9).toFixed(2).replace(/\.00$/, '') + 'B';
+    if (num >= 1e6) return (num / 1e6).toFixed(2).replace(/\.00$/, '') + 'M';
     if (num >= 1e3) return (num / 1e3).toFixed(0) + 'K';
     return Math.floor(num).toLocaleString();
   }
 
   /**************************************************************
-   * 5. محرك الأصوات المخصص
+   * 5. محرك الأصوات والمؤثرات البصرية المخصص
    **************************************************************/
   let soundOn = true;
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -1803,6 +2476,29 @@
     wheel:       { base: 680, wave: 'triangle', winNotes: [523, 659, 784, 1046] }
   };
 
+  function triggerVisualWinEffects() {
+    const stageEl = document.getElementById('stageDisplay');
+    const fxLayer = document.getElementById('stageFxLayer');
+    if (stageEl) {
+      stageEl.classList.remove('stage-win-flash');
+      void stageEl.offsetWidth;
+      stageEl.classList.add('stage-win-flash');
+    }
+    if (fxLayer) {
+      const icons = ['🪙', '💎', '✨', '👑', '🔥'];
+      for (let i = 0; i < 14; i++) {
+        const sp = document.createElement('div');
+        sp.className = 'fx-coin';
+        sp.innerText = icons[i % icons.length];
+        sp.style.left = Math.floor(5 + Math.random() * 88) + '%';
+        sp.style.top = '-20px';
+        sp.style.animationDelay = (Math.random() * 0.35) + 's';
+        fxLayer.appendChild(sp);
+        setTimeout(() => { if (sp.parentNode) sp.parentNode.removeChild(sp); }, 1350);
+      }
+    }
+  }
+
   function playGameSound(type) {
     if (!soundOn) return;
     try {
@@ -1811,7 +2507,23 @@
       const gid = activeGameObj ? activeGameObj.id : 'olympus';
       const prof = GAME_SOUND_PROFILES[gid] || GAME_SOUND_PROFILES.olympus;
 
+      if (type === 'goldFly') {
+        const coinNotes = [1046.5, 1318.5, 1567.98, 2093.0, 1567.98, 2093.0, 2637.0];
+        coinNotes.forEach((f, idx) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, now + idx * 0.065);
+          g.gain.setValueAtTime(0.22, now + idx * 0.065);
+          g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.065 + 0.22);
+          osc.connect(g); g.connect(audioCtx.destination);
+          osc.start(now + idx * 0.065); osc.stop(now + idx * 0.065 + 0.22);
+        });
+        return;
+      }
+
       if (type === 'scatterBell') {
+        triggerVisualWinEffects();
         const freqs = [880, 1174.66, 1318.5, 1760, 2093];
         freqs.forEach((f, idx) => {
           const osc = audioCtx.createOscillator();
@@ -1827,6 +2539,7 @@
       }
 
       if (type === 'win') {
+        triggerVisualWinEffects();
         prof.winNotes.forEach((f, idx) => {
           const osc = audioCtx.createOscillator();
           const g = audioCtx.createGain();
@@ -1882,17 +2595,145 @@
   }
 
   /**************************************************************
-   * 6. قائمة الألعاب الـ 20
+   * 6. قائمة الألعاب الـ 20 مع الصور المرفقة (خلفية خارجية وداخلية + 6 صور أحجار فيت سنتر)
    **************************************************************/
   const GAMES_CATALOG = [
-    { id: 'olympus',     title: 'ملك أوليمبوس',          icon: '⚡🧔♂️', bg: 'linear-gradient(145deg,#1e3a8a,#4c1d95)', type: 'cascade', king: '👑', syms: ['💎','💍','⏳','🏆','🔮','⚡'] },
-    { id: 'egypt',       title: 'ملكة مصر',              icon: '👑🐍', bg: 'linear-gradient(145deg,#78350f,#d97706)', type: 'cascade', king: '👑', syms: ['🪲','👁️','🏺','🪙','🐍','🔱'] },
-    { id: 'hades',       title: 'ملك هاديس',             icon: '🔥👹', bg: 'linear-gradient(145deg,#0f172a,#b91c1c)', type: 'cascade', king: '👑', syms: ['🔥','💀','🐺','⛓️','🩸','🗡️'] },
-    { id: 'princess',    title: 'أميرة النجوم',          icon: '👸🌟', bg: 'linear-gradient(145deg,#831843,#7e22ce)', type: 'cascade', king: '👑', syms: ['🌟','🌙','💖','🎀','🔮','💎'] },
-    { id: 'bonanza',     title: 'بونانزا الحلوى',        icon: '🍭🍬', bg: 'linear-gradient(145deg,#be185d,#2563eb)', type: 'cascade', king: '👑', syms: ['🍭','🍬','🍇','🍉','🍎','🍌'] },
-    { id: 'wolf',        title: 'ذئب الذهب',             icon: '🐺🌕', bg: 'linear-gradient(145deg,#1e293b,#047857)', type: 'cascade', king: '👑', syms: ['🐺','🦅','🐎','🦬','🌕','🪙'] },
-    { id: 'bookofra',    title: 'كتاب رع',               icon: '📖🏺', bg: 'linear-gradient(145deg,#451a03,#a16207)', type: 'cascade', king: '👑', syms: ['📖','🗿','🪲','🏺','🪙','🦅'] },
-    { id: 'tiger',       title: 'ثروة النمر',            icon: '🐯🧧', bg: 'linear-gradient(145deg,#991b1b,#ca8a04)', type: 'cascade', king: '👑', syms: ['🐯','🧧','🏮','🪙','🍊','💎'] },
+    {
+      id: 'olympus',
+      title: 'ملك أوليمبوس',
+      icon: '⚡🧔♂️',
+      bg: 'linear-gradient(145deg,#1e3a8a,#4c1d95)',
+      bgImg: 'https://i.ibb.co/gZtcxhSn/images-28.jpg',
+      type: 'cascade',
+      king: '👑',
+      syms: [
+        'https://i.ibb.co/d0Pqn8NR/images-29.jpg',
+        'https://i.ibb.co/LzCfycfb/images-32.jpg',
+        'https://i.ibb.co/g5cGj6M/images-31.jpg',
+        'https://i.ibb.co/hJZZHXgb/images-30.jpg',
+        'https://i.ibb.co/5W7BPsbs/images-3.jpg',
+        'https://i.ibb.co/yBmCw6BX/images-69.jpg'
+      ]
+    },
+    {
+      id: 'egypt',
+      title: 'ملكه مصر',
+      icon: '👑🐍',
+      bg: 'linear-gradient(145deg,#78350f,#d97706)',
+      bgImg: 'https://i.ibb.co/PGpQN540/images-67.jpg',
+      type: 'cascade',
+      king: '👑',
+      syms: [
+        'https://i.ibb.co/27TH6FTV/images-64.jpg',
+        'https://i.ibb.co/MxXGjHjB/images-40.jpg',
+        'https://i.ibb.co/h1VsCSMb/images-41.jpg',
+        'https://i.ibb.co/PZFRS2LR/images-42.jpg',
+        'https://i.ibb.co/0RzgBBjx/images-43.jpg',
+        'https://i.ibb.co/KxTrQwhJ/images-39.jpg'
+      ]
+    },
+    {
+      id: 'hades',
+      title: 'ملك هاديز',
+      icon: '🔥👹',
+      bg: 'linear-gradient(145deg,#0f172a,#b91c1c)',
+      bgImg: 'https://i.ibb.co/Z1M8qRqz/82f22152faca83fa4b7813c30cbcb9ae.jpg',
+      type: 'cascade',
+      king: '👑',
+      syms: [
+        'https://i.ibb.co/Z62PP014/images-38.jpg',
+        'https://i.ibb.co/0RfGX453/images-37.jpg',
+        'https://i.ibb.co/Y4RsxrpJ/images-36.jpg',
+        'https://i.ibb.co/HjzcqTL/images-33.jpg',
+        'https://i.ibb.co/rfZGVVfQ/images-34.jpg',
+        'https://i.ibb.co/ycRZW6Rg/images-35.jpg'
+      ]
+    },
+    {
+      id: 'princess',
+      title: 'اميره النجوم',
+      icon: '👸🌟',
+      bg: 'linear-gradient(145deg,#831843,#7e22ce)',
+      bgImg: 'https://i.ibb.co/bgQ39CFS/images-49.jpg',
+      type: 'cascade',
+      king: '👑',
+      syms: [
+        'https://i.ibb.co/MD932q2R/images-48.jpg',
+        'https://i.ibb.co/xtSgqHXs/images-44.jpg',
+        'https://i.ibb.co/jZZhtfqh/images-45.jpg',
+        'https://i.ibb.co/DHGpt7Pd/images-46.jpg',
+        'https://i.ibb.co/Y4WNKqrv/images-47.jpg',
+        'https://i.ibb.co/3931mK2H/images-12.jpg'
+      ]
+    },
+    {
+      id: 'bonanza',
+      title: 'بونانزا الحلوى',
+      icon: '🍭🍬',
+      bg: 'linear-gradient(145deg,#be185d,#2563eb)',
+      bgImg: 'https://i.ibb.co/Kcq6r0zq/20170616023556-Candy-Crush.png',
+      type: 'cascade',
+      king: '👑',
+      syms: [
+        'https://i.ibb.co/fdVQJyJS/Polish.png',
+        'https://i.ibb.co/ZRw57KWQ/Polish.png',
+        'https://i.ibb.co/Gvd0M0db/Polish.png',
+        'https://i.ibb.co/KjLSYhxN/Polish.png',
+        'https://i.ibb.co/sdh3j0KW/Polish.png',
+        'https://i.ibb.co/3YQ2H7WN/Polish.png'
+      ]
+    },
+    {
+      id: 'wolf',
+      title: 'ذئب الذهب',
+      icon: '🐺🌕',
+      bg: 'linear-gradient(145deg,#1e293b,#047857)',
+      bgImg: 'https://i.ibb.co/603NZ323/images-75.jpg',
+      type: 'cascade',
+      king: '👑',
+      syms: [
+        'https://i.ibb.co/Fd8ZbMG/images-74.jpg',
+        'https://i.ibb.co/fWJ7Jv0/images-73.jpg',
+        'https://i.ibb.co/TBSjrBMJ/images-72.jpg',
+        'https://i.ibb.co/4w80tK8v/images-71.jpg',
+        'https://i.ibb.co/fzfj3gNb/images-19.jpg',
+        'https://i.ibb.co/Fkz2rhym/images-20.jpg'
+      ]
+    },
+    {
+      id: 'bookofra',
+      title: 'كتاب رعب',
+      icon: '📖🏺',
+      bg: 'linear-gradient(145deg,#451a03,#a16207)',
+      bgImg: 'https://i.ibb.co/qY8M00Lx/images-51.jpg',
+      type: 'cascade',
+      king: '👑',
+      syms: [
+        'https://i.ibb.co/KxbNK1qR/images-52.jpg',
+        'https://i.ibb.co/JWf13x2Y/images-55.jpg',
+        'https://i.ibb.co/N6WBbphg/images-54.jpg',
+        'https://i.ibb.co/N2fzD58v/images-57.jpg',
+        'https://i.ibb.co/1G79VB8c/images-53.jpg',
+        'https://i.ibb.co/NndZH14z/unnamed.png'
+      ]
+    },
+    {
+      id: 'tiger',
+      title: 'ثورة النمر',
+      icon: '🐯🧧',
+      bg: 'linear-gradient(145deg,#991b1b,#ca8a04)',
+      bgImg: 'https://i.ibb.co/N61NSybf/images-63.jpg',
+      type: 'cascade',
+      king: '👑',
+      syms: [
+        'https://i.ibb.co/0PJ6dvp/images-62.jpg',
+        'https://i.ibb.co/S4W7dYhS/images-60.jpg',
+        'https://i.ibb.co/rGc75mty/images-58.jpg',
+        'https://i.ibb.co/mF43NSxN/unnamed-1.png',
+        'https://i.ibb.co/nstGG7yX/images-59.jpg',
+        'https://i.ibb.co/WNd7WyVd/images-61.jpg'
+      ]
+    },
 
     { id: 'rocket',      title: 'صاروخ الفضاء',          icon: '🚀🤖', bg: 'linear-gradient(145deg,#311042,#e11d48)', type: 'rocket', vehicle: '🚀' },
     { id: 'aviator',     title: 'طائرة أفياتور',         icon: '✈️🎖️', bg: 'linear-gradient(145deg,#7f1d1d,#1e293b)', type: 'rocket', vehicle: '✈️' },
@@ -1904,22 +2745,193 @@
     { id: 'chicken2',    title: 'قفزة الدجاجة 2',        icon: '🐣🚗', bg: 'linear-gradient(145deg,#065f46,#ca8a04)', type: 'step', safeIcon: '🐣', trapIcon: '🚗' },
     { id: 'goldmine',    title: 'منجم الذهب',            icon: '⛏️🪙', bg: 'linear-gradient(145deg,#78350f,#f59e0b)', type: 'step', safeIcon: '🪙', trapIcon: '💣' },
     { id: 'diamondcave', title: 'كهف الألماس',           icon: '💎🦇', bg: 'linear-gradient(145deg,#0f172a,#0284c7)', type: 'step', safeIcon: '💎', trapIcon: '💣' },
-    { id: 'piratebox',   title: 'كنز القراصنة',          icon: '🏴☠️👑', bg: 'linear-gradient(145deg,#1f2937,#991b1b)', type: 'step', safeIcon: '👑', trapIcon: '💀' },
+    { id: 'piratebox',   title: 'كنز القراصنة',          icon: '🏴‍☠️👑', bg: 'linear-gradient(145deg,#1f2937,#991b1b)', type: 'step', safeIcon: '👑', trapIcon: '💀' },
     { id: 'pharaohtomb', title: 'هرم الكنوز',            icon: '🔺🏺', bg: 'linear-gradient(145deg,#451a03,#d97706)', type: 'step', safeIcon: '🏺', trapIcon: '🦂' },
 
     { id: 'wheel',       title: 'عجلة الفواكه',          icon: '🎡🍉', bg: 'linear-gradient(145deg,#4c1d95,#10b981)', type: 'wheel' }
   ];
 
-  function renderLobbyGames() {
-    const grid = document.getElementById('gamesGridContainer');
-    grid.innerHTML = GAMES_CATALOG.map(g => `
+  // حفظ وتحميل مسبق لجميع صور الألعاب مع بديل ذكي لمنع اختفاء أي صورة نهائياً
+  const _preloadedGameImages = {};
+
+  function buildFallbackSvgDataUri(label) {
+    const safeLbl = (label || '👑').slice(0, 10);
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+      <defs>
+        <radialGradient id="g" cx="50%" cy="50%" r="55%">
+          <stop offset="0%" stop-color="#fbbf24"/>
+          <stop offset="65%" stop-color="#b45309"/>
+          <stop offset="100%" stop-color="#1e1b4b"/>
+        </radialGradient>
+      </defs>
+      <rect width="160" height="160" rx="26" fill="url(#g)" stroke="#fde047" stroke-width="5"/>
+      <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="38" fill="#ffffff" font-family="Cairo, sans-serif" font-weight="900">${safeLbl}</text>
+    </svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  }
+
+  function handleGameImgError(imgEl, fallbackIcon) {
+    if (!imgEl || imgEl.dataset.fallbackApplied) return;
+    imgEl.dataset.fallbackApplied = '1';
+    imgEl.src = buildFallbackSvgDataUri(fallbackIcon || '👑');
+  }
+
+  function preloadAllCatalogImages() {
+    GAMES_CATALOG.forEach(g => {
+      if (g.bgImg) {
+        const im = new Image();
+        im.referrerPolicy = 'no-referrer';
+        im.src = g.bgImg;
+        _preloadedGameImages[g.bgImg] = im;
+      }
+      if (Array.isArray(g.syms)) {
+        g.syms.forEach(s => {
+          if (s && s.startsWith('http')) {
+            const im = new Image();
+            im.referrerPolicy = 'no-referrer';
+            im.src = s;
+            _preloadedGameImages[s] = im;
+          }
+        });
+      }
+    });
+  }
+
+  function renderStoneSymbolHtml(sym) {
+    if (!sym) return '';
+    if (sym.startsWith('http://') || sym.startsWith('https://') || sym.startsWith('data:image')) {
+      return `<img class="stone-fit-img" src="${sym}" referrerpolicy="no-referrer" loading="eager" onerror="handleGameImgError(this, '💎')" alt="sym">`;
+    }
+    return `<span>${sym}</span>`;
+  }
+
+  function renderSingleGameCardHtml(g) {
+    if (g.bgImg) {
+      return `
+        <div class="game-card" style="background:${g.bg};" onclick="openGame('${g.id}')">
+          <div class="game-card-bg-blur" style="background-image:url('${g.bgImg}');"></div>
+          <img class="game-card-fit-img" src="${g.bgImg}" referrerpolicy="no-referrer" loading="eager" onerror="handleGameImgError(this, '${g.icon || '👑'}')" alt="${g.title}">
+          <div class="game-card-overlay">
+            <div class="game-card-title">${g.title}</div>
+          </div>
+        </div>
+      `;
+    }
+    return `
       <div class="game-card" style="background:${g.bg};" onclick="openGame('${g.id}')">
         <div class="game-card-art">${g.icon}</div>
         <div class="game-card-overlay">
           <div class="game-card-title">${g.title}</div>
         </div>
       </div>
-    `).join('');
+    `;
+  }
+
+  let currentLobbyCategory = 'all';
+
+  function filterLobbyCategory(cat) {
+    playGameSound('click');
+    currentLobbyCategory = cat;
+    ['all', 'kings', 'rocket_apple', 'others'].forEach(c => {
+      const btn = document.getElementById('catBtn_' + c);
+      if (btn) btn.classList.toggle('active', c === cat);
+    });
+    renderLobbyGames();
+  }
+
+  function renderLobbyGames() {
+    const container = document.getElementById('gamesGridContainer');
+    if (!container) return;
+
+    const kingsGames = GAMES_CATALOG.filter(g => g.type === 'cascade');
+    const rocketGames = GAMES_CATALOG.filter(g => g.type === 'rocket');
+    const appleChickenGames = GAMES_CATALOG.filter(g => ['apple', 'chicken1', 'chicken2'].includes(g.id));
+    const otherGames = GAMES_CATALOG.filter(g => ['goldmine', 'diamondcave', 'piratebox', 'pharaohtomb', 'wheel'].includes(g.id));
+
+    // تقسيم وعزل ألعاب الملوك وألعاب الصاروخ والتفاحة 3 أسطر فوق سحب يمين ويسار + الألعاب الأخرى 3 أسطر سحب يمين ويسار
+    let html = '';
+
+    if (currentLobbyCategory === 'all' || currentLobbyCategory === 'kings' || currentLobbyCategory === 'rocket_apple') {
+      html += `
+        <div class="lobby-section-box">
+          <div class="section-title" style="margin-top:0;">
+            <span>👑🚀🍎 ألعاب الملوك والصاروخ والتفاحة (3 أسطر سحب)</span>
+            <span class="swipe-hint-badge">⇄ اسحب يمين ويسار</span>
+          </div>
+      `;
+
+      if (currentLobbyCategory === 'all' || currentLobbyCategory === 'kings') {
+        html += `
+          <div class="lobby-row-header">
+            <div class="lobby-row-title">👑 السطر 1: ألعاب الملوك الأسطورية</div>
+            <span style="font-size:0.65rem; color:#94a3b8;">8 ألعاب ملكية</span>
+          </div>
+          <div class="horizontal-games-row">
+            ${kingsGames.map(g => renderSingleGameCardHtml(g)).join('')}
+          </div>
+        `;
+      }
+
+      if (currentLobbyCategory === 'all' || currentLobbyCategory === 'rocket_apple') {
+        html += `
+          <div class="lobby-row-header" style="margin-top:6px;">
+            <div class="lobby-row-title">🚀 السطر 2: ألعاب الصاروخ والطيران</div>
+            <span style="font-size:0.65rem; color:#94a3b8;">مضاعفات مباشرة</span>
+          </div>
+          <div class="horizontal-games-row">
+            ${rocketGames.map(g => renderSingleGameCardHtml(g)).join('')}
+          </div>
+
+          <div class="lobby-row-header" style="margin-top:6px;">
+            <div class="lobby-row-title">🍎🐔 السطر 3: ألعاب التفاحة والدجاجة</div>
+            <span style="font-size:0.65rem; color:#94a3b8;">تحدي الخطوات</span>
+          </div>
+          <div class="horizontal-games-row">
+            ${appleChickenGames.concat(rocketGames.slice(0, 2)).map(g => renderSingleGameCardHtml(g)).join('')}
+          </div>
+        `;
+      }
+
+      html += `</div>`;
+    }
+
+    if (currentLobbyCategory === 'all' || currentLobbyCategory === 'others') {
+      const otherRow1 = [otherGames[0], otherGames[1], otherGames[4], appleChickenGames[0], kingsGames[0], kingsGames[4]].filter(Boolean);
+      const otherRow2 = [otherGames[2], otherGames[3], otherGames[4], appleChickenGames[1], kingsGames[1], kingsGames[5]].filter(Boolean);
+      const otherRow3 = [otherGames[4], otherGames[0], otherGames[2], appleChickenGames[2], kingsGames[2], kingsGames[7]].filter(Boolean);
+
+      html += `
+        <div class="lobby-section-box">
+          <div class="section-title" style="margin-top:0;">
+            <span>💎🎡 الألعاب الأخرى والكنوز (3 أسطر سحب)</span>
+            <span class="swipe-hint-badge">⇄ اسحب يمين ويسار</span>
+          </div>
+
+          <div class="lobby-row-header">
+            <div class="lobby-row-title">⛏️💎 السطر 1: مناجم الذهب والألماس</div>
+          </div>
+          <div class="horizontal-games-row">
+            ${otherRow1.map(g => renderSingleGameCardHtml(g)).join('')}
+          </div>
+
+          <div class="lobby-row-header" style="margin-top:6px;">
+            <div class="lobby-row-title">🏴‍☠️🔺 السطر 2: كنوز القراصنة والأهرامات</div>
+          </div>
+          <div class="horizontal-games-row">
+            ${otherRow2.map(g => renderSingleGameCardHtml(g)).join('')}
+          </div>
+
+          <div class="lobby-row-header" style="margin-top:6px;">
+            <div class="lobby-row-title">🎡🌟 السطر 3: عجلة الفواكه والاختيارات الملكية</div>
+          </div>
+          <div class="horizontal-games-row">
+            ${otherRow3.map(g => renderSingleGameCardHtml(g)).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    container.innerHTML = html;
   }
 
   function renderStorePackages() {
@@ -1965,7 +2977,7 @@
   ];
 
   /**************************************************************
-   * 8. إدارة الحسابات، المعرف الرقمي 7 أرقام، وشاشة الحظر
+   * 8. إدارة الحسابات، المعرف الرقمي 7 أرقام، وشاشة الحظر، والسيرة الذاتية، والتاجر الموثق
    **************************************************************/
   let authMode = 'login';
   let currentUser = null;
@@ -1977,12 +2989,48 @@
     return Math.floor(1000000 + Math.random() * 9000000).toString();
   }
 
+  function isPlayerVerifiedTrader(uObj) {
+    if (!uObj) return false;
+    if (uObj.isAdmin) return true;
+    const vipLvl = uObj.vip || 0;
+    return vipLvl >= 6 && !uObj.traderStarRevoked;
+  }
+
+  function togglePasswordVisibility(inputId, btnEl) {
+    const inp = document.getElementById(inputId);
+    if (!inp) return;
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      if (btnEl) btnEl.innerText = '🙈';
+    } else {
+      inp.type = 'password';
+      if (btnEl) btnEl.innerText = '👁️';
+    }
+  }
+
+  function triggerSavedAutoLogin() {
+    const savedKey = safeStorageGet('royal_last_saved_key') || safeStorageGet('royal_active_key');
+    if (!savedKey) {
+      showToast('لا يوجد حساب محفوظ مسبقاً على هذا الجهاز', '#f59e0b');
+      return;
+    }
+    const local = safeStorageGet('royal_pro_' + savedKey);
+    if (local) {
+      try {
+        const data = JSON.parse(local);
+        startUserSession(savedKey, data);
+        showToast(`⚡ أهلاً بعودتك ${data.username}! تم الدخول تلقائياً`);
+        return;
+      } catch (e) {}
+    }
+  }
+
   function switchAuthTab(mode) {
     authMode = mode;
     const isReg = (mode === 'register');
     document.getElementById('tabLogin').classList.toggle('active', !isReg);
     document.getElementById('tabRegister').classList.toggle('active', isReg);
-    document.getElementById('authSubmitBtn').innerText = isReg ? 'إنشاء حساب 🎁' : 'دخول 🎮';
+    document.getElementById('authSubmitBtn').innerText = isReg ? 'إنشاء حساب والدخول فوراً 🎁' : 'دخول 🎮';
 
     document.getElementById('regAvatarSection').classList.toggle('active', isReg);
     document.getElementById('regFieldsSection').classList.toggle('active', isReg);
@@ -1991,14 +3039,13 @@
     const userLabel = document.getElementById('authUserLabel');
     const userInput = document.getElementById('authUser');
     if (isReg) {
-      userLabel.innerText = 'اسم المستخدم (عربي أو إنجليزي بدون زخرفة - أقصى 9 أحرف)';
-      userInput.placeholder = 'اسم المستخدم (أقصى 9 أحرف)';
-      userInput.maxLength = 9;
-      if (userInput.value.length > 9) userInput.value = userInput.value.slice(0, 9);
+      userLabel.innerText = '👤 اسم المستخدم أو 📱 رقم الهاتف للحساب الجديد';
+      userInput.placeholder = 'اكتب اسمك أو رقم هاتفك';
+      userInput.maxLength = 20;
       updateWhatsappVerifyHref();
     } else {
-      userLabel.innerText = 'اسم المستخدم أو رقم الهاتف';
-      userInput.placeholder = 'اسم المستخدم أو رقم الهاتف';
+      userLabel.innerText = '📱 رقم الهاتف أو 👤 اسم المستخدم';
+      userInput.placeholder = 'أدخل رقم الهاتف أو اسم المستخدم';
       userInput.removeAttribute('maxLength');
     }
   }
@@ -2034,17 +3081,10 @@
     reader.readAsDataURL(file);
   }
 
-  // التحقق من اسم المستخدم: حروف عربية أو إنجليزية أو أرقام فقط بدون زخرفة أو تشكيل أو علامات تنقيط وبحد أقصى 9 أحرف
-  const VALID_USERNAME_REGEX = /^[a-zA-Z0-9ء-غف-ي]{1,9}$/;
+  const VALID_USERNAME_REGEX = /^[a-zA-Z0-9ء-ي٠-٩_+-\s]{1,20}$/;
 
   function onAuthUserInput(inputEl) {
     if (authMode === 'register') {
-      // إزالة الزخرفة والتشكيل وعلامات التنقيط والمسافات تلقائياً أثناء الكتابة في وضع التسجيل
-      const cleaned = inputEl.value.replace(/[^a-zA-Z0-9ء-غف-ي]/g, '').slice(0, 9);
-      if (inputEl.value !== cleaned) {
-        inputEl.value = cleaned;
-        showToast('⚠️ مسموح فقط بحروف عربية أو إنجليزية بدون زخرفة أو علامات تنقيط (أقصى 9 أحرف)', '#f59e0b');
-      }
       updateWhatsappVerifyHref();
     }
   }
@@ -2188,6 +3228,11 @@
         vipPoints: 999999,
         vouchers: 999999999,
         vip: 10,
+        bio: 'المدير العام لتطبيق اساطير رويل 👑',
+        traderStarRevoked: false,
+        traderPhone: '07824361868',
+        traderTelegram: '@RoyalLegendsAdmin',
+        traderOffer: 'الإدارة الرسمية — شحن ذهب ونقاط VIP مباشرة وبأمان تام',
         friendsCount: 999,
         friendsList: [],
         avatar: '👑',
@@ -2195,12 +3240,14 @@
         avatarMonth: getTrustedMonthKey(),
         avatarChangesUsed: 0,
         totalLostUnrecovered: 0,
+        firstBetBonusClaimed: false,
+        betBehavior: { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
         lastDailyReset: getTrustedTimestamp(),
         dailyState: { dayKey: getTrustedDayKey(), spins: 999, kingSpins: 999, wins: 999, stepWins: 999, chatMsgs: 999, vouchersToday: 0, claimed: {} },
         requests: []
       };
-      if (db) await db.ref('users/admin').set(adminProfile).catch(() => {});
-      localStorage.setItem('royal_pro_admin', JSON.stringify(adminProfile));
+      if (db) await dbWriteWithTimeout(db.ref('users/admin').set(adminProfile));
+      safeStorageSet('royal_pro_admin', JSON.stringify(adminProfile));
       startUserSession('admin', adminProfile);
       return;
     }
@@ -2208,23 +3255,32 @@
     const key = u.replace(/[.#$[\]\s]/g, '_');
 
     if (authMode === 'register') {
-      if (!VALID_USERNAME_REGEX.test(u)) {
-        showToast('⚠️ اسم المستخدم يجب أن يكون عربي أو إنجليزي بدون زخرفة أو علامات تنقيط وبحد أقصى 9 أحرف!', '#ef4444');
-        return;
-      }
-      const pConfirm = document.getElementById('authPassConfirm').value.trim();
-      if (!pConfirm || p !== pConfirm) {
+      const pConfirmEl = document.getElementById('authPassConfirm');
+      const pConfirm = pConfirmEl ? pConfirmEl.value.trim() : p;
+      if (pConfirm && p !== pConfirm) {
         showToast('⚠️ كلمة المرور وتأكيد كلمة المرور غير متطابقتين!', '#ef4444');
         return;
       }
-      const phoneObj = getFormattedFullPhone();
-      if (!phoneObj.codeDigits || phoneObj.localDigits.length < 7) {
-        showToast('⚠️ يرجى اختيار الدولة أو كتابة مفتاح الدولة وإدخال رقم هاتف صحيح!', '#ef4444');
-        return;
-      }
-      if (!isPhoneWhatsappVerified) {
-        showToast('📲 يرجى تأكيد رقم الهاتف بالضغط على "إرسال رسالة واتساب" أولاً!', '#ef4444');
-        return;
+      let phoneObj = getFormattedFullPhone();
+      // إذا كتب المستخدم رقم هاتفه في خانة الاسم مباشرة بدون ملء خانة الهاتف الثانية نقوم باعتماده تلقائياً
+      const digitsInUserField = u.replace(/[^\d]/g, '');
+      if (phoneObj.localDigits.length < 7 && digitsInUserField.length >= 7) {
+        const localClean = digitsInUserField.startsWith('0') ? digitsInUserField.slice(1) : digitsInUserField;
+        phoneObj = {
+          codeDigits: phoneObj.codeDigits || '964',
+          localDigits: localClean,
+          fullDigits: (phoneObj.codeDigits || '964') + localClean,
+          fullDisplay: '+' + (phoneObj.codeDigits || '964') + localClean
+        };
+      } else if (phoneObj.localDigits.length < 7) {
+        // توليد رقم تعريفي داخلي إذا سجل باسم المستخدم فقط حتى لا يتعطل التسجيل
+        const autoLocal = Math.floor(7700000000 + Math.random() * 199999999).toString();
+        phoneObj = {
+          codeDigits: phoneObj.codeDigits || '964',
+          localDigits: autoLocal,
+          fullDigits: (phoneObj.codeDigits || '964') + autoLocal,
+          fullDisplay: '+' + (phoneObj.codeDigits || '964') + autoLocal
+        };
       }
 
       const assignedUid = generate7DigitUid();
@@ -2246,6 +3302,11 @@
         vipPoints: 0,
         vouchers: 0,
         vip: 0,
+        bio: '',
+        traderStarRevoked: false,
+        traderPhone: '',
+        traderTelegram: '',
+        traderOffer: '',
         friendsCount: 0,
         friendsList: [],
         avatar: regSelectedAvatar || '🦁',
@@ -2253,97 +3314,92 @@
         avatarMonth: getTrustedMonthKey(),
         avatarChangesUsed: 0,
         totalLostUnrecovered: 0,
+        firstBetBonusClaimed: false,
+        betBehavior: { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
         lastDailyReset: getTrustedTimestamp(),
         dailyState: { dayKey: getTrustedDayKey(), spins: 0, kingSpins: 0, wins: 0, stepWins: 0, chatMsgs: 0, vouchersToday: 0, claimed: {} },
         requests: []
       };
       if (db) {
         try {
-          const snap = await db.ref('users/' + key).once('value');
-          if (snap.exists()) { showToast('اسم المستخدم مسجل مسبقاً!', '#ef4444'); return; }
-          const phoneSnap = await db.ref('phone_to_user/' + phoneObj.fullDigits).once('value');
-          if (phoneSnap.exists()) { showToast('رقم الهاتف مسجل بحساب آخر مسبقاً!', '#ef4444'); return; }
-          await db.ref('users/' + key).set(newUser);
-          await db.ref('id_to_user/' + assignedUid).set(key);
-          await db.ref('phone_to_user/' + phoneObj.fullDigits).set(key);
+          const snap = await dbOnceWithTimeout('users/' + key);
+          if (snap && snap.exists()) { showToast('اسم المستخدم مسجل مسبقاً!', '#ef4444'); return; }
+          const phoneSnap = await dbOnceWithTimeout('phone_to_user/' + phoneObj.fullDigits);
+          if (phoneSnap && phoneSnap.exists()) { showToast('رقم الهاتف مسجل بحساب آخر مسبقاً!', '#ef4444'); return; }
+          await dbWriteWithTimeout(db.ref('users/' + key).set(newUser));
+          await dbWriteWithTimeout(db.ref('id_to_user/' + assignedUid).set(key));
+          await dbWriteWithTimeout(db.ref('phone_to_user/' + phoneObj.fullDigits).set(key));
           if (phoneObj.localDigits) {
-            await db.ref('phone_to_user/' + phoneObj.localDigits).set(key);
-            await db.ref('phone_to_user/0' + phoneObj.localDigits).set(key);
+            await dbWriteWithTimeout(db.ref('phone_to_user/' + phoneObj.localDigits).set(key));
+            await dbWriteWithTimeout(db.ref('phone_to_user/0' + phoneObj.localDigits).set(key));
           }
         } catch (e) {}
       }
-      localStorage.setItem('royal_pro_' + key, JSON.stringify(newUser));
-      localStorage.setItem('royal_phone_' + phoneObj.fullDigits, key);
+      safeStorageSet('royal_pro_' + key, JSON.stringify(newUser));
+      safeStorageSet('royal_phone_' + phoneObj.fullDigits, key);
       if (phoneObj.localDigits) {
-        localStorage.setItem('royal_phone_' + phoneObj.localDigits, key);
-        localStorage.setItem('royal_phone_0' + phoneObj.localDigits, key);
+        safeStorageSet('royal_phone_' + phoneObj.localDigits, key);
+        safeStorageSet('royal_phone_0' + phoneObj.localDigits, key);
       }
       startUserSession(key, newUser);
     } else {
       let data = null;
       let resolvedKey = key;
 
-      // 1. محاولة البحث المباشر باسم المستخدم
       if (db) {
-        try {
-          const snap = await db.ref('users/' + resolvedKey).once('value');
-          if (snap.exists()) data = snap.val();
-        } catch (e) {}
+        const snap = await dbOnceWithTimeout('users/' + resolvedKey);
+        if (snap && snap.exists()) data = snap.val();
       }
       if (!data) {
-        const local = localStorage.getItem('royal_pro_' + resolvedKey);
-        if (local) data = JSON.parse(local);
+        const local = safeStorageGet('royal_pro_' + resolvedKey);
+        if (local) {
+          try { data = JSON.parse(local); } catch (e) {}
+        }
       }
 
-      // 2. إذا لم يتم العثور عليه بالاسم، البحث برقم الهاتف (مع أو بدون مفتاح الدولة)
       if (!data) {
         const phoneCandidates = normalizePhoneLookupCandidates(u);
         for (const cand of phoneCandidates) {
           if (db && !data) {
-            try {
-              const pSnap = await db.ref('phone_to_user/' + cand).once('value');
-              if (pSnap.exists()) {
-                resolvedKey = pSnap.val();
-                const uSnap = await db.ref('users/' + resolvedKey).once('value');
-                if (uSnap.exists()) data = uSnap.val();
-              }
-            } catch (e) {}
+            const pSnap = await dbOnceWithTimeout('phone_to_user/' + cand);
+            if (pSnap && pSnap.exists()) {
+              resolvedKey = pSnap.val();
+              const uSnap = await dbOnceWithTimeout('users/' + resolvedKey);
+              if (uSnap && uSnap.exists()) data = uSnap.val();
+            }
           }
           if (!data) {
-            const localMappedKey = localStorage.getItem('royal_phone_' + cand);
+            const localMappedKey = safeStorageGet('royal_phone_' + cand);
             if (localMappedKey) {
-              const localData = localStorage.getItem('royal_pro_' + localMappedKey);
+              const localData = safeStorageGet('royal_pro_' + localMappedKey);
               if (localData) {
                 resolvedKey = localMappedKey;
-                data = JSON.parse(localData);
+                try { data = JSON.parse(localData); } catch (e) {}
               }
             }
           }
           if (data) break;
         }
 
-        // بحث شامل في قائمة المستخدمين في حال كان الرقم مخزناً داخل بيانات المستخدم
         if (!data && db && phoneCandidates.length > 0) {
-          try {
-            const allUsersSnap = await db.ref('users').once('value');
-            if (allUsersSnap.exists()) {
-              const allUsers = allUsersSnap.val();
-              for (const k of Object.keys(allUsers)) {
-                const usr = allUsers[k];
-                const uPhones = [
-                  (usr.fullPhoneDigits || ''),
-                  (usr.localPhoneDigits || ''),
-                  (usr.rawPhoneDigits || ''),
-                  (usr.phone || '').replace(/[^\d]/g, '')
-                ];
-                if (phoneCandidates.some(c => c && uPhones.includes(c))) {
-                  resolvedKey = k;
-                  data = usr;
-                  break;
-                }
+          const allUsersSnap = await dbOnceWithTimeout('users');
+          if (allUsersSnap && allUsersSnap.exists()) {
+            const allUsers = allUsersSnap.val();
+            for (const k of Object.keys(allUsers)) {
+              const usr = allUsers[k];
+              const uPhones = [
+                (usr.fullPhoneDigits || ''),
+                (usr.localPhoneDigits || ''),
+                (usr.rawPhoneDigits || ''),
+                (usr.phone || '').replace(/[^\d]/g, '')
+              ];
+              if (phoneCandidates.some(c => c && uPhones.includes(c))) {
+                resolvedKey = k;
+                data = usr;
+                break;
               }
             }
-          } catch (e) {}
+          }
         }
       }
 
@@ -2408,6 +3464,13 @@
       numericId: data.numericId || generate7DigitUid(),
       isBanned: !!data.isBanned,
       banReason: data.banReason || '',
+      bio: data.bio || '',
+      traderStarRevoked: !!data.traderStarRevoked,
+      traderPhone: data.traderPhone || '',
+      traderTelegram: data.traderTelegram || '',
+      traderOffer: data.traderOffer || '',
+      firstBetBonusClaimed: !!data.firstBetBonusClaimed,
+      betBehavior: data.betBehavior || { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
       friendsList: data.friendsList || [],
       ...data,
       key,
@@ -2420,6 +3483,7 @@
       currentUser.vouchers = 999999999;
       currentUser.vip = 10;
       currentUser.isBanned = false;
+      currentUser.traderStarRevoked = false;
     }
 
     if (!currentUser.numericId || currentUser.numericId.length !== 7) {
@@ -2436,24 +3500,45 @@
     }
 
     checkAutoVipLevelUp();
-    localStorage.setItem('royal_active_key', key);
+    const autoChk = document.getElementById('autoLoginCheck');
+    if (!autoChk || autoChk.checked) {
+      safeStorageSet('royal_active_key', key);
+    }
+    safeStorageSet('royal_last_saved_key', key);
     document.getElementById('authScreen').style.display = 'none';
     document.getElementById('exclusiveAdminBtn').style.display = isStrictlyAdmin ? 'inline-block' : 'none';
+
+    const bioInput = document.getElementById('profileBioInput');
+    if (bioInput) {
+      bioInput.value = (currentUser.bio || '').slice(0, 100);
+      updateBioCharCounter();
+    }
+    const trPhone = document.getElementById('vipTraderPhoneInput');
+    const trTele = document.getElementById('vipTraderTelegramInput');
+    const trOffer = document.getElementById('vipTraderOfferInput');
+    if (trPhone) trPhone.value = currentUser.traderPhone || '';
+    if (trTele) trTele.value = currentUser.traderTelegram || '';
+    if (trOffer) trOffer.value = currentUser.traderOffer || '';
 
     handleBanStatus(currentUser.isBanned, currentUser.banReason);
 
     if (db && !isStrictlyAdmin) {
       db.ref('users/' + key).on('value', snap => {
-        if (snap.exists()) {
+        if (snap && snap.exists()) {
           const rem = snap.val();
           currentUser.isBanned = !!rem.isBanned;
           currentUser.banReason = rem.banReason || '';
+          currentUser.traderStarRevoked = !!rem.traderStarRevoked;
           handleBanStatus(currentUser.isBanned, currentUser.banReason);
 
           currentUser.vipPoints = rem.vipPoints !== undefined ? rem.vipPoints : (currentUser.vipPoints || 0);
           currentUser.gold = rem.gold !== undefined ? rem.gold : currentUser.gold;
           currentUser.vouchers = rem.vouchers !== undefined ? rem.vouchers : (currentUser.vouchers || 0);
           currentUser.vip = rem.vip || currentUser.vip || 0;
+          if (rem.bio !== undefined) currentUser.bio = rem.bio;
+          if (rem.traderPhone !== undefined) currentUser.traderPhone = rem.traderPhone;
+          if (rem.traderTelegram !== undefined) currentUser.traderTelegram = rem.traderTelegram;
+          if (rem.traderOffer !== undefined) currentUser.traderOffer = rem.traderOffer;
           currentUser.requests = rem.requests || currentUser.requests || [];
           currentUser.friendsList = rem.friendsList || currentUser.friendsList || [];
           currentUser.friendsCount = currentUser.friendsList.length;
@@ -2478,7 +3563,7 @@
       currentUser.vip = 10;
       currentUser.isBanned = false;
     }
-    localStorage.setItem('royal_pro_' + currentUser.key, JSON.stringify(currentUser));
+    safeStorageSet('royal_pro_' + currentUser.key, JSON.stringify(currentUser));
     if (db) {
       db.ref('users/' + currentUser.key).update({
         username: currentUser.username,
@@ -2494,6 +3579,13 @@
         vipPoints: currentUser.vipPoints || 0,
         vouchers: currentUser.vouchers,
         vip: currentUser.vip,
+        bio: (currentUser.bio || '').slice(0, 100),
+        traderStarRevoked: !!currentUser.traderStarRevoked,
+        traderPhone: currentUser.traderPhone || '',
+        traderTelegram: currentUser.traderTelegram || '',
+        traderOffer: currentUser.traderOffer || '',
+        firstBetBonusClaimed: !!currentUser.firstBetBonusClaimed,
+        betBehavior: currentUser.betBehavior || { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
         isAdmin: currentUser.isAdmin ? true : null,
         friendsCount: (currentUser.friendsList ? currentUser.friendsList.length : 0),
         friendsList: currentUser.friendsList || [],
@@ -2513,12 +3605,44 @@
     refreshAllUI();
   }
 
+  function updateBioCharCounter() {
+    const inp = document.getElementById('profileBioInput');
+    const cnt = document.getElementById('bioCharCount');
+    if (!inp || !cnt) return;
+    if (inp.value.length > 100) inp.value = inp.value.slice(0, 100);
+    cnt.innerText = inp.value.length;
+  }
+
+  function saveProfileBio() {
+    if (!currentUser) return;
+    const inp = document.getElementById('profileBioInput');
+    currentUser.bio = (inp ? inp.value.trim() : '').slice(0, 100);
+    saveUser();
+    playGameSound('win');
+    showToast('✅ تم حفظ السيرة الذاتية في ملفك الشخصي!');
+  }
+
+  function saveVipTraderDetails() {
+    if (!currentUser) return;
+    if (!isPlayerVerifiedTrader(currentUser)) {
+      showToast('⚠️ هذه الميزة متاحة فقط لـ VIP 6 فما فوق الحاملين لنجمة التوثيق!', '#ef4444');
+      return;
+    }
+    currentUser.traderPhone = (document.getElementById('vipTraderPhoneInput').value || '').trim();
+    currentUser.traderTelegram = (document.getElementById('vipTraderTelegramInput').value || '').trim();
+    currentUser.traderOffer = (document.getElementById('vipTraderOfferInput').value || '').trim();
+    saveUser();
+    playGameSound('win');
+    showToast('🌟 تم حفظ أرقام التواصل وعرض بيع الذهب ونقاط VIP بنجاح!');
+  }
+
   function refreshAllUI() {
     if (!currentUser) return;
     const vip = currentUser.isAdmin ? 10 : (currentUser.vip || 0);
     const ptsNum = currentUser.vipPoints || 0;
     const pts = currentUser.isAdmin ? '∞' : ptsNum.toLocaleString();
     const tier = VIP_TIERS.find(t => t.level === vip);
+    const isVerifiedTrader = isPlayerVerifiedTrader(currentUser);
 
     document.getElementById('topUsername').innerText = currentUser.username;
     document.getElementById('topUserUidMini').innerText = '#' + (currentUser.numericId || '0000000');
@@ -2534,6 +3658,29 @@
 
     document.getElementById('topVipBadge').innerText = 'VIP ' + vip;
     document.getElementById('topTitle').innerText = currentUser.isAdmin ? 'المدير العام' : (tier ? tier.title : 'اساطير رويل');
+
+    const topStar = document.getElementById('topVerifiedStar');
+    const profStar = document.getElementById('profVerifiedStarBadge');
+    if (topStar) topStar.style.display = isVerifiedTrader ? 'inline-flex' : 'none';
+    if (profStar) profStar.style.display = isVerifiedTrader ? 'inline-flex' : 'none';
+
+    const traderCard = document.getElementById('vip6TraderConfigCard');
+    const lockedCard = document.getElementById('vip6LockedNoticeCard');
+    const lockedText = document.getElementById('vip6LockedNoticeText');
+    if (traderCard && lockedCard) {
+      if (isVerifiedTrader) {
+        traderCard.style.display = 'block';
+        lockedCard.style.display = 'none';
+      } else {
+        traderCard.style.display = 'none';
+        lockedCard.style.display = 'block';
+        if (vip >= 6 && currentUser.traderStarRevoked && lockedText) {
+          lockedText.innerHTML = '⚠️ تم سحب <strong style="color:var(--red);">نجمة التوثيق 🌟</strong> من حسابك بواسطة الإدارة. لا يمكنك عرض أرقام التواصل أو بيع الذهب حالياً.';
+        } else if (lockedText) {
+          lockedText.innerHTML = '🔒 ميزة إضافة رقم الهاتف أو معرف التلكرام وعرض بيع الذهب أو نقاط VIP متاحة فقط لأصحاب <strong style="color:var(--gold);">VIP 6 فما فوق</strong> الحاملين لنجمة التوثيق 🌟.';
+        }
+      }
+    }
 
     const frameCls = 'avatar-wrap frame-vip-' + vip;
     document.getElementById('topAvatarFrame').className = frameCls;
@@ -2586,7 +3733,7 @@
     if (!currentUser) return;
     const uid = currentUser.numericId || '';
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(uid).then(() => showToast(`📋 تم نسخ معرفك: #${uid}`));
+      navigator.clipboard.writeText(uid).then(() => showToast(`📋 تم نسخ معرفك: #${uid}`)).catch(() => {});
     } else {
       const ta = document.createElement('textarea');
       ta.value = uid;
@@ -2611,10 +3758,14 @@
   }
 
   function logoutUser() {
-    localStorage.removeItem('royal_active_key');
+    safeStorageRemove('royal_active_key');
     currentUser = null;
     document.getElementById('exclusiveAdminBtn').style.display = 'none';
     document.getElementById('authScreen').style.display = 'flex';
+    const qBtn = document.getElementById('quickAutoLoginBtn');
+    if (qBtn && safeStorageGet('royal_last_saved_key')) {
+      qBtn.style.display = 'block';
+    }
   }
 
   /**************************************************************
@@ -2643,27 +3794,126 @@
   }
 
   /**************************************************************
-   * 10. ألعاب الملوك الكاسكيد (إعادة الرهان لـ 100K + ربع الخسارة)
+   * 10. تنسيق الخسارة والأرباح الذكي:
+   * - للمستخدم الجديد في ألعاب الملوك: بعد 5 محاولات ينزل 4 سكاتير ويربح 10 مليون (مرة واحدة فقط)
+   * - بعدها الأرباح عادية ومتوسطة: تقسيم الرهان (مثل 100 ألف) على 8 قطع
+   * - في حال ربح المستخدم وغيّر الرهان: يخسر أكثر من مرة ويربح مرة
+   **************************************************************/
+  function evaluateSmartBetOutcome(tierIdx, betAmount) {
+    if (!currentUser) {
+      return { shouldWin: false, forceLose: true, isFirstTimeBonus: false, customWinAmount: 0 };
+    }
+    if (!currentUser.betBehavior) {
+      currentUser.betBehavior = {
+        lastTierIdx: -1,
+        lastDir: 0,
+        fluctCount: 0,
+        forcedLossesLeft: 0,
+        cycleStep: 0,
+        lastRoundWon: false,
+        postChangePatternQueue: []
+      };
+    }
+    const beh = currentUser.betBehavior;
+    if (!Array.isArray(beh.postChangePatternQueue)) beh.postChangePatternQueue = [];
+
+    // إذا غيّر المستخدم الرهان (خصوصاً بعد الفوز أو زيادة/نقصان الرهان): يخسر أكثر من مرة ومرة يربح
+    if (beh.lastTierIdx !== -1 && tierIdx !== beh.lastTierIdx) {
+      const newDir = tierIdx > beh.lastTierIdx ? 1 : -1;
+      if (beh.lastDir !== 0 && newDir !== beh.lastDir) {
+        beh.fluctCount = (beh.fluctCount || 0) + 1;
+      }
+      beh.lastDir = newDir;
+      // نمط: خسارة، خسارة، ربح متوسط، خسارة
+      beh.postChangePatternQueue = [false, false, true, false];
+    }
+    beh.lastTierIdx = tierIdx;
+
+    if (beh.postChangePatternQueue.length > 0) {
+      const stepWin = beh.postChangePatternQueue.shift();
+      beh.lastRoundWon = stepWin;
+      return {
+        shouldWin: stepWin,
+        forceLose: !stepWin,
+        isFirstTimeBonus: false,
+        customWinAmount: 0
+      };
+    }
+
+    if (beh.forcedLossesLeft > 0) {
+      beh.forcedLossesLeft--;
+      beh.lastRoundWon = false;
+      return {
+        shouldWin: false,
+        forceLose: true,
+        isFirstTimeBonus: false,
+        customWinAmount: 0
+      };
+    }
+
+    if ((beh.fluctCount || 0) >= 2) {
+      beh.cycleStep = ((beh.cycleStep || 0) + 1) % 4;
+      const winInFluctCycle = (beh.cycleStep === 2);
+      beh.lastRoundWon = winInFluctCycle;
+      return {
+        shouldWin: winInFluctCycle,
+        forceLose: !winInFluctCycle,
+        isFirstTimeBonus: false,
+        customWinAmount: 0
+      };
+    }
+
+    const baseRate = isTodayFriday() ? 0.38 : 0.30;
+    const naturalWin = Math.random() < baseRate;
+    beh.lastRoundWon = naturalWin;
+    return {
+      shouldWin: naturalWin,
+      forceLose: !naturalWin,
+      isFirstTimeBonus: false,
+      customWinAmount: 0
+    };
+  }
+
+  /**************************************************************
+   * 11. ألعاب الملوك الكاسكيد (مع صور الأحجار وخلفيات فيت سنتر والعداد التنازلي للدورات)
    **************************************************************/
   let activeGameObj = null;
   let freeSpinsLeft = 0;
   let freeSpinsPot = 0;
   let scatterTargetReturn = 0;
   let autoSpinsRemaining = 0;
+  let autoSpinsTotalStarted = 0;
   let autoSpinTimer = null;
+  let startCountdownInterval = null;
 
   function renderBetTiersBar() {
     const bar = document.getElementById('betTiersBar');
+    if (!bar) return;
     bar.innerHTML = BET_TIERS.map((t, idx) => `
       <button class="tier-chip ${idx === selectedBetIndex ? 'active' : ''}" onclick="selectBetTier(${idx})">${t.label}</button>
     `).join('');
+    const disp = document.getElementById('currentBetLabelDisplay');
+    if (disp && BET_TIERS[selectedBetIndex]) {
+      disp.innerText = BET_TIERS[selectedBetIndex].label + ' 🪙';
+    }
   }
 
   function selectBetTier(idx) {
     if (stepRoundActive || freeSpinsLeft > 0) return;
     playGameSound('click');
-    selectedBetIndex = idx;
+    selectedBetIndex = Math.max(0, Math.min(BET_TIERS.length - 1, idx));
     renderBetTiersBar();
+  }
+
+  function stepBetTier(delta) {
+    if (stepRoundActive || freeSpinsLeft > 0) return;
+    selectBetTier(selectedBetIndex + delta);
+  }
+
+  function selectMaxBetTier() {
+    if (stepRoundActive || freeSpinsLeft > 0) return;
+    selectBetTier(BET_TIERS.length - 1);
+    showToast('🔥 تم اختيار أقصى رهان (10 مليار)!');
   }
 
   function getCurrentBetAmount() {
@@ -2676,6 +3926,7 @@
       return;
     }
     activeGameObj = GAMES_CATALOG.find(g => g.id === gameId);
+    if (!activeGameObj) return;
     playGameSound('click');
     stopAutoSpins();
     clearInterval(rocketLoop);
@@ -2699,8 +3950,56 @@
     document.getElementById('gameStatusMsg').innerText = '';
     document.getElementById('standardBetControls').style.display = activeGameObj.type === 'rocket' ? 'none' : 'block';
 
+    // تعيين خلفية اللعبة من الداخل فيت سنتر بدون قص
+    const bgBlur = document.getElementById('stageBgBlur');
+    const bgFit = document.getElementById('stageBgFit');
+    if (activeGameObj.bgImg) {
+      if (bgBlur) bgBlur.style.backgroundImage = `url('${activeGameObj.bgImg}')`;
+      if (bgFit) bgFit.style.backgroundImage = `url('${activeGameObj.bgImg}')`;
+    } else {
+      if (bgBlur) bgBlur.style.backgroundImage = 'none';
+      if (bgFit) bgFit.style.backgroundImage = 'none';
+    }
+
     renderBetTiersBar();
     buildGameStageUI();
+    runGameEntryLoader100(activeGameObj);
+  }
+
+  let gameEntryLoaderInterval = null;
+  function runGameEntryLoader100(gameObj) {
+    clearInterval(gameEntryLoaderInterval);
+    const overlay = document.getElementById('gameEntryLoaderOverlay');
+    const thumb = document.getElementById('gameLoaderThumbBox');
+    const titleEl = document.getElementById('gameLoaderTitleText');
+    const barEl = document.getElementById('gameEntryProgressBar');
+    const pctEl = document.getElementById('gameEntryPercentText');
+    if (!overlay || !gameObj) return;
+
+    if (gameObj.bgImg) {
+      thumb.innerHTML = `<img src="${gameObj.bgImg}" referrerpolicy="no-referrer" onerror="handleGameImgError(this, '${gameObj.icon || '👑'}')">`;
+    } else {
+      thumb.innerHTML = `<span>${gameObj.icon || '👑'}</span>`;
+    }
+    titleEl.innerText = `جاري تشغيل ${gameObj.title}...`;
+    barEl.style.width = '0%';
+    pctEl.innerText = '0%';
+    overlay.classList.add('show');
+
+    let pct = 0;
+    gameEntryLoaderInterval = setInterval(() => {
+      pct += 10;
+      if (pct > 100) pct = 100;
+      barEl.style.width = pct + '%';
+      pctEl.innerText = pct + '%';
+      if (pct % 30 === 0) playGameSound('tick');
+      if (pct >= 100) {
+        clearInterval(gameEntryLoaderInterval);
+        setTimeout(() => {
+          overlay.classList.remove('show');
+        }, 160);
+      }
+    }, 45);
   }
 
   function closeGameModal() {
@@ -2712,18 +4011,76 @@
     document.getElementById('gameModal').classList.remove('open');
   }
 
+  function updateAutoCountdownHud() {
+    const hud = document.getElementById('autoCountdownHud');
+    const remEl = document.getElementById('autoRemainingCountText');
+    const totEl = document.getElementById('autoTotalCountText');
+    if (!hud) return;
+
+    if (autoSpinsRemaining > 0) {
+      hud.classList.add('active');
+      if (remEl) remEl.innerText = autoSpinsRemaining >= 900000 ? '∞' : autoSpinsRemaining;
+      if (totEl) totEl.innerText = autoSpinsTotalStarted >= 900000 ? '∞' : autoSpinsTotalStarted;
+    } else {
+      hud.classList.remove('active');
+    }
+
+    const b10 = document.getElementById('autoBtn10');
+    const b100 = document.getElementById('autoBtn100');
+    const b500 = document.getElementById('autoBtn500');
+    if (b10) b10.innerText = (autoSpinsTotalStarted === 10 && autoSpinsRemaining > 0) ? `⏳ ${autoSpinsRemaining}/10` : '⏳ 10 دورات';
+    if (b100) b100.innerText = (autoSpinsTotalStarted === 100 && autoSpinsRemaining > 0) ? `⏳ ${autoSpinsRemaining}/100` : '⏳ 100 دورة';
+    if (b500) b500.innerText = (autoSpinsTotalStarted === 500 && autoSpinsRemaining > 0) ? `⏳ ${autoSpinsRemaining}/500` : '⏳ 500 دورة';
+  }
+
+  // بدء 10 أو 100 أو 500 دورة مع عداد تنازلي مرئي قبل البدء وأثناء الدورات
   function startAutoSpins(count) {
     playGameSound('click');
+    clearInterval(startCountdownInterval);
+    clearTimeout(autoSpinTimer);
+
+    autoSpinsTotalStarted = count;
     autoSpinsRemaining = count;
     document.getElementById('stopAutoBtn').style.display = 'block';
-    runNextAutoSpin();
+    updateAutoCountdownHud();
+
+    const overlay = document.getElementById('autoStartCountdownOverlay');
+    const numEl = document.getElementById('autoStartCountdownNum');
+    const lblEl = document.getElementById('autoStartCountdownLabel');
+
+    if (overlay && numEl && (count === 10 || count === 100 || count === 500)) {
+      let sec = 3;
+      lblEl.innerText = `بدء العد التنازلي لـ ${count} دورة...`;
+      numEl.innerText = sec;
+      overlay.classList.add('show');
+      playGameSound('tick');
+
+      startCountdownInterval = setInterval(() => {
+        sec--;
+        if (sec > 0) {
+          numEl.innerText = sec;
+          playGameSound('tick');
+        } else {
+          clearInterval(startCountdownInterval);
+          overlay.classList.remove('show');
+          runNextAutoSpin();
+        }
+      }, 320);
+    } else {
+      runNextAutoSpin();
+    }
   }
 
   function stopAutoSpins() {
     autoSpinsRemaining = 0;
+    autoSpinsTotalStarted = 0;
     clearTimeout(autoSpinTimer);
+    clearInterval(startCountdownInterval);
+    const overlay = document.getElementById('autoStartCountdownOverlay');
+    if (overlay) overlay.classList.remove('show');
     const btn = document.getElementById('stopAutoBtn');
     if (btn) btn.style.display = 'none';
+    updateAutoCountdownHud();
   }
 
   function runNextAutoSpin() {
@@ -2731,6 +4088,7 @@
       stopAutoSpins();
       return;
     }
+    updateAutoCountdownHud();
     executeGameTurn();
   }
 
@@ -2741,7 +4099,7 @@
       box.innerHTML = `
         <div class="cascade-wrapper">
           <div class="cascade-grid" id="cascadeGrid">
-            ${Array.from({length: 30}, (_, i) => `<div class="stone-cell">${syms[i % syms.length]}</div>`).join('')}
+            ${Array.from({length: 30}, (_, i) => `<div class="stone-cell">${renderStoneSymbolHtml(syms[i % syms.length])}</div>`).join('')}
           </div>
         </div>
       `;
@@ -2791,6 +4149,72 @@
     return pool;
   }
 
+  let currentSpinSmartOutcome = null;
+  let isCurrentScatterFirst10M = false;
+  let pendingFreeSpinsDialogGold = 0;
+  let freeSpinsDialogAutoTimer = null;
+
+  function launchFlyingGoldToBalance(winAmount) {
+    playGameSound('goldFly');
+    const targetEl = document.getElementById('modalGoldText') || document.getElementById('goldBalance');
+    const targetRect = targetEl ? targetEl.getBoundingClientRect() : { left: window.innerWidth / 2, top: 25 };
+
+    for (let i = 0; i < 18; i++) {
+      const coin = document.createElement('div');
+      coin.className = 'flying-gold-coin';
+      coin.innerText = i % 3 === 0 ? '💰' : '🪙';
+      const startX = (window.innerWidth / 2) + (Math.random() * 120 - 60);
+      const startY = (window.innerHeight / 2) + (Math.random() * 80 - 40);
+      coin.style.left = startX + 'px';
+      coin.style.top = startY + 'px';
+      document.body.appendChild(coin);
+
+      setTimeout(() => {
+        const dx = targetRect.left - startX;
+        const dy = targetRect.top - startY;
+        coin.style.transform = `translate(${dx}px, ${dy}px) scale(0.35)`;
+        coin.style.opacity = '0.15';
+      }, 30 + i * 35);
+
+      setTimeout(() => {
+        if (coin.parentNode) coin.parentNode.removeChild(coin);
+      }, 950 + i * 35);
+    }
+  }
+
+  function showFreeSpinsResultDialog(totalWon) {
+    pendingFreeSpinsDialogGold = totalWon;
+    const dlg = document.getElementById('freeSpinsWinDialog');
+    const amtEl = document.getElementById('freeSpinsDialogAmount');
+    if (amtEl) amtEl.innerText = `+${totalWon.toLocaleString()} 🪙 (${formatCoins(totalWon)})`;
+    if (dlg) dlg.classList.add('show');
+    playGameSound('scatterBell');
+
+    clearTimeout(freeSpinsDialogAutoTimer);
+    freeSpinsDialogAutoTimer = setTimeout(() => {
+      collectFreeSpinsDialogGold();
+    }, 3200);
+  }
+
+  function collectFreeSpinsDialogGold() {
+    clearTimeout(freeSpinsDialogAutoTimer);
+    const dlg = document.getElementById('freeSpinsWinDialog');
+    if (dlg && dlg.classList.contains('show')) {
+      dlg.classList.remove('show');
+    }
+    if (pendingFreeSpinsDialogGold > 0) {
+      const won = pendingFreeSpinsDialogGold;
+      pendingFreeSpinsDialogGold = 0;
+      if (!currentUser.isAdmin) currentUser.gold += won;
+      launchFlyingGoldToBalance(won);
+      showToast(`🎉 لقد ربحت +${formatCoins(won)} ذهب وتمت إضافتها لرصيدك!`);
+      document.getElementById('gameStatusMsg').innerHTML = `🏆 تم استلام ربح المجاني: <strong style="color:#fde047;">+${formatCoins(won)} 🪙</strong>`;
+      document.getElementById('freeSpinHud').classList.remove('active');
+      freeSpinsPot = 0;
+      saveUser();
+    }
+  }
+
   function runCascadeSpin() {
     const bet = getCurrentBetAmount();
     const isFree = freeSpinsLeft > 0;
@@ -2805,25 +4229,36 @@
         currentUser.gold -= bet;
         currentUser.totalLostUnrecovered = (currentUser.totalLostUnrecovered || 0) + bet;
       }
+      currentUser.newUserKingSpinsCount = (currentUser.newUserKingSpinsCount || 0) + 1;
       recordGameProgress(1, false, true);
+      currentSpinSmartOutcome = evaluateSmartBetOutcome(selectedBetIndex, bet);
     } else {
       freeSpinsLeft--;
       document.getElementById('freeSpinCount').innerText = freeSpinsLeft;
+      currentSpinSmartOutcome = { shouldWin: true, forceLose: false, isFirstTimeBonus: false, customWinAmount: 0 };
     }
 
     isActionLocked = true;
     playGameSound('drop');
     const syms = activeGameObj.syms;
 
-    const hasLossToRecover = (currentUser.totalLostUnrecovered || 0) >= bet * 3;
-    const trigger4Kings = !isFree && hasLossToRecover && (Math.random() < 0.14);
+    // للمستخدم الجديد: في المحاولة رقم 5 بالضبط ينزل 4 سكاتير ويربح 10 مليون (مرة واحدة فقط لكل حساب)
+    const triggerNewUser5thScatter = !isFree && !currentUser.first10MScatterClaimed && (currentUser.newUserKingSpinsCount >= 5);
+    const hasLossToRecover = (currentUser.totalLostUnrecovered || 0) >= bet * 4;
+    const triggerRegularScatter = !isFree && !triggerNewUser5thScatter && currentUser.first10MScatterClaimed && !currentSpinSmartOutcome.forceLose && hasLossToRecover && (Math.random() < 0.12);
+    const trigger4Kings = triggerNewUser5thScatter || triggerRegularScatter;
 
-    const winRate = isTodayFriday() ? 0.42 : 0.32;
-    const shouldWinWave1 = !trigger4Kings && (isFree ? (Math.random() < 0.50) : (Math.random() < winRate));
+    isCurrentScatterFirst10M = triggerNewUser5thScatter;
+    if (triggerNewUser5thScatter) {
+      currentUser.first10MScatterClaimed = true;
+      saveUser();
+    }
+
+    const shouldWinWave1 = !trigger4Kings && (isFree ? true : currentSpinSmartOutcome.shouldWin);
 
     let rareMultOrb = null;
-    if (shouldWinWave1 && Math.random() < 0.05) {
-      const multOptions = [2, 4, 6, 10];
+    if (shouldWinWave1 && !isCurrentScatterFirst10M && Math.random() < 0.08) {
+      const multOptions = [2, 4];
       rareMultOrb = multOptions[Math.floor(Math.random() * multOptions.length)];
     }
 
@@ -2832,7 +4267,7 @@
 
     setTimeout(() => {
       if (trigger4Kings) {
-        triggerFourKingsScatterAnimation(board, bet);
+        triggerFourKingsScatterAnimation(board, bet, isCurrentScatterFirst10M);
       } else {
         processTumbleWave(board, bet, 1, 0, isFree, rareMultOrb);
       }
@@ -2846,26 +4281,53 @@
       if (rareMultOrb && idx === 14) {
         return `<div class="stone-cell stone-drop mult-orb-cell" id="sc_${idx}">x${rareMultOrb}</div>`;
       }
-      return `<div class="stone-cell stone-drop" id="sc_${idx}" style="animation-delay:${(idx % 6) * 0.03}s">${s}</div>`;
+      return `<div class="stone-cell stone-drop" id="sc_${idx}" style="animation-delay:${(idx % 6) * 0.03}s">${renderStoneSymbolHtml(s)}</div>`;
     }).join('');
   }
 
-  function triggerFourKingsScatterAnimation(board, bet) {
+  function triggerFourKingsScatterAnimation(board, bet, isFirst10M) {
     playGameSound('scatterBell');
     const kingCols = [0, 1, 3, 4];
+    const kingImgUrl = activeGameObj.bgImg || (activeGameObj.syms && activeGameObj.syms[0]) || '';
+
+    // إظهار 4 أعمدة سكاتير بصور ملوك متشابهة حسب اللعبة المختارة
     for (let r = 0; r < 5; r++) {
       kingCols.forEach(c => {
         const cell = document.getElementById('sc_' + (r * 6 + c));
         if (cell) {
           cell.className = 'stone-cell king-full-column';
-          cell.innerText = '👑';
+          if (kingImgUrl && kingImgUrl.startsWith('http')) {
+            cell.innerHTML = `<img class="stone-fit-img" src="${kingImgUrl}" referrerpolicy="no-referrer" onerror="handleGameImgError(this, '👑')"><span style="position:absolute; bottom:1px; font-size:0.5rem; background:#fde047; color:#000; font-weight:900; padding:0 3px; border-radius:4px;">SCATTER</span>`;
+          } else {
+            cell.innerHTML = '👑';
+          }
         }
       });
     }
 
-    scatterTargetReturn = Math.max(bet, Math.floor((currentUser.totalLostUnrecovered || 0) * 0.25));
+    if (isFirst10M) {
+      scatterTargetReturn = 10000000; // 10 مليون بالضبط للمستخدم الجديد في المحاولة الخامسة (مرة واحدة فقط)
+    } else {
+      scatterTargetReturn = Math.max(bet, Math.floor((currentUser.totalLostUnrecovered || 0) * 0.25));
+    }
     currentUser.totalLostUnrecovered = 0;
     freeSpinsPot = 0;
+
+    // تجهيز نافذة استعراض الـ 4 ملوك المتشابهة الخاصة باللعبة المختارة
+    const bannerEl = document.getElementById('scatterGameNameBanner');
+    const rowEl = document.getElementById('scatterKingsImagesRow');
+    if (bannerEl) bannerEl.innerText = `👑 سكاتير ${activeGameObj.title} الملكي 👑`;
+    if (rowEl) {
+      if (kingImgUrl && kingImgUrl.startsWith('http')) {
+        rowEl.innerHTML = [0, 1, 2, 3].map(() => `
+          <div style="width:62px; height:62px; border-radius:12px; border:2px solid #fde047; overflow:hidden; box-shadow:0 0 15px #ef4444; background:#090d1a;">
+            <img src="${kingImgUrl}" referrerpolicy="no-referrer" style="width:100%; height:100%; object-fit:contain;" onerror="handleGameImgError(this, '👑')">
+          </div>
+        `).join('');
+      } else {
+        rowEl.innerHTML = `<div style="font-size:3rem;">👑 👑 👑 👑</div>`;
+      }
+    }
 
     setTimeout(() => {
       const scatterModal = document.getElementById('scatterOverlay');
@@ -2906,18 +4368,20 @@
 
       let waveWin = 0;
       if (isFree) {
-        waveWin = Math.floor(scatterTargetReturn / 4);
+        // توزيع إجمالي السكاتير (مثل 10 مليون للمستخدم الجديد) على الـ 8 جولات المجانية
+        waveWin = Math.floor(scatterTargetReturn / 8);
       } else {
-        const baseStoneValue = bet / 16;
-        waveWin = Math.floor(baseStoneValue * matchedStonesTotal);
+        // تقسيم الرهان (مثل 100 ألف) على 8 قطع للأرباح العادية المتوسطة: كل قطعة = الرهان / 8 (مع توازن ربح متوسط)
+        const perPieceVal = (bet / 8) * 0.125;
+        waveWin = Math.max(Math.floor(bet * 0.25), Math.floor(perPieceVal * matchedStonesTotal));
       }
 
       accumulatedWin += waveWin;
-      document.getElementById('gameStatusMsg').innerHTML = `✨ تطابق ${matchedStonesTotal} أحجار! المجموع: <strong style="color:#10b981;">+${formatCoins(accumulatedWin)}</strong>`;
+      document.getElementById('gameStatusMsg').innerHTML = `✨ تطابق ${matchedStonesTotal} قطع! الربح: <strong style="color:#10b981;">+${formatCoins(accumulatedWin)}</strong>`;
 
       setTimeout(() => {
         const syms = activeGameObj.syms;
-        const allowSecondWave = (waveNum === 1 && !isFree && Math.random() < 0.18);
+        const allowSecondWave = (waveNum === 1 && !isFree && Math.random() < 0.16);
 
         const currentCounts = {};
         syms.forEach(s => currentCounts[s] = 0);
@@ -2942,7 +4406,7 @@
             const el = document.getElementById('sc_' + idx);
             if (el) {
               el.className = 'stone-cell stone-drop';
-              el.innerText = newSym;
+              el.innerHTML = renderStoneSymbolHtml(newSym);
             }
           }
         });
@@ -2955,20 +4419,24 @@
 
     } else {
       if (accumulatedWin > 0) {
-        if (rareMultOrb) {
+        if (rareMultOrb && !isFree) {
           accumulatedWin = accumulatedWin * rareMultOrb;
-          showToast(`⚡ مضاعف نادر x${rareMultOrb}! تضاعف ربح الجولة إلى +${formatCoins(accumulatedWin)}!`);
+          showToast(`⚡ مضاعف x${rareMultOrb}! أصبح الربح +${formatCoins(accumulatedWin)}!`);
         }
 
         if (isFree) {
           freeSpinsPot += accumulatedWin;
+          if (freeSpinsLeft === 0 && isCurrentScatterFirst10M) {
+            freeSpinsPot = 10000000; // ضمان 10 مليون بالتمام في نهاية الـ 8 دورات المجانية الأولى
+          }
           document.getElementById('freeSpinPotValue').innerText = formatCoins(freeSpinsPot);
-          document.getElementById('gameStatusMsg').innerHTML = `🎁 أُضيف للوعاء المجاني: <strong style="color:#34d399;">+${formatCoins(accumulatedWin)}</strong>`;
+          document.getElementById('gameStatusMsg').innerHTML = `🎁 تجميع المجاني: <strong style="color:#34d399;">+${formatCoins(freeSpinsPot)}</strong>`;
         } else {
           if (!currentUser.isAdmin) {
             currentUser.gold += accumulatedWin;
             currentUser.totalLostUnrecovered = Math.max(0, (currentUser.totalLostUnrecovered || 0) - accumulatedWin);
           }
+          launchFlyingGoldToBalance(accumulatedWin);
           recordGameProgress(0, true, false);
         }
       } else {
@@ -2977,28 +4445,29 @@
       }
 
       if (isFree && freeSpinsLeft === 0) {
-        if (freeSpinsPot <= 0) freeSpinsPot = scatterTargetReturn;
-        if (!currentUser.isAdmin) currentUser.gold += freeSpinsPot;
-        playGameSound('scatterBell');
-        showToast(`🎉 انتهت الـ 8 جولات مجانية! تم إدراج إجمالي الربح دفعة واحدة: +${formatCoins(freeSpinsPot)} ذهب!`);
-        document.getElementById('gameStatusMsg').innerHTML = `🏆 إجمالي المجاني المضاف لرصيدك دفعة واحدة: <strong style="color:#fde047;">+${formatCoins(freeSpinsPot)}</strong>`;
-        setTimeout(() => {
-          document.getElementById('freeSpinHud').classList.remove('active');
-          freeSpinsPot = 0;
-        }, 2200);
+        const finalFreeWin = isCurrentScatterFirst10M ? 10000000 : (freeSpinsPot > 0 ? freeSpinsPot : scatterTargetReturn);
+        isCurrentScatterFirst10M = false;
+        showFreeSpinsResultDialog(finalFreeWin);
       }
 
       isActionLocked = false;
       saveUser();
       if (freeSpinsLeft > 0 || autoSpinsRemaining > 0) {
-        if (autoSpinsRemaining > 0 && freeSpinsLeft === 0) autoSpinsRemaining--;
-        autoSpinTimer = setTimeout(runNextAutoSpin, 680);
+        if (autoSpinsRemaining > 0 && freeSpinsLeft === 0) {
+          autoSpinsRemaining--;
+          updateAutoCountdownHud();
+        }
+        if (freeSpinsLeft > 0 || autoSpinsRemaining > 0) {
+          autoSpinTimer = setTimeout(runNextAutoSpin, 680);
+        } else {
+          stopAutoSpins();
+        }
       }
     }
   }
 
   /**************************************************************
-   * 11. ألعاب الصاروخ ومشابهاتها
+   * 12. ألعاب الصاروخ ومشابهاتها (مرتبطة بخوارزمية الرهان الذكي)
    **************************************************************/
   const ROCKET_INDEPENDENT_DATA = {
     rocket:  { speed: 0.04, history: [1.45, 2.10, 1.15, 3.40, 1.05, 1.90, 2.60, 1.25, 4.10, 1.50, 2.05] },
@@ -3012,27 +4481,69 @@
   let rocketCrashTarget = 1.80;
   let rocketLoop = null;
   let rocketCountdownLoop = null;
+  let rocketRoundSmartOutcome = null;
+  let rocketRoundCounter = 0;
+  let rocketPostHighLossesLeft = 0;
   let rocketBets = [
     { active: false, cashed: false, tierIdx: 0, amount: 100000 },
     { active: false, cashed: false, tierIdx: 0, amount: 100000 }
   ];
   let activeBots = [];
 
+  // أسماء أولاد وبنات بالعربي والإنجليزي لقائمة اليمين في الصاروخ
+  const ROCKET_PLAYERS_POOL = [
+    { name: 'أحمد العراقي', icon: '🦁' },
+    { name: 'Sara_Queen',   icon: '👸' },
+    { name: 'حيدر الملك',   icon: '👑' },
+    { name: 'Noor_IQ',      icon: '🌸' },
+    { name: 'Ali_Pro99',    icon: '🦅' },
+    { name: 'مريم البغدادية', icon: '💎' },
+    { name: 'Zain_VIP',     icon: '⚡' },
+    { name: 'Lina_Star',    icon: '🌟' },
+    { name: 'فهد الأسد',    icon: '🐯' },
+    { name: 'Maya_Love',    icon: '💖' },
+    { name: 'كرار البصراوي', icon: '🔥' },
+    { name: 'Dina_IQ',      icon: '🦋' },
+    { name: 'عمر الدليمي',  icon: '🗡️' },
+    { name: 'Leo_King',     icon: '🐉' },
+    { name: 'طيبة الملكة',  icon: '🎀' },
+    { name: 'Sajad_77',     icon: '🏆' },
+    { name: 'Rania_VIP',    icon: '🌹' },
+    { name: 'مصطفى الذهب',  icon: '🪙' }
+  ];
+
   function buildMultiplayerRocketUI(box) {
+    rocketRoundCounter = 0;
+    rocketPostHighLossesLeft = 0;
     box.innerHTML = `
       <div class="crash-history-strip" id="crashHistoryStrip"></div>
 
       <div class="rocket-tall-screen">
-        <div class="center-pro-timer" id="centerProTimer">
-          <div style="font-size:2rem; font-weight:900; color:var(--gold);" id="rcCountdown">5.0s</div>
+        <!-- إشعار السحب المباشر للاعبين والمستخدم -->
+        <div class="rc-live-cashout-banner" id="rcLiveCashoutBanner"></div>
+
+        <!-- منطقة الطيران والعداد (على اليسار لإفساح المجال لقائمة اللاعبين على اليمين) -->
+        <div style="position:absolute; left:6px; top:42px; bottom:38px; right:162px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+          <div class="center-pro-timer" id="centerProTimer">
+            <div style="font-size:1.85rem; font-weight:900; color:var(--gold);" id="rcCountdown">5.0s</div>
+          </div>
+
+          <div id="rocketFlightZone" style="display:none; flex-direction:column; align-items:center;">
+            <div id="rocketVisual" style="font-size:4.2rem; filter:drop-shadow(0 0 20px #ef4444);">${activeGameObj.vehicle || '🚀'}</div>
+            <div id="rocketLiveMult" style="font-size:2.35rem; font-weight:900; color:var(--gold); margin-top:4px;">1.00x</div>
+          </div>
         </div>
 
-        <div id="rocketFlightZone" style="display:none; flex-direction:column; align-items:center;">
-          <div id="rocketVisual" style="font-size:4.6rem; filter:drop-shadow(0 0 20px #ef4444);">${activeGameObj.vehicle || '🚀'}</div>
-          <div id="rocketLiveMult" style="font-size:2.7rem; font-weight:900; color:var(--gold); margin-top:4px;">1.00x</div>
+        <!-- قائمة اللاعبين على اليمين (أولاد وبنات عربي وإنجليزي + رهاناتهم + اسم المستخدم) -->
+        <div class="rocket-right-players-panel">
+          <div class="rocket-right-header">
+            <span>👥 اللاعبون</span>
+            <span id="rcOnlineCountBadge">12 متصل</span>
+          </div>
+          <div class="rocket-right-list" id="rcRightPlayersList"></div>
         </div>
 
-        <div id="botsCabin" style="position:absolute; bottom:10px; display:flex; gap:5px; flex-wrap:wrap; justify-content:center; width:95%;"></div>
+        <div id="botsCabin" style="position:absolute; bottom:6px; left:6px; right:162px; display:flex; gap:4px; overflow-x:auto; justify-content:center; scrollbar-width:none;"></div>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; width:100%; margin-top:8px;">
@@ -3048,6 +4559,53 @@
     `;
     renderCrashHistory11();
     startRocketCountdownCycle();
+  }
+
+  function showRocketCashoutAnnouncement(playerName, winGold, multVal) {
+    const banner = document.getElementById('rcLiveCashoutBanner');
+    if (!banner) return;
+    banner.innerHTML = `🪂 <strong>${escapeHtml(playerName)}</strong> سحب <strong style="color:#064e3b;">+${formatCoins(winGold)}</strong> (${multVal}x)`;
+    banner.style.display = 'block';
+  }
+
+  function renderRocketRightPlayersList() {
+    const listEl = document.getElementById('rcRightPlayersList');
+    const countEl = document.getElementById('rcOnlineCountBadge');
+    if (!listEl) return;
+
+    let rowsHtml = '';
+    const myBetActive = rocketBets.find(b => b.active);
+    const totalCount = activeBots.length + (myBetActive ? 1 : 0);
+    if (countEl) countEl.innerText = `${totalCount} لاعب`;
+
+    // إظهار اسم المستخدم نفسه في أعلى القائمة اليمنى عند دخوله الرهان وعند سحبه
+    if (myBetActive && currentUser) {
+      const myWonAmt = myBetActive.cashedWin || 0;
+      const myMultStr = myBetActive.cashedMult || '';
+      rowsHtml += `
+        <div class="rc-player-row is-me ${myBetActive.cashed ? 'cashed-out' : ''}">
+          <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px;">
+            <strong style="color:#fde047;">👑 ${escapeHtml(currentUser.username)}</strong>
+          </div>
+          <div style="font-weight:900; color:${myBetActive.cashed ? '#34d399' : '#fbbf24'};">
+            ${myBetActive.cashed ? `سحب +${formatCoins(myWonAmt)} (${myMultStr}x)` : formatCoins(myBetActive.amount)}
+          </div>
+        </div>
+      `;
+    }
+
+    rowsHtml += activeBots.map((bot, i) => `
+      <div class="rc-player-row ${bot.jumped ? 'cashed-out' : ''}" id="rcRightRow_${i}">
+        <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; color:#e2e8f0;">
+          ${bot.icon} ${bot.name}
+        </div>
+        <div style="font-weight:900; color:${bot.jumped ? '#34d399' : '#38bdf8'};" id="rcRightBet_${i}">
+          ${bot.jumped ? `سحب +${formatCoins(bot.winAmount)}` : formatCoins(bot.betAmount)}
+        </div>
+      </div>
+    `).join('');
+
+    listEl.innerHTML = rowsHtml;
   }
 
   function getActiveRocketData() {
@@ -3077,11 +4635,18 @@
     if (rocketState === 'flying' && b.active && !b.cashed) {
       b.cashed = true;
       const winVal = Math.floor(b.amount * rocketMult);
+      b.cashedWin = winVal;
+      b.cashedMult = rocketMult.toFixed(2);
       if (!currentUser.isAdmin) currentUser.gold += winVal;
       recordGameProgress(1, true, false);
-      playGameSound('win');
-      btn.innerText = `تم (${rocketMult.toFixed(2)}x) ✅`;
+      launchFlyingGoldToBalance(winVal);
+      showRocketCashoutAnnouncement(currentUser ? currentUser.username : 'أنت', winVal, b.cashedMult);
+      renderRocketRightPlayersList();
+      showToast(`🎉 خرجت وسحبت: +${formatCoins(winVal)} ذهب (${b.cashedMult}x)!`);
+      btn.innerText = `تم السحب (+${formatCoins(winVal)}) ✅`;
       btn.style.background = '#334155';
+      // بعد ربح المستخدم، نجعل الجولات القادمة عند مراهنته تخسر أكثر من مرة
+      rocketPostHighLossesLeft = Math.max(rocketPostHighLossesLeft, 2);
       saveUser();
       return;
     }
@@ -3095,10 +4660,13 @@
       b.amount = amt;
       b.active = true;
       b.cashed = false;
+      b.cashedWin = 0;
+      b.cashedMult = '';
       saveUser();
       btn.innerText = `مؤكد (${BET_TIERS[b.tierIdx].label}) ⏳`;
       btn.style.background = '#0284c7';
       btn.style.color = '#fff';
+      renderRocketRightPlayersList();
     }
   }
 
@@ -3112,24 +4680,39 @@
     const timerBox = document.getElementById('centerProTimer');
     const flightZone = document.getElementById('rocketFlightZone');
     const cabin = document.getElementById('botsCabin');
+    const banner = document.getElementById('rcLiveCashoutBanner');
     if (!timerBox) return;
 
+    if (banner) banner.style.display = 'none';
     timerBox.style.display = 'flex';
     flightZone.style.display = 'none';
 
-    activeBots = [
-      { name: '🤖 فهد', target: (1.2 + Math.random() * 1.1).toFixed(2), jumped: false },
-      { name: '🤖 حيدر', target: (1.5 + Math.random() * 1.6).toFixed(2), jumped: false },
-      { name: '🤖 مريم', target: (1.8 + Math.random() * 2.0).toFixed(2), jumped: false },
-      { name: '🤖 زين', target: (2.1 + Math.random() * 2.5).toFixed(2), jumped: false }
-    ];
-    cabin.innerHTML = activeBots.map((bot, i) => `
-      <div id="botRider_${i}" style="background:rgba(255,255,255,0.1); padding:2px 7px; border-radius:10px; font-size:0.68rem; border:1px solid #38bdf8;">${bot.name}</div>
-    `).join('');
+    // اختيار 11 لاعب عشوائي (أولاد وبنات عربي وإنجليزي) مع رهاناتهم
+    const shuffled = [...ROCKET_PLAYERS_POOL].sort(() => Math.random() - 0.5).slice(0, 11);
+    const sampleBets = [100000, 300000, 500000, 1000000, 3000000, 5000000, 10000000, 25000000, 50000000];
+    activeBots = shuffled.map(p => {
+      const bAmt = sampleBets[Math.floor(Math.random() * sampleBets.length)];
+      const tgt = +(1.25 + Math.random() * 14.5).toFixed(2);
+      return {
+        name: p.name,
+        icon: p.icon,
+        betAmount: bAmt,
+        target: tgt,
+        jumped: false,
+        winAmount: 0
+      };
+    });
+
+    if (cabin) {
+      cabin.innerHTML = activeBots.slice(0, 4).map((bot, i) => `
+        <div id="botRider_${i}" style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:8px; font-size:0.62rem; white-space:nowrap; border:1px solid #38bdf8;">${bot.icon} ${bot.name}</div>
+      `).join('');
+    }
 
     [0, 1].forEach(idx => {
       rocketBets[idx].active = false;
       rocketBets[idx].cashed = false;
+      rocketBets[idx].cashedWin = 0;
       const btn = document.getElementById('rcActionBtn_' + idx);
       if (btn) {
         btn.innerText = 'رهان 🚀';
@@ -3137,6 +4720,8 @@
         btn.style.color = '#000';
       }
     });
+
+    renderRocketRightPlayersList();
 
     rocketCountdownLoop = setInterval(() => {
       timeLeft -= 0.1;
@@ -3151,6 +4736,7 @@
 
   function launchMultiplayerRocket() {
     rocketState = 'flying';
+    rocketRoundCounter++;
     const timerBox = document.getElementById('centerProTimer');
     const flightZone = document.getElementById('rocketFlightZone');
     const visual = document.getElementById('rocketVisual');
@@ -3163,17 +4749,34 @@
     multEl.style.color = 'var(--gold)';
 
     const rData = getActiveRocketData();
-    const roll = Math.random();
-    if (roll < 0.45) {
-      rocketCrashTarget = +(1.02 + Math.random() * 0.55).toFixed(2);
-    } else if (roll < 0.85) {
-      rocketCrashTarget = +(1.60 + Math.random() * 1.65).toFixed(2);
+    const activeBetObj = rocketBets.find(b => b.active);
+
+    // منطق الصاروخ المطلوب:
+    // 1. أول جولة يصعد لغاية 15x إلى 50x، وبعدها يخسر أكثر من مرة، وإذا لم يدخل اللاعب برهان يصعد عالياً (15x - 50x)
+    if (!activeBetObj) {
+      // إذا لم يدخل اللاعب يصعد هواي (16x إلى 50x)
+      rocketCrashTarget = +(16.0 + Math.random() * 34.0).toFixed(2);
+      rocketRoundSmartOutcome = null;
     } else {
-      rocketCrashTarget = +(3.30 + Math.random() * 3.20).toFixed(2);
+      rocketRoundSmartOutcome = evaluateSmartBetOutcome(activeBetObj.tierIdx, activeBetObj.amount);
+      saveUser();
+      if (rocketRoundCounter === 1 && rocketPostHighLossesLeft === 0) {
+        // أول جولة يصعد لغاية 15x إلى 50x وبعدها يخسر أكثر من مرة
+        rocketCrashTarget = +(15.5 + Math.random() * 34.5).toFixed(2);
+        rocketPostHighLossesLeft = 3;
+      } else if (rocketPostHighLossesLeft > 0 || (rocketRoundSmartOutcome && rocketRoundSmartOutcome.forceLose)) {
+        if (rocketPostHighLossesLeft > 0) rocketPostHighLossesLeft--;
+        rocketCrashTarget = +(1.01 + Math.random() * 0.28).toFixed(2);
+      } else {
+        rocketCrashTarget = +(2.40 + Math.random() * 6.50).toFixed(2);
+        rocketPostHighLossesLeft = 2;
+      }
     }
 
     rocketLoop = setInterval(() => {
-      rocketMult += rData.speed;
+      // تسريع الصعود تدريجياً كلما ارتفع المضاعف ليصل إلى 15x-50x بسلاسة
+      const stepInc = rocketMult < 3 ? rData.speed : (rocketMult < 12 ? rData.speed * 3.2 : rData.speed * 8.5);
+      rocketMult += stepInc;
       if (multEl) multEl.innerText = rocketMult.toFixed(2) + 'x';
 
       [0, 1].forEach(idx => {
@@ -3181,19 +4784,23 @@
           const btn = document.getElementById('rcActionBtn_' + idx);
           if (btn) {
             btn.style.background = 'var(--green)';
-            btn.innerText = `سحب ${formatCoins(rocketBets[idx].amount * rocketMult)}`;
+            const previewWin = Math.floor(rocketBets[idx].amount * rocketMult);
+            btn.innerText = `سحب ${formatCoins(previewWin)}`;
           }
         }
       });
 
       activeBots.forEach((bot, i) => {
-        if (!bot.jumped && rocketMult >= bot.target) {
+        if (!bot.jumped && rocketMult >= bot.target && bot.target < rocketCrashTarget) {
           bot.jumped = true;
+          bot.winAmount = Math.floor(bot.betAmount * bot.target);
           const bEl = document.getElementById('botRider_' + i);
           if (bEl) {
-            bEl.innerText = `🪂 ${bot.name} (${bot.target}x)`;
+            bEl.innerText = `🪂 ${bot.name} (+${formatCoins(bot.winAmount)})`;
             bEl.style.background = 'rgba(16,185,129,0.3)';
           }
+          showRocketCashoutAnnouncement(bot.name, bot.winAmount, bot.target.toFixed(2));
+          renderRocketRightPlayersList();
         }
       });
 
@@ -3214,17 +4821,17 @@
           if (activeGameObj && activeGameObj.type === 'rocket') startRocketCountdownCycle();
         }, 2600);
       }
-    }, 105);
+    }, 95);
   }
 
   /**************************************************************
-   * 12. ألعاب الدجاج والتفاحة والخطوات (المضاعفات المعدلة المطلوبة)
-   * X1.05 | X1.30 | X1.80 | X2.0 | X2.50 | X3.10 | X5
+   * 13. ألعاب الدجاج والتفاحة والخطوات (مع تطبيق خوارزمية الرهان الذكي)
    **************************************************************/
   let stepRoundActive = false;
   let stepRowIndex = 0;
   let stepMultiplier = 1.0;
   let stepBetLocked = 100000;
+  let stepSmartOutcome = null;
   const STEP_HIGH_MULTS = [1.05, 1.30, 1.80, 2.00, 2.50, 3.10, 5.00];
 
   function buildStepClimb35UI(box) {
@@ -3244,6 +4851,7 @@
   function startStepClimb35Round() {
     const bet = getCurrentBetAmount();
     if (!currentUser.isAdmin && currentUser.gold < bet) {
+      stopAutoSpins();
       showToast('رصيد الذهب غير كافٍ!', '#ef4444');
       return;
     }
@@ -3252,6 +4860,7 @@
     stepRoundActive = true;
     stepRowIndex = 0;
     stepMultiplier = 1.0;
+    stepSmartOutcome = evaluateSmartBetOutcome(selectedBetIndex, bet);
     saveUser();
     recordGameProgress(1, false, false);
 
@@ -3271,7 +4880,15 @@
   function clickStepTile35(idx) {
     if (!stepRoundActive || Math.floor(idx / 5) !== stepRowIndex) return;
     const el = document.getElementById('stTile_' + idx);
-    const winStep = Math.random() < 0.78;
+
+    let winStep = Math.random() < 0.78;
+    if (stepSmartOutcome) {
+      if (stepSmartOutcome.forceLose && stepRowIndex >= 0) {
+        winStep = false;
+      } else if (stepSmartOutcome.shouldWin) {
+        winStep = true;
+      }
+    }
 
     if (!winStep) {
       el.innerHTML = `<div style="font-size:1.25rem;">${activeGameObj.trapIcon}</div>`;
@@ -3287,7 +4904,10 @@
       playGameSound('win');
       stepMultiplier = STEP_HIGH_MULTS[stepRowIndex];
       stepRowIndex++;
-      const currentWinCoins = Math.floor(stepBetLocked * stepMultiplier);
+      let currentWinCoins = Math.floor(stepBetLocked * stepMultiplier);
+      if (stepSmartOutcome && stepSmartOutcome.customWinAmount > 0) {
+        currentWinCoins = Math.max(currentWinCoins, stepSmartOutcome.customWinAmount);
+      }
       document.getElementById('cashoutMainBtn').innerText = `سحب (${formatCoins(currentWinCoins)}) 💰`;
 
       if (stepRowIndex >= 7) cashoutStepGame();
@@ -3298,11 +4918,13 @@
   function cashoutStepGame() {
     if (!stepRoundActive || stepRowIndex === 0) return;
     stepRoundActive = false;
-    const winVal = Math.floor(stepBetLocked * stepMultiplier);
+    let winVal = Math.floor(stepBetLocked * stepMultiplier);
+    if (stepSmartOutcome && stepSmartOutcome.customWinAmount > 0) {
+      winVal = Math.max(winVal, stepSmartOutcome.customWinAmount);
+    }
     if (!currentUser.isAdmin) currentUser.gold += winVal;
     playGameSound('win');
 
-    // تسجيل فوز في الدجاج أو التفاحة
     if (!currentUser.dailyState) currentUser.dailyState = {};
     currentUser.dailyState.stepWins = (currentUser.dailyState.stepWins || 0) + 1;
     recordGameProgress(0, true, false);
@@ -3315,7 +4937,7 @@
   }
 
   /**************************************************************
-   * 13. عجلة الفواكه
+   * 14. عجلة الفواكه (مع خوارزمية الرهان الذكي والعداد التنازلي)
    **************************************************************/
   const WHEEL_SEGMENTS = [
     { icon: '🍉', mult: 2.5 }, { icon: '🍓', mult: 0 }, { icon: '🍌', mult: 2.0 }, { icon: '🍒', mult: 4.0 },
@@ -3355,10 +4977,11 @@
     }
     if (!currentUser.isAdmin) currentUser.gold -= bet;
     isActionLocked = true;
+    const wheelOutcome = evaluateSmartBetOutcome(selectedBetIndex, bet);
     saveUser();
     recordGameProgress(1, false, false);
 
-    const winTurn = Math.random() < 0.52;
+    const winTurn = wheelOutcome.shouldWin && !wheelOutcome.forceLose;
     const winIndices = [0, 2, 3, 5, 6, 7];
     const loseIndices = [1, 4];
     const segIndex = winTurn
@@ -3381,7 +5004,10 @@
     setTimeout(() => {
       const chosen = WHEEL_SEGMENTS[segIndex];
       if (chosen.mult > 0) {
-        const winVal = Math.floor(bet * chosen.mult);
+        let winVal = Math.floor(bet * chosen.mult);
+        if (wheelOutcome.customWinAmount > 0) {
+          winVal = Math.max(winVal, wheelOutcome.customWinAmount);
+        }
         if (!currentUser.isAdmin) currentUser.gold += winVal;
         playGameSound('win');
         recordGameProgress(0, true, false);
@@ -3392,13 +5018,23 @@
       }
       isActionLocked = false;
       saveUser();
+      if (autoSpinsRemaining > 0) {
+        autoSpinsRemaining--;
+        updateAutoCountdownHud();
+        if (autoSpinsRemaining > 0) {
+          autoSpinTimer = setTimeout(runNextAutoSpin, 700);
+        } else {
+          stopAutoSpins();
+        }
+      }
     }, 3200);
   }
 
   /**************************************************************
-   * 14. نظام الدردشة الحية العامة بين جميع اللاعبين
+   * 15. نظام الدردشة الحية العامة + فتح الملف الشخصي عند الضغط على أي شخص
    **************************************************************/
   let chatListenerAttached = false;
+  let cachedChatMessages = {};
 
   function initLiveChat() {
     if (!db || chatListenerAttached) return;
@@ -3406,11 +5042,12 @@
 
     db.ref('chat_messages').limitToLast(60).on('value', snap => {
       const box = document.getElementById('liveChatMessagesBox');
-      if (!snap.exists()) {
+      if (!snap || !snap.exists()) {
         box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.8rem; margin-top:20px;">لا توجد رسائل بعد. كن أول من يكتب! 💬</div>';
         return;
       }
       const msgs = snap.val();
+      cachedChatMessages = msgs || {};
       const list = Object.keys(msgs).map(k => ({ ...msgs[k], msgKey: k }));
 
       box.innerHTML = list.map(m => {
@@ -3418,16 +5055,18 @@
         const canDelete = isMe || (currentUser && currentUser.isAdmin);
         const vipLvl = m.vip || 0;
         const uidStr = m.numericId ? `#${m.numericId}` : '';
+        const hasStar = (vipLvl >= 6 && !m.traderStarRevoked) || m.userKey === 'admin';
 
         return `
           <div class="chat-msg-row">
-            <div class="avatar-wrap frame-vip-${vipLvl}" style="width:34px; height:34px; font-size:1.1rem; flex-shrink:0;">
+            <div class="avatar-wrap frame-vip-${vipLvl}" style="width:36px; height:36px; font-size:1.1rem; flex-shrink:0; cursor:pointer;" onclick="openPlayerPublicProfile('${escapeHtml(m.userKey)}', '${m.msgKey}')">
               ${m.avatar && m.avatar.startsWith('data:image') ? `<img src="${m.avatar}">` : (m.avatar || '🦁')}
             </div>
             <div class="chat-bubble chat-frame-${vipLvl}">
               <div class="chat-msg-header">
-                <div>
-                  <strong style="color:var(--gold);">${escapeHtml(m.username)}</strong>
+                <div style="cursor:pointer; display:flex; align-items:center; gap:4px; flex-wrap:wrap;" onclick="openPlayerPublicProfile('${escapeHtml(m.userKey)}', '${m.msgKey}')">
+                  <strong style="color:var(--gold); text-decoration:underline;">${escapeHtml(m.username)}</strong>
+                  ${hasStar ? `<span class="verified-star-badge">🌟 موثق</span>` : ''}
                   <span class="uid-badge" style="font-size:0.58rem; padding:1px 3px;">${uidStr}</span>
                   <span style="font-size:0.65rem; color:#38bdf8;">[VIP ${vipLvl}]</span>
                 </div>
@@ -3435,6 +5074,7 @@
               </div>
               <div class="chat-msg-text">${escapeHtml(m.text)}</div>
               <div class="chat-actions-strip">
+                <button class="chat-action-btn" style="border-color:var(--gold); color:var(--gold);" onclick="openPlayerPublicProfile('${escapeHtml(m.userKey)}', '${m.msgKey}')">👤 الملف الشخصي</button>
                 ${!isMe ? `<button class="chat-action-btn" onclick="addFriendFromChat('${escapeHtml(m.userKey)}', '${escapeHtml(m.username)}', '${m.numericId || ''}', '${m.avatar || '🦁'}', ${vipLvl})">➕ إضافة صديق</button>` : ''}
                 <button class="chat-action-btn" onclick="reportChatMessage('${m.msgKey}', '${escapeHtml(m.username)}')">🚩 إبلاغ</button>
                 ${canDelete ? `<button class="chat-action-btn" style="color:var(--red); border-color:rgba(239,68,68,0.4);" onclick="deleteChatMessage('${m.msgKey}')">🗑️ حذف</button>` : ''}
@@ -3448,20 +5088,131 @@
     });
   }
 
+  // استعراض الملف الشخصي لأي لاعب عند الضغط عليه في الدردشة
+  async function openPlayerPublicProfile(userKey, msgKey) {
+    playGameSound('click');
+    const modal = document.getElementById('playerProfileModal');
+    if (!modal) return;
+    modal.classList.add('open');
+
+    const fallbackMsg = (msgKey && cachedChatMessages[msgKey]) ? cachedChatMessages[msgKey] : {};
+    let pData = {
+      key: userKey,
+      username: fallbackMsg.username || userKey || 'لاعب',
+      numericId: fallbackMsg.numericId || '0000000',
+      vip: fallbackMsg.vip || 0,
+      avatar: fallbackMsg.avatar || '🦁',
+      coverPhoto: fallbackMsg.coverPhoto || '',
+      bio: fallbackMsg.bio || '',
+      traderStarRevoked: !!fallbackMsg.traderStarRevoked,
+      traderPhone: fallbackMsg.traderPhone || '',
+      traderTelegram: fallbackMsg.traderTelegram || '',
+      traderOffer: fallbackMsg.traderOffer || ''
+    };
+
+    if (currentUser && userKey === currentUser.key) {
+      pData = { ...pData, ...currentUser };
+    } else if (db && userKey) {
+      const snap = await dbOnceWithTimeout('users/' + userKey, 2000);
+      if (snap && snap.exists()) {
+        pData = { ...pData, ...snap.val(), key: userKey };
+      }
+    }
+
+    const vipLvl = pData.isAdmin ? 10 : (pData.vip || 0);
+    const isVerified = isPlayerVerifiedTrader(pData);
+
+    const coverEl = document.getElementById('pubProfCover');
+    if (coverEl) {
+      coverEl.style.backgroundImage = pData.coverPhoto
+        ? `url(${pData.coverPhoto})`
+        : 'linear-gradient(135deg,#1e1b4b,#7e22ce,#b45309)';
+    }
+
+    const avEl = document.getElementById('pubProfAvatar');
+    if (avEl) {
+      avEl.className = `profile-main-avatar frame-vip-${vipLvl}`;
+      avEl.innerHTML = (pData.avatar && pData.avatar.startsWith('data:image'))
+        ? `<img src="${pData.avatar}">`
+        : `<span>${pData.avatar || '🦁'}</span>`;
+    }
+
+    document.getElementById('pubProfName').innerText = pData.username || 'لاعب';
+    document.getElementById('pubProfUid').innerText = '#' + (pData.numericId || '0000000');
+    document.getElementById('pubProfVipBadge').innerText = `VIP ${vipLvl}`;
+    document.getElementById('pubProfVerifiedBadge').style.display = isVerified ? 'inline-flex' : 'none';
+    document.getElementById('pubProfBioText').innerText = (pData.bio && pData.bio.trim()) ? pData.bio : 'لا توجد سيرة ذاتية مضافة.';
+
+    const friendWrap = document.getElementById('pubProfFriendBtnWrap');
+    if (friendWrap) {
+      if (currentUser && userKey !== currentUser.key) {
+        const already = (currentUser.friendsList || []).some(f => f.key === userKey);
+        friendWrap.innerHTML = `
+          <button class="btn-primary" style="width:auto; padding:6px 12px; font-size:0.74rem; ${already ? 'background:#334155; color:#fff;' : ''}"
+            onclick="addFriendDirect('${escapeHtml(userKey)}', '${escapeHtml(pData.username)}', '${pData.numericId || ''}', '${pData.avatar || '🦁'}', ${vipLvl})">
+            ${already ? 'صديقك ✅' : '➕ إضافة صديق'}
+          </button>
+        `;
+      } else {
+        friendWrap.innerHTML = '';
+      }
+    }
+
+    const traderSec = document.getElementById('pubProfTraderSection');
+    const offerBox = document.getElementById('pubProfOfferBox');
+    const contactsBox = document.getElementById('pubProfContactsList');
+
+    if (isVerified) {
+      traderSec.style.display = 'block';
+      offerBox.innerText = (pData.traderOffer && pData.traderOffer.trim())
+        ? pData.traderOffer
+        : '💎 تاجر معتمد لبيع وشراء الذهب ونقاط VIP';
+
+      let cHtml = '';
+      const cleanPhone = (pData.traderPhone || '').trim();
+      const cleanTele = (pData.traderTelegram || '').trim().replace(/^@/, '');
+
+      if (cleanPhone) {
+        const waDigits = cleanPhone.replace(/[^\d]/g, '');
+        cHtml += `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #10b981;">
+            <span style="font-size:0.76rem; color:#e2e8f0;">📱 الهاتف: <strong style="color:#34d399; direction:ltr; display:inline-block;">${escapeHtml(cleanPhone)}</strong></span>
+            <a href="https://wa.me/${waDigits}" target="_blank" style="background:#10b981; color:#000; font-weight:900; font-size:0.7rem; padding:4px 9px; border-radius:8px; text-decoration:none;">💬 تواصل مباشر</a>
+          </div>
+        `;
+      }
+      if (cleanTele) {
+        cHtml += `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #38bdf8;">
+            <span style="font-size:0.76rem; color:#e2e8f0;">✈️ تلكرام: <strong style="color:#38bdf8; direction:ltr; display:inline-block;">@${escapeHtml(cleanTele)}</strong></span>
+            <a href="https://t.me/${encodeURIComponent(cleanTele)}" target="_blank" style="background:#0284c7; color:#fff; font-weight:900; font-size:0.7rem; padding:4px 9px; border-radius:8px; text-decoration:none;">✈️ مراسلة تلكرام</a>
+          </div>
+        `;
+      }
+      if (!cleanPhone && !cleanTele) {
+        cHtml = `<div style="font-size:0.72rem; color:#94a3b8; text-align:center;">لم يقم اللاعب بإضافة رقم هاتف أو معرف تلكرام بعد.</div>`;
+      }
+      contactsBox.innerHTML = cHtml;
+    } else {
+      traderSec.style.display = 'none';
+    }
+  }
+
   function formatMsgTime(ts) {
     if (!ts) return '';
     const d = new Date(ts);
     return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
   }
 
+  // تم إصلاح الخطأ البرمجي الذي كان يوقف الكود في المتصفح والاستضافة
   function escapeHtml(text) {
     if (!text) return '';
     return text.toString()
-      .replace(/&/g, "&")
-      .replace(/</g, "<")
-      .replace(/>/g, ">")
-      .replace(/"/g, """)
-      .replace(/'/g, "'");
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   async function sendLiveChatMessage() {
@@ -3480,17 +5231,21 @@
       numericId: currentUser.numericId || '0000000',
       vip: currentUser.vip || 0,
       avatar: currentUser.avatar || '🦁',
+      bio: (currentUser.bio || '').slice(0, 100),
+      traderStarRevoked: !!currentUser.traderStarRevoked,
+      traderPhone: currentUser.traderPhone || '',
+      traderTelegram: currentUser.traderTelegram || '',
+      traderOffer: currentUser.traderOffer || '',
       text: txt,
       timestamp: getTrustedTimestamp()
     };
 
     if (db) {
-      await db.ref('chat_messages').push(msgObj).catch(() => {});
+      await dbWriteWithTimeout(db.ref('chat_messages').push(msgObj));
     }
 
     input.value = '';
 
-    // تسجيل مهمة إرسال رسالة في الدردشة
     if (!currentUser.dailyState) currentUser.dailyState = {};
     currentUser.dailyState.chatMsgs = (currentUser.dailyState.chatMsgs || 0) + 1;
     saveUser();
@@ -3499,7 +5254,7 @@
   async function deleteChatMessage(msgKey) {
     if (!guardAntiSpam(300) || !currentUser) return;
     if (db) {
-      await db.ref('chat_messages/' + msgKey).remove().catch(() => {});
+      await dbWriteWithTimeout(db.ref('chat_messages/' + msgKey).remove());
       showToast('🗑️ تم حذف الرسالة بنجاح');
     }
   }
@@ -3527,19 +5282,19 @@
       return;
     }
     if (db) {
-      await db.ref('chat_reports/' + currentReportingMsgKey).push({
+      await dbWriteWithTimeout(db.ref('chat_reports/' + currentReportingMsgKey).push({
         reportedBy: currentUser.username,
         reportedUser: currentReportingUser,
         reason: reason,
         timestamp: getTrustedTimestamp()
-      }).catch(() => {});
+      }));
     }
     closeReportModal();
     showToast('🚩 تم إرسال البلاغ للإدارة بنجاح!');
   }
 
   /**************************************************************
-   * 15. نظام الأصدقاء والبحث بالاسم أو المعرف الفريد 7 أرقام
+   * 16. نظام الأصدقاء والبحث بالاسم أو المعرف الفريد 7 أرقام
    **************************************************************/
   function renderMyFriendsList() {
     const box = document.getElementById('myFriendsListContainer');
@@ -3552,7 +5307,7 @@
 
     box.innerHTML = list.map(f => `
       <div class="friend-card">
-        <div style="display:flex; align-items:center; gap:9px;">
+        <div style="display:flex; align-items:center; gap:9px; cursor:pointer;" onclick="openPlayerPublicProfile('${escapeHtml(f.key)}', '')">
           <div class="avatar-wrap frame-vip-${f.vip || 0}" style="width:38px; height:38px; font-size:1.2rem;">
             ${f.avatar && f.avatar.startsWith('data:image') ? `<img src="${f.avatar}">` : (f.avatar || '🦁')}
           </div>
@@ -3586,26 +5341,22 @@
     let foundKey = null;
 
     if (db) {
-      try {
-        // البحث بالمعرف 7 أرقام
-        if (/^\d{7}$/.test(q)) {
-          const idSnap = await db.ref('id_to_user/' + q).once('value');
-          if (idSnap.exists()) {
-            foundKey = idSnap.val();
-            const uSnap = await db.ref('users/' + foundKey).once('value');
-            if (uSnap.exists()) foundUser = uSnap.val();
-          }
+      if (/^\d{7}$/.test(q)) {
+        const idSnap = await dbOnceWithTimeout('id_to_user/' + q);
+        if (idSnap && idSnap.exists()) {
+          foundKey = idSnap.val();
+          const uSnap = await dbOnceWithTimeout('users/' + foundKey);
+          if (uSnap && uSnap.exists()) foundUser = uSnap.val();
         }
-        // البحث بالاسم
-        if (!foundUser) {
-          const targetKey = q.replace(/[.#$[\]\s]/g, '_');
-          const uSnap = await db.ref('users/' + targetKey).once('value');
-          if (uSnap.exists()) {
-            foundUser = uSnap.val();
-            foundKey = targetKey;
-          }
+      }
+      if (!foundUser) {
+        const targetKey = q.replace(/[.#$[\]\s]/g, '_');
+        const uSnap = await dbOnceWithTimeout('users/' + targetKey);
+        if (uSnap && uSnap.exists()) {
+          foundUser = uSnap.val();
+          foundKey = targetKey;
         }
-      } catch (e) {}
+      }
     }
 
     if (!foundUser) {
@@ -3618,7 +5369,7 @@
 
     resultBox.innerHTML = `
       <div class="friend-card" style="background:#060a17; border-color:var(--gold);">
-        <div style="display:flex; align-items:center; gap:8px;">
+        <div style="display:flex; align-items:center; gap:8px; cursor:pointer;" onclick="openPlayerPublicProfile('${escapeHtml(foundKey)}', '')">
           <div class="avatar-wrap frame-vip-${foundUser.vip || 0}" style="width:36px; height:36px; font-size:1.15rem;">
             ${foundUser.avatar && foundUser.avatar.startsWith('data:image') ? `<img src="${foundUser.avatar}">` : (foundUser.avatar || '🦁')}
           </div>
@@ -3677,7 +5428,7 @@
   }
 
   /**************************************************************
-   * 16. سحب القسائم (كل 5000 قسيمة = 1 دولار أو 1,000 دينار عراقي)
+   * 17. سحب القسائم ولوحة الأدمن (مع التحكم بنجمة التوثيق 🌟)
    **************************************************************/
   function updateRedeemCostHint() {
     const usd = parseInt(document.getElementById('rechargeSelect').value) || 1;
@@ -3760,9 +5511,6 @@
     `).join('');
   }
 
-  /**************************************************************
-   * 17. لوحة الأدمن ومستويات VIP
-   **************************************************************/
   function renderVipCards() {
     const box = document.getElementById('vipListContainer');
     if (!box || !currentUser) return;
@@ -3776,7 +5524,7 @@
             <div class="avatar-wrap frame-vip-${t.level}" style="font-size:1.35rem;">${t.icon}</div>
             <div>
               <div style="font-weight:900; color:var(--gold); font-size:0.86rem;">المستوى ${t.title} (${t.reqPoints.toLocaleString()} نقطة)</div>
-              <div style="font-size:0.7rem; color:#cbd5e1;">🎁 +${formatCoins(t.goldBonus)} ذهب + إطار صورة + إطار دردشة</div>
+              <div style="font-size:0.7rem; color:#cbd5e1;">🎁 +${formatCoins(t.goldBonus)} ذهب + إطار صورة + إطار دردشة ${t.level >= 6 ? '+ 🌟 توثيق تاجر' : ''}</div>
             </div>
           </div>
           <button class="btn-primary" style="width:auto; padding:6px 11px; font-size:0.74rem; ${unlocked ? 'background:var(--green); color:#000;' : ''}"
@@ -3971,15 +5719,57 @@
     let targetKey = target.replace(/[.#$[\]\s]/g, '_');
     if (db) {
       if (/^\d{7}$/.test(target)) {
-        const idSnap = await db.ref('id_to_user/' + target).once('value');
-        if (idSnap.exists()) targetKey = idSnap.val();
+        const idSnap = await dbOnceWithTimeout('id_to_user/' + target);
+        if (idSnap && idSnap.exists()) targetKey = idSnap.val();
       }
-      await db.ref('users/' + targetKey).update({
+      await dbWriteWithTimeout(db.ref('users/' + targetKey).update({
         isBanned: isBanned,
         banReason: isBanned ? 'حظر بواسطة الأدمن لمخالفة سياسات اللعب النظيف' : ''
-      });
+      }));
       showToast(isBanned ? `🔒 تم حظر الحساب ${targetKey} بنجاح!` : `🔓 تم فك الحظر عن الحساب ${targetKey}!`);
     }
+  }
+
+  // ميزة منح أو سحب نجمة التوثيق (صلاحية التجار VIP 6+) من لوحة التحكم
+  async function adminToggleTraderStar(grantStar) {
+    if (!currentUser || !currentUser.isAdmin) return;
+    const target = document.getElementById('adminVerifyTarget').value.trim();
+    if (!target) { showToast('أدخل اسم اللاعب أو المعرف الرقمي!', '#ef4444'); return; }
+
+    let targetKey = target.replace(/[.#$[\]\s]/g, '_');
+    if (db) {
+      if (/^\d{7}$/.test(target)) {
+        const idSnap = await dbOnceWithTimeout('id_to_user/' + target);
+        if (idSnap && idSnap.exists()) targetKey = idSnap.val();
+      }
+      const updates = {
+        traderStarRevoked: !grantStar
+      };
+      if (!grantStar) {
+        updates.traderPhone = '';
+        updates.traderTelegram = '';
+        updates.traderOffer = '';
+      }
+      await dbWriteWithTimeout(db.ref('users/' + targetKey).update(updates));
+    }
+
+    const localRaw = safeStorageGet('royal_pro_' + targetKey);
+    if (localRaw) {
+      try {
+        const parsed = JSON.parse(localRaw);
+        parsed.traderStarRevoked = !grantStar;
+        if (!grantStar) {
+          parsed.traderPhone = '';
+          parsed.traderTelegram = '';
+          parsed.traderOffer = '';
+        }
+        safeStorageSet('royal_pro_' + targetKey, JSON.stringify(parsed));
+      } catch (e) {}
+    }
+
+    showToast(grantStar
+      ? `🌟 تم منح وتفعيل نجمة التوثيق للاعب (${targetKey})!`
+      : `🚫 تم سحب نجمة التوثيق وإلغاء خاصية عرض التواصل والبيع من (${targetKey})!`);
   }
 
   function loadAdminPendingStoreOrders() {
@@ -3987,7 +5777,7 @@
     const box = document.getElementById('adminPendingOrdersList');
     if (db) {
       db.ref('store_orders').once('value', snap => {
-        if (!snap.exists()) { box.innerHTML = 'لا توجد طلبات.'; return; }
+        if (!snap || !snap.exists()) { box.innerHTML = 'لا توجد طلبات.'; return; }
         const list = Object.values(snap.val()).filter(r => r.status && r.status.includes('قيد المراجعة'));
         if (list.length === 0) { box.innerHTML = 'لا توجد طلبات.'; return; }
         box.innerHTML = list.map(r => `
@@ -4010,9 +5800,9 @@
   async function approveStoreOrder(ordId, userKey, addGold, addPoints) {
     if (!currentUser || !currentUser.isAdmin) return;
     if (db) {
-      await db.ref('store_orders/' + ordId).update({ status: 'تمت الموافقة ✅' });
-      const snap = await db.ref('users/' + userKey).once('value');
-      if (snap.exists()) {
+      await dbWriteWithTimeout(db.ref('store_orders/' + ordId).update({ status: 'تمت الموافقة ✅' }));
+      const snap = await dbOnceWithTimeout('users/' + userKey);
+      if (snap && snap.exists()) {
         const d = snap.val();
         const newPts = (d.vipPoints || 0) + addPoints;
         let newVip = d.vip || 0;
@@ -4024,12 +5814,12 @@
           }
         });
         const updatedReqs = (d.requests || []).map(r => r.id === ordId ? { ...r, status: 'تمت الموافقة ✅' } : r);
-        await db.ref('users/' + userKey).update({
+        await dbWriteWithTimeout(db.ref('users/' + userKey).update({
           gold: (d.gold || 0) + addGold + extraGoldBonus,
           vipPoints: newPts,
           vip: newVip,
           requests: updatedReqs
-        });
+        }));
       }
     }
     loadAdminPendingStoreOrders();
@@ -4044,8 +5834,8 @@
     if (!target) return;
 
     if (db) {
-      const snap = await db.ref('users/' + target).once('value');
-      if (snap.exists()) {
+      const snap = await dbOnceWithTimeout('users/' + target);
+      if (snap && snap.exists()) {
         const d = snap.val();
         const newPts = (d.vipPoints || 0) + addP;
         let newVip = d.vip || 0;
@@ -4056,12 +5846,12 @@
             bonusG += t.goldBonus;
           }
         });
-        await db.ref('users/' + target).update({
+        await dbWriteWithTimeout(db.ref('users/' + target).update({
           gold: (d.gold || 0) + addG + bonusG,
           vipPoints: newPts,
           vip: newVip,
           isAdmin: null
-        });
+        }));
         showToast(`✅ تم شحن حساب ${target}!`);
       }
     }
@@ -4110,20 +5900,30 @@
   }
 
   window.onload = async () => {
+    preloadAllCatalogImages();
     renderLobbyGames();
     renderStorePackages();
-    const savedKey = localStorage.getItem('royal_active_key');
+    const lastSaved = safeStorageGet('royal_last_saved_key');
+    const qBtn = document.getElementById('quickAutoLoginBtn');
+    if (qBtn && lastSaved) {
+      qBtn.style.display = 'block';
+    }
+    const savedKey = safeStorageGet('royal_active_key');
     if (savedKey) {
       let data = null;
-      const local = localStorage.getItem('royal_pro_' + savedKey);
-      if (local) data = JSON.parse(local);
-      if (db) {
-        try {
-          const snap = await db.ref('users/' + savedKey).once('value');
-          if (snap.exists()) data = snap.val();
-        } catch (e) {}
+      const local = safeStorageGet('royal_pro_' + savedKey);
+      if (local) {
+        try { data = JSON.parse(local); } catch (e) {}
       }
-      if (data) startUserSession(savedKey, data);
+      if (data) {
+        startUserSession(savedKey, data);
+      } else if (db) {
+        const snap = await dbOnceWithTimeout('users/' + savedKey);
+        if (snap && snap.exists()) {
+          data = snap.val();
+          startUserSession(savedKey, data);
+        }
+      }
     }
   };
 </script>
