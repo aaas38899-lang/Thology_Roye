@@ -1,9 +1,8 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>اساطير رويل</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -1524,6 +1523,130 @@
     .whatsapp-verified-badge.show {
       display: block;
     }
+
+    /* معالجة شاملة لتناسق الخطوط والكتابة على طول وعرض الهاتف ورفع الأزرار فوق شريط تحكم الجهاز */
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    .app-wrapper {
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-bottom: calc(145px + env(safe-area-inset-bottom, 28px)) !important;
+      overflow-x: hidden;
+    }
+    .view-section {
+      padding-bottom: calc(45px + env(safe-area-inset-bottom, 20px));
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    #profileView {
+      padding-bottom: calc(65px + env(safe-area-inset-bottom, 28px)) !important;
+    }
+    .logout-safe-btn {
+      margin-top: 8px;
+      margin-bottom: calc(45px + env(safe-area-inset-bottom, 24px)) !important;
+      position: relative;
+      z-index: 10;
+    }
+    .bottom-nav {
+      padding: 6px 2px calc(10px + env(safe-area-inset-bottom, 12px)) !important;
+      box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.9);
+    }
+    .top-bar {
+      gap: 6px;
+      max-width: 100%;
+    }
+    .user-mini {
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+    }
+    .user-mini > div:last-child {
+      min-width: 0;
+      overflow: hidden;
+    }
+    #topUsername {
+      display: inline-block;
+      max-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: bottom;
+    }
+    .currencies {
+      flex-shrink: 0;
+      max-width: 62%;
+    }
+    .curr-pill {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .task-card, .friend-card {
+      gap: 8px;
+      max-width: 100%;
+    }
+    .task-card > div:first-child, .friend-card > div:first-child {
+      min-width: 0;
+      flex: 1;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .task-card .btn-primary, .friend-card .btn-primary, .friend-card .chat-action-btn {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .chat-container {
+      height: calc(100vh - 195px);
+      height: calc(100dvh - 195px);
+      margin-bottom: 12px;
+    }
+    .chat-bubble {
+      min-width: 0;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+    .game-modal {
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100dvh;
+    }
+    .game-stage {
+      padding-bottom: calc(16px + env(safe-area-inset-bottom, 16px)) !important;
+    }
+    .bet-controls {
+      margin-bottom: env(safe-area-inset-bottom, 8px);
+    }
+    .stone-cell img.stone-fit-img, .game-card-fit-img, .game-loader-thumb img {
+      color: transparent !important;
+      font-size: 0 !important;
+      text-indent: -9999px;
+    }
+    .admin-sub-list {
+      max-height: 135px;
+      overflow-y: auto;
+      background: #060913;
+      border: 1px solid #263354;
+      border-radius: 8px;
+      padding: 6px;
+      margin-top: 6px;
+      font-size: 0.72rem;
+    }
+    .admin-sub-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .admin-sub-item:last-child {
+      border-bottom: none;
+    }
+
   </style>
 </head>
 <body>
@@ -1960,7 +2083,7 @@
       </label>
     </div>
 
-    <button class="btn-primary" style="background:var(--red); color:#fff;" onclick="logoutUser()">تسجيل الخروج 🚪</button>
+    <button class="btn-primary logout-safe-btn" style="background:var(--red); color:#fff;" onclick="logoutUser()">تسجيل الخروج 🚪</button>
   </div>
 
   <!-- شريط التنقل السفلي الشامل (8 أقسام رئيسية مع المتجر وVIP) -->
@@ -2186,24 +2309,34 @@
   <div class="popup-box">
     <h3 style="color:var(--gold); margin-bottom:10px;">👑 لوحة الأدمن - اساطير رويل</h3>
 
-    <!-- إدارة الحظر وفك الحظر -->
+    <!-- إدارة الحظر وفك الحظر + قائمة المحظورين -->
     <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px; background:#1a0f1f; padding:8px; border-radius:10px;">
-      <h4 style="color:var(--red); margin-bottom:6px; font-size:0.84rem;">🚫 إدارة حظر اللاعبين:</h4>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <h4 style="color:var(--red); font-size:0.84rem;">🚫 إدارة حظر اللاعبين وقائمة المحظورين:</h4>
+        <button type="button" onclick="loadAdminBannedAndVerifiedLists()" style="background:#1e2946; color:#fff; border:1px solid #475569; border-radius:6px; padding:2px 7px; font-size:0.65rem; cursor:pointer;">تحديث 🔄</button>
+      </div>
       <input type="text" id="adminBanTarget" class="form-input" placeholder="اسم المستخدم أو المعرف (7 أرقام)" style="font-size:0.76rem; margin-bottom:6px;">
       <div style="display:flex; gap:6px;">
         <button class="btn-primary" style="background:var(--red); font-size:0.75rem; padding:7px;" onclick="adminSetBan(true)">حظر اللاعب 🔒</button>
         <button class="btn-primary" style="background:var(--green); font-size:0.75rem; padding:7px;" onclick="adminSetBan(false)">فك الحظر 🔓</button>
       </div>
+      <div style="font-size:0.7rem; color:#fca5a5; margin-top:6px; font-weight:700;">📋 قائمة الحسابات المحظورة حالياً:</div>
+      <div class="admin-sub-list" id="adminBannedUsersList">جاري التحميل...</div>
     </div>
 
-    <!-- إدارة نجمة التوثيق وصلاحية التجار VIP 6+ -->
+    <!-- إدارة نجمة التوثيق وصلاحية التجار VIP 6+ + قائمة الموثقين -->
     <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px; background:#0f1b2d; padding:8px; border-radius:10px; border:1px solid rgba(251,191,36,0.35);">
-      <h4 style="color:#fde047; margin-bottom:6px; font-size:0.84rem;">🌟 نجمة التوثيق وصلاحية التجار (VIP 6+):</h4>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <h4 style="color:#fde047; font-size:0.84rem;">🌟 نجمة التوثيق وقائمة التجار الموثقين (VIP 6+):</h4>
+        <button type="button" onclick="loadAdminBannedAndVerifiedLists()" style="background:#1e2946; color:#fde047; border:1px solid var(--gold); border-radius:6px; padding:2px 7px; font-size:0.65rem; cursor:pointer;">تحديث 🔄</button>
+      </div>
       <input type="text" id="adminVerifyTarget" class="form-input" placeholder="اسم المستخدم أو المعرف (7 أرقام)" style="font-size:0.76rem; margin-bottom:6px;">
       <div style="display:flex; gap:6px;">
         <button class="btn-primary" style="background:linear-gradient(135deg,#fbbf24,#d97706); color:#000; font-size:0.74rem; padding:7px;" onclick="adminToggleTraderStar(true)">🌟 منح نجمة التوثيق</button>
         <button class="btn-primary" style="background:#be123c; color:#fff; font-size:0.74rem; padding:7px;" onclick="adminToggleTraderStar(false)">🚫 سحب نجمة التوثيق</button>
       </div>
+      <div style="font-size:0.7rem; color:#fde047; margin-top:6px; font-weight:700;">📋 قائمة الموثقين وتجار VIP 6+:</div>
+      <div class="admin-sub-list" id="adminVerifiedUsersList">جاري التحميل...</div>
     </div>
 
     <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px;">
@@ -2751,8 +2884,50 @@
     { id: 'wheel',       title: 'عجلة الفواكه',          icon: '🎡🍉', bg: 'linear-gradient(145deg,#4c1d95,#10b981)', type: 'wheel' }
   ];
 
-  // حفظ وتحميل مسبق لجميع صور الألعاب مع بديل ذكي لمنع اختفاء أي صورة نهائياً
+  // الحل الأول: محرك الصور المزدوج الذكي (تخطي حجب الشبكة وحظر الطلبات المتكررة لـ ibb.co عبر البروكسي السحابي)
   const _preloadedGameImages = {};
+  const _resolvedWorkingUrls = {};
+  let _preferredGatewayIdx = 0;
+
+  function cleanImageUrl(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') return '';
+    return rawUrl.replace(/[\u2060\u200B\s]/g, '').trim();
+  }
+
+  function buildGatewayUrl(origUrl, gatewayIdx) {
+    const clean = cleanImageUrl(origUrl);
+    if (!clean || !clean.startsWith('http')) return clean;
+    const noProto = clean.replace(/^https?:\/\//i, '');
+    if (gatewayIdx === 1) {
+      return 'https://wsrv.nl/?url=' + encodeURIComponent(clean);
+    }
+    if (gatewayIdx === 2) {
+      return 'https://i0.wp.com/' + noProto;
+    }
+    if (gatewayIdx === 3) {
+      return 'https://images.weserv.nl/?url=' + encodeURIComponent(clean);
+    }
+    if (gatewayIdx === 4) {
+      return 'https://wsrv.nl/?url=' + encodeURIComponent(noProto) + '&n=-1';
+    }
+    return clean;
+  }
+
+  function getBestImageUrl(origUrl) {
+    const clean = cleanImageUrl(origUrl);
+    if (!clean) return '';
+    if (_resolvedWorkingUrls[clean]) return _resolvedWorkingUrls[clean];
+    return buildGatewayUrl(clean, _preferredGatewayIdx);
+  }
+
+  function buildCssMultiBgUrl(origUrl) {
+    const clean = cleanImageUrl(origUrl);
+    if (!clean) return 'none';
+    const best = getBestImageUrl(clean);
+    const proxy1 = buildGatewayUrl(clean, 1);
+    const proxy2 = buildGatewayUrl(clean, 2);
+    return `url('${best}'), url('${proxy1}'), url('${proxy2}')`;
+  }
 
   function buildFallbackSvgDataUri(label) {
     const safeLbl = (label || '👑').slice(0, 10);
@@ -2770,52 +2945,96 @@
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
   }
 
-  function handleGameImgError(imgEl) {
+  function onGameImgLoadSuccess(imgEl) {
     if (!imgEl) return;
-    const origSrc = imgEl.getAttribute('data-orig-src') || imgEl.src;
-    const retries = parseInt(imgEl.getAttribute('data-retries') || '0', 10);
-    if (retries < 3 && origSrc && origSrc.startsWith('http')) {
-      imgEl.setAttribute('data-retries', (retries + 1).toString());
-      imgEl.setAttribute('data-orig-src', origSrc);
-      setTimeout(() => {
-        imgEl.src = origSrc + (origSrc.includes('?') ? '&' : '?') + 'r=' + (retries + 1);
-      }, 400 * (retries + 1));
+    imgEl.style.opacity = '1';
+    const orig = cleanImageUrl(imgEl.getAttribute('data-orig-src') || '');
+    if (orig && imgEl.src) {
+      _resolvedWorkingUrls[orig] = imgEl.src;
     }
   }
 
+  function handleGameImgError(imgEl) {
+    if (!imgEl) return;
+    const origSrc = cleanImageUrl(imgEl.getAttribute('data-orig-src') || imgEl.src);
+    if (!origSrc || !origSrc.startsWith('http')) return;
+    const step = parseInt(imgEl.getAttribute('data-gw-step') || '0', 10) + 1;
+    imgEl.setAttribute('data-gw-step', step.toString());
+    imgEl.setAttribute('data-orig-src', origSrc);
+
+    if (step <= 4) {
+      // التحويل الفوري التلقائي إلى البروكسي السحابي (wsrv.nl / i0.wp.com / weserv) عند حجب أو فشل ibb.co
+      if (_preferredGatewayIdx === 0) _preferredGatewayIdx = 1;
+      const nextUrl = buildGatewayUrl(origSrc, step);
+      imgEl.src = nextUrl;
+    } else if (step <= 6) {
+      const retryGw = (step % 2 === 1) ? 1 : 2;
+      setTimeout(() => {
+        imgEl.src = buildGatewayUrl(origSrc, retryGw) + ( retryGw === 1 ? '&t=' + step : '?t=' + step );
+      }, 300);
+    }
+  }
+
+  // تحميل تدريجي هادئ للخلفيات فقط عند فتح القائمة، وتحميل أحجار اللعبة المختارة فقط عند فتحها لمنع حظر 429 من ibb.co
   function preloadAllCatalogImages() {
-    GAMES_CATALOG.forEach(g => {
-      if (g.bgImg) {
+    const kingsWithBg = GAMES_CATALOG.filter(g => g.bgImg);
+    kingsWithBg.forEach((g, idx) => {
+      setTimeout(() => {
+        const cleanBg = cleanImageUrl(g.bgImg);
         const im = new Image();
-        im.src = g.bgImg;
-        _preloadedGameImages[g.bgImg] = im;
-      }
-      if (Array.isArray(g.syms)) {
-        g.syms.forEach(s => {
-          if (s && s.startsWith('http')) {
-            const im = new Image();
-            im.src = s;
-            _preloadedGameImages[s] = im;
-          }
-        });
-      }
+        im.onload = () => { _resolvedWorkingUrls[cleanBg] = im.src; };
+        im.onerror = () => {
+          if (_preferredGatewayIdx === 0) _preferredGatewayIdx = 1;
+          im.src = buildGatewayUrl(cleanBg, 1);
+        };
+        im.src = getBestImageUrl(cleanBg);
+        _preloadedGameImages[cleanBg] = im;
+      }, idx * 220);
+    });
+  }
+
+  function preloadSingleGameStones(gameObj) {
+    if (!gameObj) return;
+    const urls = [];
+    if (gameObj.bgImg) urls.push(cleanImageUrl(gameObj.bgImg));
+    if (Array.isArray(gameObj.syms)) {
+      gameObj.syms.forEach(s => {
+        if (s && s.startsWith('http')) urls.push(cleanImageUrl(s));
+      });
+    }
+    urls.forEach((u, i) => {
+      if (_resolvedWorkingUrls[u]) return;
+      setTimeout(() => {
+        const im = new Image();
+        im.onload = () => { _resolvedWorkingUrls[u] = im.src; };
+        im.onerror = () => {
+          const gw = _preferredGatewayIdx || 1;
+          im.src = buildGatewayUrl(u, gw);
+        };
+        im.src = getBestImageUrl(u);
+        _preloadedGameImages[u] = im;
+      }, i * 90);
     });
   }
 
   function renderStoneSymbolHtml(sym) {
     if (!sym) return '';
-    if (sym.startsWith('http://') || sym.startsWith('https://') || sym.startsWith('data:image')) {
-      return `<img class="stone-fit-img" src="${sym}" data-orig-src="${sym}" onerror="handleGameImgError(this)" alt="sym">`;
+    const cleanSym = cleanImageUrl(sym);
+    if (cleanSym.startsWith('http://') || cleanSym.startsWith('https://') || cleanSym.startsWith('data:image')) {
+      const bestSrc = getBestImageUrl(cleanSym);
+      return `<img class="stone-fit-img" src="${bestSrc}" data-orig-src="${cleanSym}" onload="onGameImgLoadSuccess(this)" onerror="handleGameImgError(this)" alt="">`;
     }
     return `<span>${sym}</span>`;
   }
 
   function renderSingleGameCardHtml(g) {
     if (g.bgImg) {
+      const cleanBg = cleanImageUrl(g.bgImg);
+      const bestBg = getBestImageUrl(cleanBg);
       return `
         <div class="game-card" style="background:${g.bg};" onclick="openGame('${g.id}')">
-          <div class="game-card-bg-blur" style="background-image:url('${g.bgImg}');"></div>
-          <img class="game-card-fit-img" src="${g.bgImg}" data-orig-src="${g.bgImg}" onerror="handleGameImgError(this)" alt="${g.title}">
+          <div class="game-card-bg-blur" style="background-image:${buildCssMultiBgUrl(cleanBg)};"></div>
+          <img class="game-card-fit-img" src="${bestBg}" data-orig-src="${cleanBg}" onload="onGameImgLoadSuccess(this)" onerror="handleGameImgError(this)" alt="">
           <div class="game-card-overlay">
             <div class="game-card-title">${g.title}</div>
           </div>
@@ -2998,7 +3217,7 @@
     if (!uObj) return false;
     if (uObj.isAdmin) return true;
     const vipLvl = uObj.vip || 0;
-    return vipLvl >= 6 && !uObj.traderStarRevoked;
+    return (vipLvl >= 6 || !!uObj.traderStarGrantedByAdmin) && !uObj.traderStarRevoked;
   }
 
   function togglePasswordVisibility(inputId, btnEl) {
@@ -3198,9 +3417,13 @@
   function handleBanStatus(isBanned, reason) {
     const banOverlay = document.getElementById('bannedScreenOverlay');
     if (isBanned) {
+      try {
+        stopAutoSpins();
+        closeGameModal();
+      } catch (e) {}
       document.getElementById('bannedUsername').innerText = currentUser ? currentUser.username : 'لاعب';
       document.getElementById('bannedUserId').innerText = currentUser ? '#' + currentUser.numericId : '#0000000';
-      if (reason) document.getElementById('bannedReason').innerText = 'السبب: ' + reason;
+      document.getElementById('bannedReason').innerText = 'السبب: ' + (reason || 'مخالفة سياسات اللعب النظيف');
       banOverlay.classList.add('active');
     } else {
       banOverlay.classList.remove('active');
@@ -3471,6 +3694,7 @@
       banReason: data.banReason || '',
       bio: data.bio || '',
       traderStarRevoked: !!data.traderStarRevoked,
+      traderStarGrantedByAdmin: !!data.traderStarGrantedByAdmin,
       traderPhone: data.traderPhone || '',
       traderTelegram: data.traderTelegram || '',
       traderOffer: data.traderOffer || '',
@@ -3534,6 +3758,7 @@
           currentUser.isBanned = !!rem.isBanned;
           currentUser.banReason = rem.banReason || '';
           currentUser.traderStarRevoked = !!rem.traderStarRevoked;
+          if (rem.traderStarGrantedByAdmin !== undefined) currentUser.traderStarGrantedByAdmin = !!rem.traderStarGrantedByAdmin;
           handleBanStatus(currentUser.isBanned, currentUser.banReason);
 
           currentUser.vipPoints = rem.vipPoints !== undefined ? rem.vipPoints : (currentUser.vipPoints || 0);
@@ -3586,6 +3811,7 @@
         vip: currentUser.vip,
         bio: (currentUser.bio || '').slice(0, 100),
         traderStarRevoked: !!currentUser.traderStarRevoked,
+        traderStarGrantedByAdmin: !!currentUser.traderStarGrantedByAdmin,
         traderPhone: currentUser.traderPhone || '',
         traderTelegram: currentUser.traderTelegram || '',
         traderOffer: currentUser.traderOffer || '',
@@ -3955,12 +4181,14 @@
     document.getElementById('gameStatusMsg').innerText = '';
     document.getElementById('standardBetControls').style.display = activeGameObj.type === 'rocket' ? 'none' : 'block';
 
-    // تعيين خلفية اللعبة من الداخل فيت سنتر بدون قص
+    // تحميل صور اللعبة المختارة وتعيين خلفيتها من الداخل فيت سنتر مع دعم البروكسي التلقائي
+    preloadSingleGameStones(activeGameObj);
     const bgBlur = document.getElementById('stageBgBlur');
     const bgFit = document.getElementById('stageBgFit');
     if (activeGameObj.bgImg) {
-      if (bgBlur) bgBlur.style.backgroundImage = `url('${activeGameObj.bgImg}')`;
-      if (bgFit) bgFit.style.backgroundImage = `url('${activeGameObj.bgImg}')`;
+      const multiBg = buildCssMultiBgUrl(activeGameObj.bgImg);
+      if (bgBlur) bgBlur.style.backgroundImage = multiBg;
+      if (bgFit) bgFit.style.backgroundImage = multiBg;
     } else {
       if (bgBlur) bgBlur.style.backgroundImage = 'none';
       if (bgFit) bgFit.style.backgroundImage = 'none';
@@ -3982,7 +4210,7 @@
     if (!overlay || !gameObj) return;
 
     if (gameObj.bgImg) {
-      thumb.innerHTML = `<img src="${gameObj.bgImg}" onerror="handleGameImgError(this)">`;
+      thumb.innerHTML = `<img src="${getBestImageUrl(gameObj.bgImg)}" data-orig-src="${cleanImageUrl(gameObj.bgImg)}" onload="onGameImgLoadSuccess(this)" onerror="handleGameImgError(this)" alt="">`;
     } else {
       thumb.innerHTML = `<span>${gameObj.icon || '👑'}</span>`;
     }
@@ -4302,7 +4530,7 @@
         if (cell) {
           cell.className = 'stone-cell king-full-column';
           if (kingImgUrl && kingImgUrl.startsWith('http')) {
-            cell.innerHTML = `<img class="stone-fit-img" src="${kingImgUrl}" onerror="handleGameImgError(this)"><span style="position:absolute; bottom:1px; font-size:0.5rem; background:#fde047; color:#000; font-weight:900; padding:0 3px; border-radius:4px;">SCATTER</span>`;
+            cell.innerHTML = `<img class="stone-fit-img" src="${getBestImageUrl(kingImgUrl)}" data-orig-src="${cleanImageUrl(kingImgUrl)}" onload="onGameImgLoadSuccess(this)" onerror="handleGameImgError(this)" alt=""><span style="position:absolute; bottom:1px; font-size:0.5rem; background:#fde047; color:#000; font-weight:900; padding:0 3px; border-radius:4px;">SCATTER</span>`;
           } else {
             cell.innerHTML = '👑';
           }
@@ -4326,7 +4554,7 @@
       if (kingImgUrl && kingImgUrl.startsWith('http')) {
         rowEl.innerHTML = [0, 1, 2, 3].map(() => `
           <div style="width:62px; height:62px; border-radius:12px; border:2px solid #fde047; overflow:hidden; box-shadow:0 0 15px #ef4444; background:#090d1a;">
-            <img src="${kingImgUrl}" style="width:100%; height:100%; object-fit:contain;" onerror="handleGameImgError(this)">
+            <img src="${getBestImageUrl(kingImgUrl)}" data-orig-src="${cleanImageUrl(kingImgUrl)}" style="width:100%; height:100%; object-fit:contain;" onload="onGameImgLoadSuccess(this)" onerror="handleGameImgError(this)" alt="">
           </div>
         `).join('');
       } else {
@@ -5060,7 +5288,7 @@
         const canDelete = isMe || (currentUser && currentUser.isAdmin);
         const vipLvl = m.vip || 0;
         const uidStr = m.numericId ? `#${m.numericId}` : '';
-        const hasStar = (vipLvl >= 6 && !m.traderStarRevoked) || m.userKey === 'admin';
+        const hasStar = ((vipLvl >= 6 || !!m.traderStarGrantedByAdmin) && !m.traderStarRevoked) || m.userKey === 'admin';
 
         return `
           <div class="chat-msg-row">
@@ -5238,6 +5466,7 @@
       avatar: currentUser.avatar || '🦁',
       bio: (currentUser.bio || '').slice(0, 100),
       traderStarRevoked: !!currentUser.traderStarRevoked,
+        traderStarGrantedByAdmin: !!currentUser.traderStarGrantedByAdmin,
       traderPhone: currentUser.traderPhone || '',
       traderTelegram: currentUser.traderTelegram || '',
       traderOffer: currentUser.traderOffer || '',
@@ -5709,51 +5938,221 @@
     showToast(`🎉 +${reward} قسيمة! المجموع اليومي: ${st.vouchersToday}/720`);
   }
 
+  function verifyStrictAdminAccess() {
+    return Boolean(currentUser && currentUser.isAdmin === true && currentUser.key === 'admin' && currentUser.pass === '12345');
+  }
+
+  // دالة بحث ذكية للأدمن تعثر على اللاعب بالاسم أو المعرف (حتى مع وجود #) أو رقم الهاتف في السيرفر والتخزين المحلي
+  async function resolveAdminTargetUserKey(rawInput) {
+    const cleaned = (rawInput || '').trim().replace(/^#/, '');
+    if (!cleaned) return null;
+    let targetKey = cleaned.replace(/[.#$[\]\s]/g, '_');
+
+    if (db) {
+      if (/^\d{7}$/.test(cleaned)) {
+        const idSnap = await dbOnceWithTimeout('id_to_user/' + cleaned);
+        if (idSnap && idSnap.exists()) return idSnap.val();
+      }
+      const directSnap = await dbOnceWithTimeout('users/' + targetKey);
+      if (directSnap && directSnap.exists()) return targetKey;
+
+      const allSnap = await dbOnceWithTimeout('users', 2500);
+      if (allSnap && allSnap.exists()) {
+        const allUsers = allSnap.val();
+        for (const k of Object.keys(allUsers)) {
+          const u = allUsers[k];
+          if (!u) continue;
+          if (
+            String(u.numericId || '') === cleaned ||
+            String(u.username || '').trim().toLowerCase() === cleaned.toLowerCase() ||
+            String(u.phone || '').includes(cleaned)
+          ) {
+            return k;
+          }
+        }
+      }
+    }
+
+    // فحص التخزين المحلي كاحتياط
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('royal_pro_')) {
+        try {
+          const u = JSON.parse(localStorage.getItem(k));
+          const shortKey = k.replace(/^royal_pro_/, '');
+          if (
+            shortKey.toLowerCase() === targetKey.toLowerCase() ||
+            String(u.numericId || '') === cleaned ||
+            String(u.username || '').trim().toLowerCase() === cleaned.toLowerCase()
+          ) {
+            return shortKey;
+          }
+        } catch (e) {}
+      }
+    }
+
+    return targetKey;
+  }
+
   function openAdminModal() {
-    if (!currentUser || !currentUser.isAdmin || currentUser.key !== 'admin') return;
+    if (!verifyStrictAdminAccess()) return;
     document.getElementById('adminModal').classList.add('open');
     loadAdminPendingStoreOrders();
+    loadAdminBannedAndVerifiedLists();
+  }
+
+  async function loadAdminBannedAndVerifiedLists() {
+    if (!verifyStrictAdminAccess()) return;
+    const banBox = document.getElementById('adminBannedUsersList');
+    const verBox = document.getElementById('adminVerifiedUsersList');
+    const combinedUsers = {};
+
+    // جلب الحسابات من التخزين المحلي أولاً
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const lk = localStorage.key(i);
+        if (lk && lk.startsWith('royal_pro_')) {
+          const uKey = lk.replace(/^royal_pro_/, '');
+          const uObj = JSON.parse(localStorage.getItem(lk));
+          if (uObj && uKey !== 'admin') combinedUsers[uKey] = { ...uObj, key: uKey };
+        }
+      }
+    } catch (e) {}
+
+    // جلب الحسابات من Firebase
+    if (db) {
+      const allSnap = await dbOnceWithTimeout('users', 2600);
+      if (allSnap && allSnap.exists()) {
+        const remUsers = allSnap.val();
+        Object.keys(remUsers).forEach(uKey => {
+          if (uKey !== 'admin' && remUsers[uKey]) {
+            combinedUsers[uKey] = { ...(combinedUsers[uKey] || {}), ...remUsers[uKey], key: uKey };
+          }
+        });
+      }
+    }
+
+    const usersArr = Object.values(combinedUsers);
+
+    // 1. عرض قائمة المحظورين
+    if (banBox) {
+      const bannedList = usersArr.filter(u => !!u.isBanned);
+      if (bannedList.length === 0) {
+        banBox.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:4px;">لا يوجد لاعبون محظورون حالياً ✅</div>';
+      } else {
+        banBox.innerHTML = bannedList.map(u => `
+          <div class="admin-sub-item">
+            <div style="min-width:0; flex:1;">
+              <strong style="color:#fff;">${escapeHtml(u.username || u.key)}</strong>
+              <span class="uid-badge" style="font-size:0.6rem; padding:1px 4px;">#${u.numericId || '0000000'}</span>
+              <div style="font-size:0.63rem; color:#f87171;">${escapeHtml(u.banReason || 'محظور')}</div>
+            </div>
+            <button type="button" class="btn-primary" style="width:auto; padding:4px 8px; font-size:0.66rem; background:var(--green); color:#000;" onclick="adminQuickBanAction('${escapeHtml(u.key)}', false)">فك الحظر 🔓</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    // 2. عرض قائمة الموثقين وتجار VIP 6+
+    if (verBox) {
+      const tradersList = usersArr.filter(u => (u.vip || 0) >= 6 || !!u.traderStarGrantedByAdmin || !!u.traderStarRevoked);
+      if (tradersList.length === 0) {
+        verBox.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:4px;">لا يوجد تجار VIP 6+ أو موثقون حالياً. يمكنك منح النجمة لأي لاعب من الحقل أعلاه 🌟</div>';
+      } else {
+        verBox.innerHTML = tradersList.map(u => {
+          const activeStar = isPlayerVerifiedTrader(u);
+          return `
+            <div class="admin-sub-item">
+              <div style="min-width:0; flex:1;">
+                <strong style="color:var(--gold);">${escapeHtml(u.username || u.key)}</strong>
+                <span class="uid-badge" style="font-size:0.6rem; padding:1px 4px;">#${u.numericId || '0000000'}</span>
+                <span style="font-size:0.64rem; color:#38bdf8;">[VIP ${u.vip || 0}]</span>
+                <div style="font-size:0.63rem; color:${activeStar ? '#34d399' : '#f87171'};">
+                  ${activeStar ? '🌟 نجمة التوثيق مفعلة' : '🚫 نجمة التوثيق مسحوبة'}
+                </div>
+              </div>
+              ${activeStar
+                ? `<button type="button" class="btn-primary" style="width:auto; padding:4px 8px; font-size:0.66rem; background:#be123c; color:#fff;" onclick="adminQuickStarAction('${escapeHtml(u.key)}', false)">سحب النجمة 🚫</button>`
+                : `<button type="button" class="btn-primary" style="width:auto; padding:4px 8px; font-size:0.66rem; background:var(--gold); color:#000;" onclick="adminQuickStarAction('${escapeHtml(u.key)}', true)">منح النجمة 🌟</button>`
+              }
+            </div>
+          `;
+        }).join('');
+      }
+    }
+  }
+
+  async function adminQuickBanAction(targetKey, isBanned) {
+    document.getElementById('adminBanTarget').value = targetKey;
+    await adminSetBan(isBanned);
+  }
+
+  async function adminQuickStarAction(targetKey, grantStar) {
+    document.getElementById('adminVerifyTarget').value = targetKey;
+    await adminToggleTraderStar(grantStar);
   }
 
   // ميزة الحظر وفك الحظر المباشرة من لوحة الأدمن
   async function adminSetBan(isBanned) {
-    if (!currentUser || !currentUser.isAdmin) return;
+    if (!verifyStrictAdminAccess()) return;
     const target = document.getElementById('adminBanTarget').value.trim();
     if (!target) { showToast('أدخل اسم اللاعب أو المعرف الرقمي!', '#ef4444'); return; }
 
-    let targetKey = target.replace(/[.#$[\]\s]/g, '_');
-    if (db) {
-      if (/^\d{7}$/.test(target)) {
-        const idSnap = await dbOnceWithTimeout('id_to_user/' + target);
-        if (idSnap && idSnap.exists()) targetKey = idSnap.val();
-      }
-      await dbWriteWithTimeout(db.ref('users/' + targetKey).update({
-        isBanned: isBanned,
-        banReason: isBanned ? 'حظر بواسطة الأدمن لمخالفة سياسات اللعب النظيف' : ''
-      }));
-      showToast(isBanned ? `🔒 تم حظر الحساب ${targetKey} بنجاح!` : `🔓 تم فك الحظر عن الحساب ${targetKey}!`);
+    const targetKey = await resolveAdminTargetUserKey(target);
+    if (!targetKey || targetKey === 'admin') {
+      showToast('⚠️ لا يمكن تطبيق هذا الإجراء على هذا الحساب!', '#ef4444');
+      return;
     }
+
+    const banUpdates = {
+      isBanned: isBanned,
+      banReason: isBanned ? 'حظر بواسطة الأدمن لمخالفة سياسات اللعب النظيف' : ''
+    };
+
+    if (db) {
+      await dbWriteWithTimeout(db.ref('users/' + targetKey).update(banUpdates));
+    }
+
+    const localRaw = safeStorageGet('royal_pro_' + targetKey);
+    if (localRaw) {
+      try {
+        const parsed = JSON.parse(localRaw);
+        parsed.isBanned = isBanned;
+        parsed.banReason = banUpdates.banReason;
+        safeStorageSet('royal_pro_' + targetKey, JSON.stringify(parsed));
+      } catch (e) {}
+    }
+
+    showToast(isBanned ? `🔒 تم حظر الحساب (${targetKey}) بنجاح!` : `🔓 تم فك الحظر عن الحساب (${targetKey})!`);
+    loadAdminBannedAndVerifiedLists();
   }
 
   // ميزة منح أو سحب نجمة التوثيق (صلاحية التجار VIP 6+) من لوحة التحكم
   async function adminToggleTraderStar(grantStar) {
-    if (!currentUser || !currentUser.isAdmin) return;
+    if (!verifyStrictAdminAccess()) return;
     const target = document.getElementById('adminVerifyTarget').value.trim();
     if (!target) { showToast('أدخل اسم اللاعب أو المعرف الرقمي!', '#ef4444'); return; }
 
-    let targetKey = target.replace(/[.#$[\]\s]/g, '_');
+    const targetKey = await resolveAdminTargetUserKey(target);
+    if (!targetKey) return;
+
+    const updates = {
+      traderStarRevoked: !grantStar,
+      traderStarGrantedByAdmin: !!grantStar
+    };
+    if (!grantStar) {
+      updates.traderPhone = '';
+      updates.traderTelegram = '';
+      updates.traderOffer = '';
+    }
+
     if (db) {
-      if (/^\d{7}$/.test(target)) {
-        const idSnap = await dbOnceWithTimeout('id_to_user/' + target);
-        if (idSnap && idSnap.exists()) targetKey = idSnap.val();
-      }
-      const updates = {
-        traderStarRevoked: !grantStar
-      };
-      if (!grantStar) {
-        updates.traderPhone = '';
-        updates.traderTelegram = '';
-        updates.traderOffer = '';
+      const snap = await dbOnceWithTimeout('users/' + targetKey);
+      if (snap && snap.exists()) {
+        const curVip = snap.val().vip || 0;
+        if (grantStar && curVip < 6) {
+          updates.vip = 6;
+        }
       }
       await dbWriteWithTimeout(db.ref('users/' + targetKey).update(updates));
     }
@@ -5763,6 +6162,10 @@
       try {
         const parsed = JSON.parse(localRaw);
         parsed.traderStarRevoked = !grantStar;
+        parsed.traderStarGrantedByAdmin = !!grantStar;
+        if (grantStar && (parsed.vip || 0) < 6) {
+          parsed.vip = 6;
+        }
         if (!grantStar) {
           parsed.traderPhone = '';
           parsed.traderTelegram = '';
@@ -5773,8 +6176,9 @@
     }
 
     showToast(grantStar
-      ? `🌟 تم منح وتفعيل نجمة التوثيق للاعب (${targetKey})!`
+      ? `🌟 تم منح وتفعيل نجمة التوثيق (VIP 6+) للاعب (${targetKey})!`
       : `🚫 تم سحب نجمة التوثيق وإلغاء خاصية عرض التواصل والبيع من (${targetKey})!`);
+    loadAdminBannedAndVerifiedLists();
   }
 
   function loadAdminPendingStoreOrders() {
