@@ -1,9 +1,9 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="referrer" content="no-referrer">
   <title>اساطير رويل</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -2770,17 +2770,23 @@
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
   }
 
-  function handleGameImgError(imgEl, fallbackIcon) {
-    if (!imgEl || imgEl.dataset.fallbackApplied) return;
-    imgEl.dataset.fallbackApplied = '1';
-    imgEl.src = buildFallbackSvgDataUri(fallbackIcon || '👑');
+  function handleGameImgError(imgEl) {
+    if (!imgEl) return;
+    const origSrc = imgEl.getAttribute('data-orig-src') || imgEl.src;
+    const retries = parseInt(imgEl.getAttribute('data-retries') || '0', 10);
+    if (retries < 3 && origSrc && origSrc.startsWith('http')) {
+      imgEl.setAttribute('data-retries', (retries + 1).toString());
+      imgEl.setAttribute('data-orig-src', origSrc);
+      setTimeout(() => {
+        imgEl.src = origSrc + (origSrc.includes('?') ? '&' : '?') + 'r=' + (retries + 1);
+      }, 400 * (retries + 1));
+    }
   }
 
   function preloadAllCatalogImages() {
     GAMES_CATALOG.forEach(g => {
       if (g.bgImg) {
         const im = new Image();
-        im.referrerPolicy = 'no-referrer';
         im.src = g.bgImg;
         _preloadedGameImages[g.bgImg] = im;
       }
@@ -2788,7 +2794,6 @@
         g.syms.forEach(s => {
           if (s && s.startsWith('http')) {
             const im = new Image();
-            im.referrerPolicy = 'no-referrer';
             im.src = s;
             _preloadedGameImages[s] = im;
           }
@@ -2800,7 +2805,7 @@
   function renderStoneSymbolHtml(sym) {
     if (!sym) return '';
     if (sym.startsWith('http://') || sym.startsWith('https://') || sym.startsWith('data:image')) {
-      return `<img class="stone-fit-img" src="${sym}" referrerpolicy="no-referrer" loading="eager" onerror="handleGameImgError(this, '💎')" alt="sym">`;
+      return `<img class="stone-fit-img" src="${sym}" data-orig-src="${sym}" onerror="handleGameImgError(this)" alt="sym">`;
     }
     return `<span>${sym}</span>`;
   }
@@ -2810,7 +2815,7 @@
       return `
         <div class="game-card" style="background:${g.bg};" onclick="openGame('${g.id}')">
           <div class="game-card-bg-blur" style="background-image:url('${g.bgImg}');"></div>
-          <img class="game-card-fit-img" src="${g.bgImg}" referrerpolicy="no-referrer" loading="eager" onerror="handleGameImgError(this, '${g.icon || '👑'}')" alt="${g.title}">
+          <img class="game-card-fit-img" src="${g.bgImg}" data-orig-src="${g.bgImg}" onerror="handleGameImgError(this)" alt="${g.title}">
           <div class="game-card-overlay">
             <div class="game-card-title">${g.title}</div>
           </div>
@@ -3977,7 +3982,7 @@
     if (!overlay || !gameObj) return;
 
     if (gameObj.bgImg) {
-      thumb.innerHTML = `<img src="${gameObj.bgImg}" referrerpolicy="no-referrer" onerror="handleGameImgError(this, '${gameObj.icon || '👑'}')">`;
+      thumb.innerHTML = `<img src="${gameObj.bgImg}" onerror="handleGameImgError(this)">`;
     } else {
       thumb.innerHTML = `<span>${gameObj.icon || '👑'}</span>`;
     }
@@ -4297,7 +4302,7 @@
         if (cell) {
           cell.className = 'stone-cell king-full-column';
           if (kingImgUrl && kingImgUrl.startsWith('http')) {
-            cell.innerHTML = `<img class="stone-fit-img" src="${kingImgUrl}" referrerpolicy="no-referrer" onerror="handleGameImgError(this, '👑')"><span style="position:absolute; bottom:1px; font-size:0.5rem; background:#fde047; color:#000; font-weight:900; padding:0 3px; border-radius:4px;">SCATTER</span>`;
+            cell.innerHTML = `<img class="stone-fit-img" src="${kingImgUrl}" onerror="handleGameImgError(this)"><span style="position:absolute; bottom:1px; font-size:0.5rem; background:#fde047; color:#000; font-weight:900; padding:0 3px; border-radius:4px;">SCATTER</span>`;
           } else {
             cell.innerHTML = '👑';
           }
@@ -4321,7 +4326,7 @@
       if (kingImgUrl && kingImgUrl.startsWith('http')) {
         rowEl.innerHTML = [0, 1, 2, 3].map(() => `
           <div style="width:62px; height:62px; border-radius:12px; border:2px solid #fde047; overflow:hidden; box-shadow:0 0 15px #ef4444; background:#090d1a;">
-            <img src="${kingImgUrl}" referrerpolicy="no-referrer" style="width:100%; height:100%; object-fit:contain;" onerror="handleGameImgError(this, '👑')">
+            <img src="${kingImgUrl}" style="width:100%; height:100%; object-fit:contain;" onerror="handleGameImgError(this)">
           </div>
         `).join('');
       } else {
