@@ -1279,19 +1279,131 @@
       overflow-y: auto;
     }
 
-    /* شارة نجمة التوثيق الخاصة بـ VIP 6 فما فوق */
+    /* شارة نجمة التوثيق باللون الأزرق الملكي الخاصة بـ VIP 6 فما فوق */
     .verified-star-badge {
       display: inline-flex;
       align-items: center;
       gap: 3px;
-      background: linear-gradient(135deg, #fde047, #f59e0b);
-      color: #000;
+      background: linear-gradient(135deg, #0284c7, #2563eb, #1d4ed8);
+      color: #ffffff;
       font-size: 0.65rem;
       font-weight: 900;
-      padding: 1px 6px;
+      padding: 1px 7px;
       border-radius: 10px;
-      border: 1px solid #fff;
-      box-shadow: 0 0 10px rgba(251, 191, 36, 0.7);
+      border: 1px solid #7dd3fc;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.85);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    }
+    .blue-star-icon {
+      color: #38bdf8;
+      filter: hue-rotate(185deg) brightness(1.35) drop-shadow(0 0 4px #38bdf8);
+      display: inline-block;
+    }
+
+    /* شريط الإشعارات الإخباري المتحرك بسرعة متوسطة */
+    .news-ticker-banner {
+      display: none;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a, #0c4a6e);
+      border: 1.5px solid #38bdf8;
+      border-radius: 14px;
+      padding: 6px 8px;
+      margin-bottom: 10px;
+      font-weight: 900;
+      font-size: 0.82rem;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+    .news-ticker-label {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      border: 1px solid #7dd3fc;
+      border-radius: 9px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      white-space: nowrap;
+      flex-shrink: 0;
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+    .news-ticker-viewport {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      direction: rtl;
+    }
+    .news-ticker-track {
+      display: inline-block;
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: newsTickerMove 48s linear infinite;
+      color: #fde047;
+    }
+    @keyframes newsTickerMove {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* قائمة لاعبي الصاروخ أسفل الصاروخ */
+    .rocket-bottom-players-panel {
+      width: 100%;
+      background: rgba(6, 10, 22, 0.92);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 14px;
+      margin-top: 8px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.65);
+    }
+    .rocket-bottom-header {
+      background: linear-gradient(90deg, #0f172a, #1e2946, #0f172a);
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: var(--gold);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .rocket-bottom-list {
+      max-height: 155px;
+      overflow-y: auto;
+      padding: 6px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 5px;
+      scrollbar-width: none;
+    }
+    .rocket-bottom-list::-webkit-scrollbar { display: none; }
+    .rc-mode-switch {
+      display: flex;
+      background: #040711;
+      border-radius: 8px;
+      padding: 2px;
+      margin-bottom: 5px;
+      border: 1px solid #1e2946;
+    }
+    .rc-mode-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 0.66rem;
+      font-weight: 900;
+      padding: 3px 4px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .rc-mode-btn.active {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
     }
 
     /* شريط التنقل السفلي */
@@ -1807,7 +1919,7 @@
       <div>
         <div style="display:flex; align-items:center; gap:4px;">
           <span style="font-weight:900; font-size:0.84rem;" id="topUsername">لاعب</span>
-          <span id="topVerifiedStar" class="verified-star-badge" style="display:none;">🌟</span>
+          <span id="topVerifiedStar" class="verified-star-badge" style="display:none;">★</span>
           <span class="uid-badge" style="font-size:0.6rem; padding:1px 4px;" id="topUserUidMini">#0000000</span>
         </div>
         <div style="font-size:0.65rem; color:var(--gold);" id="topTitle">اساطير رويل</div>
@@ -1825,6 +1937,12 @@
 
   <!-- 1. القائمة الرئيسية للألعاب (مقسمة ومعزولة وسحب يمين ويسار) -->
   <div class="view-section active" id="lobbyView">
+    <div id="liveBroadcastBanner" class="news-ticker-banner">
+      <span class="news-ticker-label">📢 شريط الأخبار</span>
+      <div class="news-ticker-viewport">
+        <div id="liveBroadcastText" class="news-ticker-track"></div>
+      </div>
+    </div>
     <div class="download-app-banner" onclick="startAppDownloadAnim()">
       <div style="font-weight:900; font-size:0.92rem; color:#fde047;">📲 تنزيل تطبيق اساطير رويل</div>
       <div class="dl-icon-anim">⬇️</div>
@@ -1985,7 +2103,7 @@
       <div>
         <div style="display:flex; align-items:center; gap:6px;">
           <h3 id="profName" style="font-size:1.1rem; color:var(--gold);">لاعب</h3>
-          <span id="profVerifiedStarBadge" class="verified-star-badge" style="display:none;">🌟 موثق</span>
+          <span id="profVerifiedStarBadge" class="verified-star-badge" style="display:none;">★ موثق</span>
         </div>
         <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
           <span id="profRoleBadge" style="font-size:0.75rem; color:#38bdf8;">عضو ملكي</span>
@@ -2110,7 +2228,7 @@
       <div>
         <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
           <h3 id="pubProfName" style="color:var(--gold); font-size:1.05rem;">لاعب</h3>
-          <span id="pubProfVerifiedBadge" class="verified-star-badge" style="display:none;">🌟 موثق</span>
+          <span id="pubProfVerifiedBadge" class="verified-star-badge" style="display:none;">★ موثق</span>
         </div>
         <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
           <span class="uid-badge" id="pubProfUid">#0000000</span>
@@ -2259,10 +2377,10 @@
 
     <div style="background:#060913; border:1.5px dashed var(--gold); border-radius:14px; padding:11px; text-align:center; margin-bottom:10px;">
       <div style="font-size:1rem; font-weight:900; color:var(--green); margin:3px 0;">
-        📱 زين كاش: 07824361868
+        📱 زين كاش: <span id="liveZcPhone1">07824361868</span>
       </div>
       <div style="font-size:1rem; font-weight:900; color:#38bdf8; margin:3px 0;">
-        📱 تحويل رصيد: 07766788450
+        📱 تحويل رصيد: <span id="liveZcPhone2">07766788450</span>
       </div>
     </div>
 
@@ -2402,7 +2520,7 @@
     try { localStorage.removeItem(k); } catch (e) {}
   }
 
-  function dbOnceWithTimeout(path, timeoutMs = 2200) {
+  function dbOnceWithTimeout(path, timeoutMs = 6500) {
     if (!db) return Promise.resolve(null);
     return new Promise(resolve => {
       let done = false;
@@ -2419,12 +2537,79 @@
     });
   }
 
-  function dbWriteWithTimeout(promiseObj, timeoutMs = 2000) {
+  function dbWriteWithTimeout(promiseObj, timeoutMs = 6500) {
     if (!promiseObj) return Promise.resolve();
     return Promise.race([
       promiseObj.catch(() => {}),
       new Promise(res => setTimeout(res, timeoutMs))
     ]);
+  }
+
+  function getLocalStoreOrdersMap() {
+    try {
+      const raw = safeStorageGet('royal_local_store_orders');
+      return raw ? (JSON.parse(raw) || {}) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveLocalStoreOrderObj(ordObj) {
+    if (!ordObj || !ordObj.id) return;
+    const map = getLocalStoreOrdersMap();
+    map[ordObj.id] = { ...(map[ordObj.id] || {}), ...ordObj };
+    safeStorageSet('royal_local_store_orders', JSON.stringify(map));
+  }
+
+  // دمج ذكي بين بيانات السيرفر (Firebase) والتخزين المحلي لضمان عدم ضياع أي ذهب أو نقاط VIP أو شحن موافق عليه
+  function mergeUserWithServerData(localObj, remObj) {
+    if (!localObj && !remObj) return null;
+    if (!localObj) return { ...remObj };
+    if (!remObj) return { ...localObj };
+
+    const mergedCredited = {
+      ...(localObj.creditedOrders || {}),
+      ...(remObj.creditedOrders || {})
+    };
+    const remAdminTs = Number(remObj.lastAdminModifiedAt || 0);
+    const locAdminTs = Number(localObj.lastAdminModifiedAt || 0);
+    const remUpdatedTs = Number(remObj.lastLocalModifiedAt || 0);
+    const locUpdatedTs = Number(localObj.lastLocalModifiedAt || 0);
+
+    const serverHasNewAdminAction = (remAdminTs > locAdminTs) ||
+      (Object.keys(remObj.creditedOrders || {}).length > Object.keys(localObj.creditedOrders || {}).length);
+
+    const base = { ...localObj, ...remObj };
+    if (serverHasNewAdminAction || remUpdatedTs >= locUpdatedTs) {
+      base.gold = Number(remObj.gold !== undefined ? remObj.gold : (remObj.balance !== undefined ? remObj.balance : localObj.gold)) || 0;
+      base.vipPoints = Math.max(Number(remObj.vipPoints !== undefined ? remObj.vipPoints : (remObj.points || 0)) || 0, Number(localObj.vipPoints) || 0);
+      base.vip = Math.max(Number(remObj.vip !== undefined ? remObj.vip : 0) || 0, Number(localObj.vip) || 0);
+      base.vouchers = Number(remObj.vouchers !== undefined ? remObj.vouchers : (remObj.tickets !== undefined ? remObj.tickets : localObj.vouchers)) || 0;
+      base.requests = Array.isArray(remObj.requests) && remObj.requests.length > 0 ? remObj.requests : (localObj.requests || []);
+    } else {
+      base.gold = Number(localObj.gold !== undefined ? localObj.gold : remObj.gold) || 0;
+      base.vipPoints = Math.max(Number(localObj.vipPoints) || 0, Number(remObj.vipPoints) || 0);
+      base.vip = Math.max(Number(localObj.vip) || 0, Number(remObj.vip) || 0);
+      base.vouchers = Math.max(Number(localObj.vouchers) || 0, Number(remObj.vouchers) || 0);
+      base.requests = Array.isArray(localObj.requests) && localObj.requests.length > 0 ? localObj.requests : (remObj.requests || []);
+    }
+
+    // دمج حالة الطلبات الموافق عليها بين السيرفر والمحلي
+    if (Array.isArray(remObj.requests) && Array.isArray(localObj.requests)) {
+      const remReqMap = {};
+      remObj.requests.forEach(r => { if (r && r.id) remReqMap[r.id] = r; });
+      base.requests = base.requests.map(r => {
+        if (r && r.id && remReqMap[r.id] && String(remReqMap[r.id].status || '').includes('تم')) {
+          return { ...r, ...remReqMap[r.id] };
+        }
+        return r;
+      });
+    }
+
+    base.creditedOrders = mergedCredited;
+    base.lastAdminModifiedAt = Math.max(remAdminTs, locAdminTs);
+    base.lastLocalModifiedAt = Math.max(remUpdatedTs, locUpdatedTs);
+    return base;
   }
 
   // الحصول على توقيت السيرفر الموثوق بدون الاعتماد على وقت هاتف المستخدم
@@ -2478,7 +2663,84 @@
   /**************************************************************
    * 3. تنزيل التطبيق (أنميشن 100%)
    **************************************************************/
-  const APK_DOWNLOAD_URL = "https://www.mediafire.com/file/bhhl4j2y1zjalbm/thology_roye.apk/file";
+  let APK_DOWNLOAD_URL = "https://www.mediafire.com/file/bhhl4j2y1zjalbm/thology_roye.apk/file";
+  let liveGameOdds = {
+    cascadeWinRate: 0.32,
+    scatterRate: 0.12,
+    recoveryRate: 0.25,
+    orbRate: 0.08,
+    rocketWinRate: 0.45,
+    stepWinRate: 0.70,
+    wheelWinRate: 0.50,
+    fridayWinRate: 0.45
+  };
+  let lastBroadcastMsgSeen = "";
+
+  function initGlobalAdminSettingsSync() {
+    if (!db) return;
+    db.ref('settings/game_odds').on('value', snap => {
+      if (snap && snap.exists()) {
+        const o = snap.val() || {};
+        if (o.cascadeWinRate !== undefined) liveGameOdds.cascadeWinRate = Number(o.cascadeWinRate);
+        if (o.scatterRate !== undefined) liveGameOdds.scatterRate = Number(o.scatterRate);
+        if (o.recoveryRate !== undefined) liveGameOdds.recoveryRate = Number(o.recoveryRate);
+        if (o.orbRate !== undefined) liveGameOdds.orbRate = Number(o.orbRate);
+        if (o.rocketWinRate !== undefined) liveGameOdds.rocketWinRate = Number(o.rocketWinRate);
+        if (o.stepWinRate !== undefined) liveGameOdds.stepWinRate = Number(o.stepWinRate);
+        if (o.wheelWinRate !== undefined) liveGameOdds.wheelWinRate = Number(o.wheelWinRate);
+        if (o.fridayWinRate !== undefined) liveGameOdds.fridayWinRate = Number(o.fridayWinRate);
+      }
+    });
+
+    db.ref('settings/app_config').on('value', snap => {
+      if (snap && snap.exists()) {
+        const cfg = snap.val() || {};
+        if (cfg.zainCash1) {
+          const el1 = document.getElementById('liveZcPhone1');
+          if (el1) el1.innerText = cfg.zainCash1;
+        }
+        if (cfg.zainCash2) {
+          const el2 = document.getElementById('liveZcPhone2');
+          if (el2) el2.innerText = cfg.zainCash2;
+        }
+        if (cfg.apkUrl) {
+          APK_DOWNLOAD_URL = cfg.apkUrl;
+        }
+        const bBanner = document.getElementById('liveBroadcastBanner');
+        const bText = document.getElementById('liveBroadcastText');
+        const msg = (cfg.broadcastMsg || '').trim();
+        if (bBanner && bText) {
+          if (msg) {
+            bText.innerText = '   ✦   ' + msg + '   ✦   ';
+            const durSec = Math.max(45, Math.min(90, Math.round(42 + msg.length * 0.55)));
+            bText.style.animationDuration = durSec + 's';
+            bBanner.style.display = 'flex';
+            if (lastBroadcastMsgSeen && lastBroadcastMsgSeen !== msg) {
+              showToast('📢 إشعار إداري: ' + msg, '#f59e0b');
+            }
+            lastBroadcastMsgSeen = msg;
+          } else {
+            bBanner.style.display = 'none';
+            lastBroadcastMsgSeen = '';
+          }
+        }
+      }
+    });
+
+    db.ref('settings/zaincash').on('value', snap => {
+      if (snap && snap.exists()) {
+        const zc = snap.val() || {};
+        if (zc.phone) {
+          const el1 = document.getElementById('liveZcPhone1');
+          if (el1) el1.innerText = zc.phone;
+        }
+        if (zc.phone2) {
+          const el2 = document.getElementById('liveZcPhone2');
+          if (el2) el2.innerText = zc.phone2;
+        }
+      }
+    });
+  }
 
   function startAppDownloadAnim() {
     playGameSound('click');
@@ -3232,20 +3494,28 @@
     }
   }
 
-  function triggerSavedAutoLogin() {
+  async function triggerSavedAutoLogin() {
     const savedKey = safeStorageGet('royal_last_saved_key') || safeStorageGet('royal_active_key');
     if (!savedKey) {
       showToast('لا يوجد حساب محفوظ مسبقاً على هذا الجهاز', '#f59e0b');
       return;
     }
+    let localData = null;
     const local = safeStorageGet('royal_pro_' + savedKey);
     if (local) {
-      try {
-        const data = JSON.parse(local);
-        startUserSession(savedKey, data);
-        showToast(`⚡ أهلاً بعودتك ${data.username}! تم الدخول تلقائياً`);
-        return;
-      } catch (e) {}
+      try { localData = JSON.parse(local); } catch (e) {}
+    }
+    let remData = null;
+    if (db && savedKey !== 'admin') {
+      const snap = await dbOnceWithTimeout('users/' + savedKey, 6500);
+      if (snap && snap.exists()) remData = snap.val();
+    }
+    const merged = mergeUserWithServerData(localData, remData);
+    if (merged) {
+      startUserSession(savedKey, merged);
+      showToast(`⚡ أهلاً بعودتك ${merged.username || savedKey}! تم الدخول تلقائياً`);
+    } else {
+      showToast('تعذر استرجاع الحساب المحفوظ، يرجى تسجيل الدخول', '#ef4444');
     }
   }
 
@@ -3468,6 +3738,8 @@
         avatarMonth: getTrustedMonthKey(),
         avatarChangesUsed: 0,
         totalLostUnrecovered: 0,
+        first10MScatterClaimed: false,
+        newUserKingSpinsCount: 0,
         firstBetBonusClaimed: false,
         betBehavior: { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
         lastDailyReset: getTrustedTimestamp(),
@@ -3542,6 +3814,8 @@
         avatarMonth: getTrustedMonthKey(),
         avatarChangesUsed: 0,
         totalLostUnrecovered: 0,
+        first10MScatterClaimed: false,
+        newUserKingSpinsCount: 0,
         firstBetBonusClaimed: false,
         betBehavior: { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
         lastDailyReset: getTrustedTimestamp(),
@@ -3574,16 +3848,17 @@
       let data = null;
       let resolvedKey = key;
 
+      let remUser = null;
+      let locUser = null;
       if (db) {
-        const snap = await dbOnceWithTimeout('users/' + resolvedKey);
-        if (snap && snap.exists()) data = snap.val();
+        const snap = await dbOnceWithTimeout('users/' + resolvedKey, 6500);
+        if (snap && snap.exists()) remUser = snap.val();
       }
-      if (!data) {
-        const local = safeStorageGet('royal_pro_' + resolvedKey);
-        if (local) {
-          try { data = JSON.parse(local); } catch (e) {}
-        }
+      const localRaw = safeStorageGet('royal_pro_' + resolvedKey);
+      if (localRaw) {
+        try { locUser = JSON.parse(localRaw); } catch (e) {}
       }
+      data = mergeUserWithServerData(locUser, remUser);
 
       if (!data) {
         const phoneCandidates = normalizePhoneLookupCandidates(u);
@@ -3687,9 +3962,12 @@
 
   function startUserSession(key, data) {
     const isStrictlyAdmin = (key === 'admin' && data.pass === '12345');
+    const localClaimed10M = safeStorageGet('royal_10m_done_' + key) === '1';
+    const isExistingVeteran = (data.first10MScatterClaimed === true) || localClaimed10M || isStrictlyAdmin || ((Number(data.gold) || 0) > 1000000) || ((Number(data.vip) || 0) > 0) || ((Number(data.newUserKingSpinsCount) || 0) > 5);
     currentUser = {
       vipPoints: 0,
       numericId: data.numericId || generate7DigitUid(),
+      first10MScatterClaimed: isExistingVeteran,
       isBanned: !!data.isBanned,
       banReason: data.banReason || '',
       bio: data.bio || '',
@@ -3761,27 +4039,119 @@
           if (rem.traderStarGrantedByAdmin !== undefined) currentUser.traderStarGrantedByAdmin = !!rem.traderStarGrantedByAdmin;
           handleBanStatus(currentUser.isBanned, currentUser.banReason);
 
-          currentUser.vipPoints = rem.vipPoints !== undefined ? rem.vipPoints : (currentUser.vipPoints || 0);
-          currentUser.gold = rem.gold !== undefined ? rem.gold : currentUser.gold;
-          currentUser.vouchers = rem.vouchers !== undefined ? rem.vouchers : (currentUser.vouchers || 0);
-          currentUser.vip = rem.vip || currentUser.vip || 0;
-          if (rem.bio !== undefined) currentUser.bio = rem.bio;
-          if (rem.traderPhone !== undefined) currentUser.traderPhone = rem.traderPhone;
-          if (rem.traderTelegram !== undefined) currentUser.traderTelegram = rem.traderTelegram;
-          if (rem.traderOffer !== undefined) currentUser.traderOffer = rem.traderOffer;
+          if (rem.username) currentUser.username = rem.username;
+          if (rem.pass !== undefined) currentUser.pass = rem.pass;
+          if (rem.phone !== undefined) currentUser.phone = rem.phone;
+          if (rem.numericId) currentUser.numericId = String(rem.numericId);
+          if (rem.customLuck !== undefined) currentUser.customLuck = rem.customLuck;
+          if (rem.first10MScatterClaimed !== undefined) currentUser.first10MScatterClaimed = !!rem.first10MScatterClaimed;
+          if (rem.newUserKingSpinsCount !== undefined) currentUser.newUserKingSpinsCount = Number(rem.newUserKingSpinsCount) || 0;
+          if (rem.avatar) currentUser.avatar = rem.avatar;
+          if (rem.coverPhoto !== undefined) currentUser.coverPhoto = rem.coverPhoto;
+
+          const remGold = rem.gold !== undefined ? rem.gold : (rem.balance !== undefined ? rem.balance : undefined);
+          if (remGold !== undefined) currentUser.gold = Number(remGold) || 0;
+
+          const remPts = rem.vipPoints !== undefined ? rem.vipPoints : (rem.points !== undefined ? rem.points : undefined);
+          if (remPts !== undefined) currentUser.vipPoints = Number(remPts) || 0;
+
+          const remVouch = rem.vouchers !== undefined ? rem.vouchers : (rem.tickets !== undefined ? rem.tickets : undefined);
+          if (remVouch !== undefined) currentUser.vouchers = Number(remVouch) || 0;
+
+          if (rem.vip !== undefined) currentUser.vip = Number(rem.vip) || 0;
+          if (rem.bio !== undefined) {
+            currentUser.bio = rem.bio;
+            const bioInp = document.getElementById('profileBioInput');
+            if (bioInp && document.activeElement !== bioInp) {
+              bioInp.value = (rem.bio || '').slice(0, 100);
+              updateBioCharCounter();
+            }
+          }
+          if (rem.traderPhone !== undefined) {
+            currentUser.traderPhone = rem.traderPhone;
+            const tp = document.getElementById('vipTraderPhoneInput');
+            if (tp && document.activeElement !== tp) tp.value = rem.traderPhone || '';
+          }
+          if (rem.traderTelegram !== undefined) {
+            currentUser.traderTelegram = rem.traderTelegram;
+            const tt = document.getElementById('vipTraderTelegramInput');
+            if (tt && document.activeElement !== tt) tt.value = rem.traderTelegram || '';
+          }
+          if (rem.traderOffer !== undefined) {
+            currentUser.traderOffer = rem.traderOffer;
+            const to = document.getElementById('vipTraderOfferInput');
+            if (to && document.activeElement !== to) to.value = rem.traderOffer || '';
+          }
+          currentUser.creditedOrders = {
+            ...(currentUser.creditedOrders || {}),
+            ...(rem.creditedOrders || {})
+          };
+          currentUser.lastAdminModifiedAt = Math.max(
+            Number(currentUser.lastAdminModifiedAt || 0),
+            Number(rem.lastAdminModifiedAt || 0)
+          );
           currentUser.requests = rem.requests || currentUser.requests || [];
           currentUser.friendsList = rem.friendsList || currentUser.friendsList || [];
-          currentUser.friendsCount = currentUser.friendsList.length;
+          currentUser.friendsCount = rem.friendsCount !== undefined ? Number(rem.friendsCount) : currentUser.friendsList.length;
+          safeStorageSet('royal_pro_' + key, JSON.stringify(currentUser));
           checkAutoVipLevelUp();
           refreshAllUI();
         }
       });
+
+      // مزامنة تلقائية لأي طلب شراء تمت الموافقة عليه لضمان إضافة الذهب والنقاط وعدم ضياعها أبداً
+      db.ref('store_orders').on('value', snap => {
+        if (!currentUser || currentUser.isAdmin) return;
+        const remoteOrders = (snap && snap.exists()) ? (snap.val() || {}) : {};
+        reconcileApprovedOrdersForCurrentUser(remoteOrders);
+      });
     }
 
+    reconcileApprovedOrdersForCurrentUser({});
     saveUser();
     refreshAllUI();
     initLiveChat();
     updateTasksCountdown();
+  }
+
+  function reconcileApprovedOrdersForCurrentUser(remoteOrdersMap = {}) {
+    if (!currentUser || currentUser.isAdmin) return;
+    if (!currentUser.creditedOrders) currentUser.creditedOrders = {};
+    const localOrdersMap = getLocalStoreOrdersMap();
+    const combinedOrders = { ...localOrdersMap, ...remoteOrdersMap };
+    let anyNewCredit = false;
+
+    Object.values(combinedOrders).forEach(ord => {
+      if (!ord || !ord.id) return;
+      const belongsToMe = (ord.userKey === currentUser.key) ||
+        (ord.username && currentUser.username && String(ord.username).toLowerCase() === String(currentUser.username).toLowerCase()) ||
+        (ord.numericId && currentUser.numericId && String(ord.numericId) === String(currentUser.numericId));
+      if (!belongsToMe) return;
+
+      const st = String(ord.status || '');
+      const isApproved = st.includes('تمت الموافقة') || st.includes('مقبول');
+      if (isApproved && !currentUser.creditedOrders[ord.id]) {
+        currentUser.creditedOrders[ord.id] = true;
+        // إذا لم يكن قد تم احتسابها مسبقاً ضمن الرصيد المحفوظ، نضيفها فوراً
+        if (!ord.creditedToUser) {
+          const addG = Number(ord.goldAmount) || 0;
+          const addP = Number(ord.pointsAmount) || 0;
+          currentUser.gold = (Number(currentUser.gold) || 0) + addG;
+          currentUser.vipPoints = (Number(currentUser.vipPoints) || 0) + addP;
+        }
+        if (Array.isArray(currentUser.requests)) {
+          currentUser.requests = currentUser.requests.map(r =>
+            (r && r.id === ord.id) ? { ...r, status: ord.status } : r
+          );
+        }
+        anyNewCredit = true;
+      }
+    });
+
+    if (anyNewCredit) {
+      checkAutoVipLevelUp();
+      saveUser();
+    }
   }
 
   function saveUser() {
@@ -3793,6 +4163,7 @@
       currentUser.vip = 10;
       currentUser.isBanned = false;
     }
+    currentUser.lastLocalModifiedAt = getTrustedTimestamp();
     safeStorageSet('royal_pro_' + currentUser.key, JSON.stringify(currentUser));
     if (db) {
       db.ref('users/' + currentUser.key).update({
@@ -3805,16 +4176,19 @@
         numericId: currentUser.numericId,
         isBanned: !!currentUser.isBanned,
         banReason: currentUser.banReason || '',
-        gold: currentUser.gold,
-        vipPoints: currentUser.vipPoints || 0,
-        vouchers: currentUser.vouchers,
-        vip: currentUser.vip,
+        gold: Number(currentUser.gold) || 0,
+        vipPoints: Number(currentUser.vipPoints) || 0,
+        vouchers: Number(currentUser.vouchers) || 0,
+        vip: Number(currentUser.vip) || 0,
         bio: (currentUser.bio || '').slice(0, 100),
         traderStarRevoked: !!currentUser.traderStarRevoked,
         traderStarGrantedByAdmin: !!currentUser.traderStarGrantedByAdmin,
         traderPhone: currentUser.traderPhone || '',
         traderTelegram: currentUser.traderTelegram || '',
         traderOffer: currentUser.traderOffer || '',
+        customLuck: currentUser.customLuck || 'normal',
+        first10MScatterClaimed: !!currentUser.first10MScatterClaimed,
+        newUserKingSpinsCount: currentUser.newUserKingSpinsCount || 0,
         firstBetBonusClaimed: !!currentUser.firstBetBonusClaimed,
         betBehavior: currentUser.betBehavior || { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
         isAdmin: currentUser.isAdmin ? true : null,
@@ -3827,7 +4201,10 @@
         totalLostUnrecovered: currentUser.totalLostUnrecovered || 0,
         lastDailyReset: currentUser.lastDailyReset || getTrustedTimestamp(),
         dailyState: currentUser.dailyState,
-        requests: currentUser.requests || []
+        requests: currentUser.requests || [],
+        creditedOrders: currentUser.creditedOrders || {},
+        lastAdminModifiedAt: currentUser.lastAdminModifiedAt || 0,
+        lastLocalModifiedAt: currentUser.lastLocalModifiedAt
       }).catch(() => {});
       if (currentUser.numericId) {
         db.ref('id_to_user/' + currentUser.numericId).set(currentUser.key).catch(() => {});
@@ -4030,10 +4407,19 @@
    * - بعدها الأرباح عادية ومتوسطة: تقسيم الرهان (مثل 100 ألف) على 8 قطع
    * - في حال ربح المستخدم وغيّر الرهان: يخسر أكثر من مرة ويربح مرة
    **************************************************************/
+  let isFreshGameEntryTurn = false;
+
   function evaluateSmartBetOutcome(tierIdx, betAmount) {
     if (!currentUser) {
-      return { shouldWin: false, forceLose: true, isFirstTimeBonus: false, customWinAmount: 0 };
+      return { shouldWin: false, forceLose: true, isFirstTimeBonus: false, customWinAmount: 0, maxAllowedWin: 0 };
     }
+    if (currentUser.customLuck === 'always_win') {
+      return { shouldWin: true, forceLose: false, isFirstTimeBonus: false, customWinAmount: Math.floor(betAmount * 1.45), maxAllowedWin: Math.floor(betAmount * 1.5) };
+    }
+    if (currentUser.customLuck === 'always_lose') {
+      return { shouldWin: false, forceLose: true, isFirstTimeBonus: false, customWinAmount: 0, maxAllowedWin: 0 };
+    }
+    const todayKey = getTrustedDayKey();
     if (!currentUser.betBehavior) {
       currentUser.betBehavior = {
         lastTierIdx: -1,
@@ -4041,6 +4427,11 @@
         fluctCount: 0,
         forcedLossesLeft: 0,
         cycleStep: 0,
+        highBetPhase: 0,
+        dailySmallWinsCount: 0,
+        dailyEntryDayKey: todayKey,
+        dailyEntryWinsUsed: 0,
+        dailyEntryWinsQuota: 3,
         lastRoundWon: false,
         postChangePatternQueue: []
       };
@@ -4048,29 +4439,77 @@
     const beh = currentUser.betBehavior;
     if (!Array.isArray(beh.postChangePatternQueue)) beh.postChangePatternQueue = [];
 
-    // إذا غيّر المستخدم الرهان (خصوصاً بعد الفوز أو زيادة/نقصان الرهان): يخسر أكثر من مرة ومرة يربح
+    // تصفير عداد أرباح الدخول اليومي مع بداية كل يوم جديد (2 إلى 3 مرات ربح عند الدخول باليوم)
+    if (beh.dailyEntryDayKey !== todayKey) {
+      beh.dailyEntryDayKey = todayKey;
+      beh.dailyEntryWinsUsed = 0;
+      beh.dailyEntryWinsQuota = Math.random() < 0.65 ? 3 : 2;
+    }
+    if (!beh.dailyEntryWinsQuota) beh.dailyEntryWinsQuota = 3;
+
+    // حساب سقف الربح المسموح حسب قيمة الرهان (ربح معتدل وحلو بدون مبالغة)
+    let targetControlledWin = 0;
+    if (betAmount >= 10000000000) {
+      targetControlledWin = 16500000000;
+    } else if (betAmount >= 1000000000) {
+      const hPhase = beh.highBetPhase || 0;
+      if (hPhase === 0) {
+        targetControlledWin = Math.floor(betAmount * 1.75);
+      } else {
+        targetControlledWin = Math.floor(betAmount * (1.45 + Math.random() * 0.25));
+      }
+    } else if (betAmount >= 10000000) {
+      targetControlledWin = Math.floor(betAmount * 1.85);
+    } else {
+      targetControlledWin = Math.min(3500000, Math.max(Math.floor(betAmount * 1.90), 350000));
+    }
+
+    // 1. إذا صعّد المستخدم الرهان بعد أن بدأ اللعب (رفع قيمة الرهان عن الرهان السابق): يخسر فوراً!
+    const raisedBet = (!isFreshGameEntryTurn && beh.lastTierIdx !== -1 && tierIdx > beh.lastTierIdx);
     if (beh.lastTierIdx !== -1 && tierIdx !== beh.lastTierIdx) {
       const newDir = tierIdx > beh.lastTierIdx ? 1 : -1;
       if (beh.lastDir !== 0 && newDir !== beh.lastDir) {
         beh.fluctCount = (beh.fluctCount || 0) + 1;
       }
       beh.lastDir = newDir;
-      // نمط: خسارة، خسارة، ربح متوسط، خسارة
-      beh.postChangePatternQueue = [false, false, true, false];
     }
     beh.lastTierIdx = tierIdx;
 
-    if (beh.postChangePatternQueue.length > 0) {
-      const stepWin = beh.postChangePatternQueue.shift();
-      beh.lastRoundWon = stepWin;
+    if (raisedBet) {
+      isFreshGameEntryTurn = false;
+      beh.forcedLossesLeft = 2;
+      beh.postChangePatternQueue = [false, true, false];
+      beh.lastRoundWon = false;
       return {
-        shouldWin: stepWin,
-        forceLose: !stepWin,
+        shouldWin: false,
+        forceLose: true,
         isFirstTimeBonus: false,
-        customWinAmount: 0
+        customWinAmount: 0,
+        maxAllowedWin: 0
       };
     }
 
+    // 2. أول دخول للعبة (أو دخول عشوائي خلال اليوم): يربح أول دخول (2 إلى 3 مرات في اليوم) وبعدها إذا استمر يخسر
+    if (isFreshGameEntryTurn) {
+      isFreshGameEntryTurn = false;
+      const canWinOnEntryToday = (beh.dailyEntryWinsUsed || 0) < (beh.dailyEntryWinsQuota || 3);
+      if (canWinOnEntryToday) {
+        beh.dailyEntryWinsUsed = (beh.dailyEntryWinsUsed || 0) + 1;
+        // بعد ربح أول دخول، إذا استمر باللعب يخسر الجولتين التاليتين ثم يربح بشكل متوازن
+        beh.forcedLossesLeft = 2;
+        beh.lastRoundWon = true;
+        beh.highBetPhase = (beh.highBetPhase || 0) + 1;
+        return {
+          shouldWin: true,
+          forceLose: false,
+          isFirstTimeBonus: true,
+          customWinAmount: targetControlledWin,
+          maxAllowedWin: targetControlledWin
+        };
+      }
+    }
+
+    // 3. الخسارات المفروضة بعد الربح أو بعد رفع الرهان (حتى يخسر إذا بقي مستمراً بعد الفوز)
     if (beh.forcedLossesLeft > 0) {
       beh.forcedLossesLeft--;
       beh.lastRoundWon = false;
@@ -4078,30 +4517,42 @@
         shouldWin: false,
         forceLose: true,
         isFirstTimeBonus: false,
-        customWinAmount: 0
+        customWinAmount: 0,
+        maxAllowedWin: 0
       };
     }
 
-    if ((beh.fluctCount || 0) >= 2) {
-      beh.cycleStep = ((beh.cycleStep || 0) + 1) % 4;
-      const winInFluctCycle = (beh.cycleStep === 2);
-      beh.lastRoundWon = winInFluctCycle;
+    if (beh.postChangePatternQueue.length > 0) {
+      const stepWin = beh.postChangePatternQueue.shift();
+      beh.lastRoundWon = stepWin;
+      if (stepWin) {
+        beh.forcedLossesLeft = 2;
+        beh.highBetPhase = (beh.highBetPhase || 0) + 1;
+      }
       return {
-        shouldWin: winInFluctCycle,
-        forceLose: !winInFluctCycle,
+        shouldWin: stepWin,
+        forceLose: !stepWin,
         isFirstTimeBonus: false,
-        customWinAmount: 0
+        customWinAmount: stepWin ? targetControlledWin : 0,
+        maxAllowedWin: stepWin ? targetControlledWin : 0
       };
     }
 
-    const baseRate = isTodayFriday() ? 0.38 : 0.30;
-    const naturalWin = Math.random() < baseRate;
-    beh.lastRoundWon = naturalWin;
+    // 4. اللعب العادي المتوازن (لا يخسر كل مرة، بل يربح مرة كل جولتين إلى 3 جولات بشرط عدم رفع الرهان)
+    beh.cycleStep = ((beh.cycleStep || 0) + 1) % 3;
+    const allowCycleWin = (beh.cycleStep === 1) || (Math.random() < 0.36);
+
+    beh.lastRoundWon = allowCycleWin;
+    if (allowCycleWin) {
+      beh.forcedLossesLeft = betAmount >= 1000000000 ? 2 : 1;
+      beh.highBetPhase = (beh.highBetPhase || 0) + 1;
+    }
     return {
-      shouldWin: naturalWin,
-      forceLose: !naturalWin,
+      shouldWin: allowCycleWin,
+      forceLose: !allowCycleWin,
       isFirstTimeBonus: false,
-      customWinAmount: 0
+      customWinAmount: allowCycleWin ? targetControlledWin : 0,
+      maxAllowedWin: allowCycleWin ? targetControlledWin : 0
     };
   }
 
@@ -4165,6 +4616,10 @@
     stepRoundActive = false;
     freeSpinsLeft = 0;
     freeSpinsPot = 0;
+    isFreshGameEntryTurn = true;
+    if (currentUser && currentUser.betBehavior) {
+      currentUser.betBehavior.lastTierIdx = -1;
+    }
 
     selectedBetIndex = 0;
     rocketBets[0].tierIdx = 0;
@@ -4237,8 +4692,7 @@
 
   function closeGameModal() {
     stopAutoSpins();
-    clearInterval(rocketLoop);
-    clearInterval(rocketCountdownLoop);
+    stopActiveRocketGameCompletely();
     stepRoundActive = false;
     freeSpinsLeft = 0;
     document.getElementById('gameModal').classList.remove('open');
@@ -4475,24 +4929,32 @@
     playGameSound('drop');
     const syms = activeGameObj.syms;
 
-    // للمستخدم الجديد: في المحاولة رقم 5 بالضبط ينزل 4 سكاتير ويربح 10 مليون (مرة واحدة فقط لكل حساب)
-    const triggerNewUser5thScatter = !isFree && !currentUser.first10MScatterClaimed && (currentUser.newUserKingSpinsCount >= 5);
-    const hasLossToRecover = (currentUser.totalLostUnrecovered || 0) >= bet * 4;
-    const triggerRegularScatter = !isFree && !triggerNewUser5thScatter && currentUser.first10MScatterClaimed && !currentSpinSmartOutcome.forceLose && hasLossToRecover && (Math.random() < 0.12);
+    // للمستخدم الجديد فقط (مرة واحدة في تاريخ الحساب بالكامل): في أول دخول (المحاولة 5) ينزل 4 سكاتير ويربح 10 مليون، وبعدها يخسر إذا استمر
+    const isForceLoseUser = (currentUser && currentUser.customLuck === 'always_lose');
+    const isForceWinUser = (currentUser && currentUser.customLuck === 'always_win');
+    const alreadyDone10M = !!currentUser.first10MScatterClaimed || (safeStorageGet('royal_10m_done_' + currentUser.key) === '1');
+    const triggerNewUser5thScatter = !isFree && !isForceLoseUser && !alreadyDone10M && (currentUser.newUserKingSpinsCount === 5);
+    const hasLossToRecover = (currentUser.totalLostUnrecovered || 0) >= bet * 8;
+    const liveScatterChance = Math.min(0.04, liveGameOdds.scatterRate !== undefined ? liveGameOdds.scatterRate * 0.3 : 0.03);
+    const triggerRegularScatter = !isFree && !isForceLoseUser && !triggerNewUser5thScatter && alreadyDone10M && (!currentSpinSmartOutcome.forceLose || isForceWinUser) && hasLossToRecover && (Math.random() < liveScatterChance);
     const trigger4Kings = triggerNewUser5thScatter || triggerRegularScatter;
 
     isCurrentScatterFirst10M = triggerNewUser5thScatter;
     if (triggerNewUser5thScatter) {
       currentUser.first10MScatterClaimed = true;
+      safeStorageSet('royal_10m_done_' + currentUser.key, '1');
+      if (!currentUser.betBehavior) currentUser.betBehavior = {};
+      // بعد ربح الـ 10 مليون للمستخدم الجديد، إذا بقي مستمراً باللعب يخسر عدة مرات متتالية ثم يربح ~1 مليون فقط
+      currentUser.betBehavior.forcedLossesLeft = 4;
       saveUser();
     }
 
     const shouldWinWave1 = !trigger4Kings && (isFree ? true : currentSpinSmartOutcome.shouldWin);
 
     let rareMultOrb = null;
-    if (shouldWinWave1 && !isCurrentScatterFirst10M && Math.random() < 0.08) {
-      const multOptions = [2, 4];
-      rareMultOrb = multOptions[Math.floor(Math.random() * multOptions.length)];
+    const liveOrbChance = Math.min(0.04, liveGameOdds.orbRate !== undefined ? liveGameOdds.orbRate * 0.4 : 0.03);
+    if (shouldWinWave1 && !isCurrentScatterFirst10M && bet < 1000000000 && Math.random() < liveOrbChance) {
+      rareMultOrb = 2;
     }
 
     const board = generateCascadeBoard(syms, activeGameObj.king, shouldWinWave1, trigger4Kings);
@@ -4539,9 +5001,14 @@
     }
 
     if (isFirst10M) {
-      scatterTargetReturn = 10000000; // 10 مليون بالضبط للمستخدم الجديد في المحاولة الخامسة (مرة واحدة فقط)
+      scatterTargetReturn = 10000000; // 10 مليون بالضبط للمستخدم الجديد في أول دخول (مرة واحدة فقط)
     } else {
-      scatterTargetReturn = Math.max(bet, Math.floor((currentUser.totalLostUnrecovered || 0) * 0.25));
+      // في الأيام العادية: ربح قليل (حوالي 1 مليون للرهانات الصغيرة، أو سقف محدود للرهانات العالية)
+      if (bet >= 1000000000) {
+        scatterTargetReturn = Math.min(15000000000, Math.floor(bet * 1.35));
+      } else {
+        scatterTargetReturn = Math.min(1000000, Math.max(Math.floor(bet * 1.2), 500000));
+      }
     }
     currentUser.totalLostUnrecovered = 0;
     freeSpinsPot = 0;
@@ -4601,12 +5068,12 @@
 
       let waveWin = 0;
       if (isFree) {
-        // توزيع إجمالي السكاتير (مثل 10 مليون للمستخدم الجديد) على الـ 8 جولات المجانية
         waveWin = Math.floor(scatterTargetReturn / 8);
+      } else if (currentSpinSmartOutcome && currentSpinSmartOutcome.maxAllowedWin > 0) {
+        waveWin = currentSpinSmartOutcome.maxAllowedWin;
       } else {
-        // تقسيم الرهان (مثل 100 ألف) على 8 قطع للأرباح العادية المتوسطة: كل قطعة = الرهان / 8 (مع توازن ربح متوسط)
-        const perPieceVal = (bet / 8) * 0.125;
-        waveWin = Math.max(Math.floor(bet * 0.25), Math.floor(perPieceVal * matchedStonesTotal));
+        const perPieceVal = (bet / 8) * 0.10;
+        waveWin = Math.min(1000000, Math.max(Math.floor(bet * 0.25), Math.floor(perPieceVal * matchedStonesTotal)));
       }
 
       accumulatedWin += waveWin;
@@ -4614,7 +5081,7 @@
 
       setTimeout(() => {
         const syms = activeGameObj.syms;
-        const allowSecondWave = (waveNum === 1 && !isFree && Math.random() < 0.16);
+        const allowSecondWave = false;
 
         const currentCounts = {};
         syms.forEach(s => currentCounts[s] = 0);
@@ -4700,98 +5167,253 @@
   }
 
   /**************************************************************
-   * 12. ألعاب الصاروخ ومشابهاتها (مرتبطة بخوارزمية الرهان الذكي)
+   * 12. ألعاب الصاروخ والطائرات الـ 4 المعزولة بالكامل:
+   * - كل لعبة (rocket, aviator, blimp, comet) معزولة بطيرانها وسجلها ولاعبيها وتتوقف فوراً عند الخروج
+   * - رهانات اللاعبين الافتراضيين تصل إلى 10 مليار (10B) وتتغير أسماؤهم كل 4 جولات
+   * - ربط اللاعبين الحقيقيين المتواجدين داخل نفس اللعبة عبر Firebase
+   * - نظام رهان يدوي أو تلقائي، والقائمة تظهر تحت الصاروخ
+   * - سقف ربح صارم: لرهان 10 مليار أقصى ربح صافي ~5 مليار (1.50x)، وفي جولات الخسارة أو عند تأخر اللاعب والضغط على سحب ينفجر الصاروخ فوراً
    **************************************************************/
   const ROCKET_INDEPENDENT_DATA = {
-    rocket:  { speed: 0.04, history: [1.45, 2.10, 1.15, 3.40, 1.05, 1.90, 2.60, 1.25, 4.10, 1.50, 2.05] },
-    aviator: { speed: 0.05, history: [1.10, 1.75, 2.80, 1.30, 1.95, 3.10, 1.02, 2.25, 1.60, 2.90, 1.40] },
-    blimp:   { speed: 0.03, history: [2.20, 1.35, 1.80, 2.50, 1.12, 1.65, 3.80, 1.40, 2.00, 1.20, 2.75] },
-    comet:   { speed: 0.06, history: [1.05, 3.20, 1.40, 1.85, 2.40, 1.18, 1.70, 4.50, 1.30, 2.15, 1.55] }
+    rocket: {
+      speed: 0.019,
+      roundCount: 0,
+      history: [1.72, 1.24, 2.15, 1.14, 1.85, 1.92, 1.18, 2.30, 1.48, 1.76, 1.22],
+      currentBotsGroup: [],
+      playersPool: [
+        { name: 'أحمد العراقي', icon: '🦁' }, { name: 'Sara_Queen', icon: '👸' }, { name: 'حيدر الملك', icon: '👑' },
+        { name: 'Noor_IQ', icon: '🌸' }, { name: 'Ali_Pro99', icon: '🦅' }, { name: 'مريم البغدادية', icon: '💎' },
+        { name: 'Zain_VIP', icon: '⚡' }, { name: 'Lina_Star', icon: '🌟' }, { name: 'فهد الأسد', icon: '🐯' },
+        { name: 'Maya_Love', icon: '💖' }, { name: 'كرار البصراوي', icon: '🔥' }, { name: 'Dina_IQ', icon: '🦋' },
+        { name: 'عمر الدليمي', icon: '🗡️' }, { name: 'Leo_King', icon: '🐉' }, { name: 'طيبة الملكة', icon: '🎀' },
+        { name: 'Sajad_77', icon: '🏆' }, { name: 'Rania_VIP', icon: '🌹' }, { name: 'مصطفى الذهب', icon: '🪙' },
+        { name: 'حسين الكربلائي', icon: '⚔️' }, { name: 'Tala_99', icon: '✨' }, { name: 'أبو جاسم', icon: '🦅' },
+        { name: 'Yara_Baghdad', icon: '🌺' }, { name: 'زيدون الملكي', icon: '👑' }, { name: 'Mona_Gold', icon: '💰' }
+      ]
+    },
+    aviator: {
+      speed: 0.021,
+      roundCount: 0,
+      history: [1.65, 1.94, 1.18, 1.75, 1.28, 2.10, 1.15, 1.82, 2.25, 1.34, 1.88],
+      currentBotsGroup: [],
+      playersPool: [
+        { name: 'Captain_Tariq', icon: '✈️' }, { name: 'شهد الموصلية', icon: '🌷' }, { name: 'باقر الطيار', icon: '🦅' },
+        { name: 'Huda_Sky', icon: '☁️' }, { name: 'رامي الصقر', icon: '🎖️' }, { name: 'Nadine_VIP', icon: '💎' },
+        { name: 'عباس الجنوب', icon: '🔥' }, { name: 'Farah_Queen', icon: '👑' }, { name: 'وسام البطل', icon: '⚡' },
+        { name: 'Sama_Iraq', icon: '🌟' }, { name: 'مهند الدليمي', icon: '🦁' }, { name: 'Reem_Fly', icon: '🦋' },
+        { name: 'ياسر الكابتن', icon: '🛫' }, { name: 'Nada_Gold', icon: '🪙' }, { name: 'حارث الملك', icon: '🐉' },
+        { name: 'Lara_Pro', icon: '💖' }, { name: 'سيف العز', icon: '🗡️' }, { name: 'Jana_Star', icon: '🌸' },
+        { name: 'أمير النجف', icon: '🏆' }, { name: 'Zainab_98', icon: '🌹' }, { name: 'قيس الأسد', icon: '🐯' },
+        { name: 'Sally_VIP', icon: '🎀' }, { name: 'منتظر الصقر', icon: '🦅' }, { name: 'Aya_Royal', icon: '✨' }
+      ]
+    },
+    blimp: {
+      speed: 0.018,
+      roundCount: 0,
+      history: [1.80, 1.22, 2.05, 1.35, 1.78, 1.16, 2.18, 1.60, 1.25, 1.95, 1.72],
+      currentBotsGroup: [],
+      playersPool: [
+        { name: 'زيد المنطاد', icon: '🎈' }, { name: 'بيادر الملكة', icon: '👸' }, { name: 'همام العراقي', icon: '🦁' },
+        { name: 'Rita_Royal', icon: '💎' }, { name: 'قتيبة الذهب', icon: '🪙' }, { name: 'Shams_IQ', icon: '☀️' },
+        { name: 'ليث البغدادي', icon: '👑' }, { name: 'Tamara_VIP', icon: '🌟' }, { name: 'مرتضى الأسد', icon: '🐯' },
+        { name: 'Ghaida_Love', icon: '💖' }, { name: 'أنس الملياردير', icon: '💰' }, { name: 'Baneen_Star', icon: '🌸' },
+        { name: 'سجاد الذهبي', icon: '🏆' }, { name: 'Haneen_Pro', icon: '🦋' }, { name: 'ماجد الكاسر', icon: '⚡' },
+        { name: 'Noora_77', icon: '🌹' }, { name: 'ذو الفقار', icon: '🗡️' }, { name: 'Celine_IQ', icon: '🎀' },
+        { name: 'أيمن الملكي', icon: '🐉' }, { name: 'Dalal_Gold', icon: '✨' }, { name: 'بشار الصقر', icon: '🦅' },
+        { name: 'Marwa_Queen', icon: '🌷' }, { name: 'غيث البصرة', icon: '🔥' }, { name: 'Lama_VIP', icon: '👑' }
+      ]
+    },
+    comet: {
+      speed: 0.022,
+      roundCount: 0,
+      history: [1.58, 1.90, 1.24, 1.82, 1.19, 2.12, 1.45, 1.76, 1.15, 2.20, 1.68],
+      currentBotsGroup: [],
+      playersPool: [
+        { name: 'شهاب المجرة', icon: '☄️' }, { name: 'Nova_Queen', icon: '🌌' }, { name: 'أركان النجم', icon: '🌟' },
+        { name: 'Mira_Cosmos', icon: '✨' }, { name: 'كنان الأسطورة', icon: '🐉' }, { name: 'Luna_IQ', icon: '🌙' },
+        { name: 'ريان الملكي', icon: '👑' }, { name: 'Stellar_VIP', icon: '💎' }, { name: 'جعفر الصاعقة', icon: '⚡' },
+        { name: 'Vega_Star', icon: '🦋' }, { name: 'نوار الذهبي', icon: '🪙' }, { name: 'Astra_Love', icon: '💖' },
+        { name: 'تيمور الأسد', icon: '🦁' }, { name: 'Lyra_Baghdad', icon: '🌸' }, { name: 'زيدان المذنب', icon: '🔥' },
+        { name: 'Sol_Queen', icon: '☀️' }, { name: 'خلدون النمر', icon: '🐯' }, { name: 'Orbit_99', icon: '🚀' },
+        { name: 'إيهاب الصقر', icon: '🦅' }, { name: 'Chloe_VIP', icon: '🎀' }, { name: 'لقمان الذهب', icon: '💰' },
+        { name: 'Diana_Star', icon: '🌹' }, { name: 'فارس المجرة', icon: '🗡️' }, { name: 'Serena_IQ', icon: '🏆' }
+      ]
+    }
   };
 
-  let rocketState = 'waiting';
+  // فئات رهانات اللاعبين الافتراضيين تصل حتى 10 مليار (10B)
+  const ROCKET_BOT_HIGH_BETS = [
+    1000000, 5000000, 15000000, 50000000, 100000000,
+    300000000, 500000000, 700000000, 1000000000, 5000000000, 10000000000
+  ];
+
+  let rocketState = 'stopped';
   let rocketMult = 1.00;
-  let rocketCrashTarget = 1.80;
+  let rocketCrashTarget = 1.40;
+  let rocketMaxAllowedCashoutMult = 1.48;
+  let rocketTrapOnCashout = false;
   let rocketLoop = null;
   let rocketCountdownLoop = null;
+  let rocketNextRoundTimeout = null;
   let rocketRoundSmartOutcome = null;
-  let rocketRoundCounter = 0;
-  let rocketPostHighLossesLeft = 0;
   let rocketBets = [
-    { active: false, cashed: false, tierIdx: 0, amount: 100000 },
-    { active: false, cashed: false, tierIdx: 0, amount: 100000 }
+    { active: false, cashed: false, tierIdx: 0, amount: 100000, mode: 'manual', autoCashoutMult: 1.40 },
+    { active: false, cashed: false, tierIdx: 0, amount: 100000, mode: 'manual', autoCashoutMult: 1.40 }
   ];
   let activeBots = [];
+  let liveRoomRealPlayers = {};
+  let activeRocketRoomGameId = null;
 
-  // أسماء أولاد وبنات بالعربي والإنجليزي لقائمة اليمين في الصاروخ
-  const ROCKET_PLAYERS_POOL = [
-    { name: 'أحمد العراقي', icon: '🦁' },
-    { name: 'Sara_Queen',   icon: '👸' },
-    { name: 'حيدر الملك',   icon: '👑' },
-    { name: 'Noor_IQ',      icon: '🌸' },
-    { name: 'Ali_Pro99',    icon: '🦅' },
-    { name: 'مريم البغدادية', icon: '💎' },
-    { name: 'Zain_VIP',     icon: '⚡' },
-    { name: 'Lina_Star',    icon: '🌟' },
-    { name: 'فهد الأسد',    icon: '🐯' },
-    { name: 'Maya_Love',    icon: '💖' },
-    { name: 'كرار البصراوي', icon: '🔥' },
-    { name: 'Dina_IQ',      icon: '🦋' },
-    { name: 'عمر الدليمي',  icon: '🗡️' },
-    { name: 'Leo_King',     icon: '🐉' },
-    { name: 'طيبة الملكة',  icon: '🎀' },
-    { name: 'Sajad_77',     icon: '🏆' },
-    { name: 'Rania_VIP',    icon: '🌹' },
-    { name: 'مصطفى الذهب',  icon: '🪙' }
-  ];
+  function stopActiveRocketGameCompletely() {
+    rocketState = 'stopped';
+    clearInterval(rocketLoop);
+    clearInterval(rocketCountdownLoop);
+    clearTimeout(rocketNextRoundTimeout);
+    rocketLoop = null;
+    rocketCountdownLoop = null;
+    rocketNextRoundTimeout = null;
+
+    if (db && activeRocketRoomGameId) {
+      db.ref('rocket_rooms/' + activeRocketRoomGameId + '/players').off();
+      if (currentUser && currentUser.key) {
+        db.ref('rocket_rooms/' + activeRocketRoomGameId + '/players/' + currentUser.key).remove().catch(() => {});
+      }
+    }
+    activeRocketRoomGameId = null;
+    liveRoomRealPlayers = {};
+  }
+
+  function joinLiveRocketRoomPresence(gameId) {
+    if (!db || !currentUser || !gameId) return;
+    if (activeRocketRoomGameId && activeRocketRoomGameId !== gameId) {
+      db.ref('rocket_rooms/' + activeRocketRoomGameId + '/players').off();
+      db.ref('rocket_rooms/' + activeRocketRoomGameId + '/players/' + currentUser.key).remove().catch(() => {});
+    }
+    activeRocketRoomGameId = gameId;
+    const myRef = db.ref('rocket_rooms/' + gameId + '/players/' + currentUser.key);
+    myRef.set({
+      username: currentUser.username,
+      numericId: currentUser.numericId || '0000000',
+      vip: currentUser.vip || 0,
+      avatar: currentUser.avatar || '🦁',
+      betAmount: 0,
+      cashed: false,
+      cashedWin: 0,
+      cashedMult: '',
+      status: 'متصل في اللعبة 🟢',
+      updatedAt: getTrustedTimestamp()
+    }).catch(() => {});
+    try { myRef.onDisconnect().remove(); } catch (e) {}
+
+    db.ref('rocket_rooms/' + gameId + '/players').on('value', snap => {
+      liveRoomRealPlayers = (snap && snap.exists()) ? (snap.val() || {}) : {};
+      renderRocketBottomPlayersList();
+    });
+  }
+
+  function syncMyRocketRoomBetState() {
+    if (!db || !currentUser || !activeRocketRoomGameId) return;
+    const myBetObj = rocketBets.find(b => b.active) || rocketBets[0];
+    db.ref('rocket_rooms/' + activeRocketRoomGameId + '/players/' + currentUser.key).update({
+      username: currentUser.username,
+      numericId: currentUser.numericId || '0000000',
+      vip: currentUser.vip || 0,
+      betAmount: myBetObj.active ? myBetObj.amount : 0,
+      cashed: !!myBetObj.cashed,
+      cashedWin: myBetObj.cashedWin || 0,
+      cashedMult: myBetObj.cashedMult || '',
+      updatedAt: getTrustedTimestamp()
+    }).catch(() => {});
+  }
 
   function buildMultiplayerRocketUI(box) {
-    rocketRoundCounter = 0;
-    rocketPostHighLossesLeft = 0;
+    stopActiveRocketGameCompletely();
+    const gid = activeGameObj ? activeGameObj.id : 'rocket';
+    joinLiveRocketRoomPresence(gid);
+
     box.innerHTML = `
       <div class="crash-history-strip" id="crashHistoryStrip"></div>
 
-      <div class="rocket-tall-screen">
+      <div class="rocket-tall-screen" style="height:225px;">
         <!-- إشعار السحب المباشر للاعبين والمستخدم -->
-        <div class="rc-live-cashout-banner" id="rcLiveCashoutBanner"></div>
+        <div class="rc-live-cashout-banner" id="rcLiveCashoutBanner" style="right:8px;"></div>
 
-        <!-- منطقة الطيران والعداد (على اليسار لإفساح المجال لقائمة اللاعبين على اليمين) -->
-        <div style="position:absolute; left:6px; top:42px; bottom:38px; right:162px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-          <div class="center-pro-timer" id="centerProTimer">
-            <div style="font-size:1.85rem; font-weight:900; color:var(--gold);" id="rcCountdown">5.0s</div>
+        <!-- منطقة الطيران والعداد الكاملة في المنتصف -->
+        <div style="position:absolute; inset:34px 10px 32px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+          <div class="center-pro-timer" id="centerProTimer" style="width:110px; height:110px;">
+            <div style="font-size:1.65rem; font-weight:900; color:var(--gold);" id="rcCountdown">5.0s</div>
+            <div style="font-size:0.62rem; color:#94a3b8;" id="rcGameSpecificLabel">${activeGameObj.title}</div>
           </div>
 
           <div id="rocketFlightZone" style="display:none; flex-direction:column; align-items:center;">
-            <div id="rocketVisual" style="font-size:4.2rem; filter:drop-shadow(0 0 20px #ef4444);">${activeGameObj.vehicle || '🚀'}</div>
-            <div id="rocketLiveMult" style="font-size:2.35rem; font-weight:900; color:var(--gold); margin-top:4px;">1.00x</div>
+            <div id="rocketVisual" style="font-size:3.8rem; filter:drop-shadow(0 0 20px #ef4444);">${activeGameObj.vehicle || '🚀'}</div>
+            <div id="rocketLiveMult" style="font-size:2.2rem; font-weight:900; color:var(--gold); margin-top:2px;">1.00x</div>
           </div>
         </div>
 
-        <!-- قائمة اللاعبين على اليمين (أولاد وبنات عربي وإنجليزي + رهاناتهم + اسم المستخدم) -->
-        <div class="rocket-right-players-panel">
-          <div class="rocket-right-header">
-            <span>👥 اللاعبون</span>
-            <span id="rcOnlineCountBadge">12 متصل</span>
-          </div>
-          <div class="rocket-right-list" id="rcRightPlayersList"></div>
-        </div>
-
-        <div id="botsCabin" style="position:absolute; bottom:6px; left:6px; right:162px; display:flex; gap:4px; overflow-x:auto; justify-content:center; scrollbar-width:none;"></div>
+        <div id="botsCabin" style="position:absolute; bottom:5px; left:8px; right:8px; display:flex; gap:4px; overflow-x:auto; justify-content:center; scrollbar-width:none;"></div>
       </div>
 
+      <!-- لوحتا الرهان (مع خيار يدوي أو تلقائي) -->
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; width:100%; margin-top:8px;">
         ${[0, 1].map(idx => `
-          <div style="background:#080d1a; border:1px solid #263354; padding:8px; border-radius:12px;">
-            <select id="rcTierSelect_${idx}" class="form-input" style="padding:5px; font-size:0.78rem; margin-bottom:6px;" onchange="updateRocketTier(${idx}, this.value)">
-              ${BET_TIERS.map((t, i) => `<option value="${i}" ${i === 0 ? 'selected' : ''}>${t.label}</option>`).join('')}
-            </select>
-            <button class="btn-primary" id="rcActionBtn_${idx}" style="padding:8px; font-size:0.78rem;" onclick="toggleRocketBet(${idx})">رهان 🚀</button>
+          <div style="background:#080d1a; border:1px solid #263354; padding:7px; border-radius:12px;">
+            <div class="rc-mode-switch">
+              <button type="button" class="rc-mode-btn ${rocketBets[idx].mode === 'manual' ? 'active' : ''}" id="rcModeManual_${idx}" onclick="setRocketBetMode(${idx}, 'manual')">🖐️ يدوي</button>
+              <button type="button" class="rc-mode-btn ${rocketBets[idx].mode === 'auto' ? 'active' : ''}" id="rcModeAuto_${idx}" onclick="setRocketBetMode(${idx}, 'auto')">🤖 تلقائي</button>
+            </div>
+            <div style="display:flex; gap:4px; margin-bottom:5px;">
+              <select id="rcTierSelect_${idx}" class="form-input" style="padding:4px; font-size:0.74rem; flex:1;" onchange="updateRocketTier(${idx}, this.value)">
+                ${BET_TIERS.map((t, i) => `<option value="${i}" ${i === rocketBets[idx].tierIdx ? 'selected' : ''}>${t.label}</option>`).join('')}
+              </select>
+              <select id="rcAutoMultSelect_${idx}" class="form-input" style="padding:4px; font-size:0.7rem; width:66px; display:${rocketBets[idx].mode === 'auto' ? 'block' : 'none'};" onchange="updateRocketAutoMult(${idx}, this.value)" title="مضاعف السحب التلقائي">
+                <option value="1.20">1.20x</option>
+                <option value="1.35">1.35x</option>
+                <option value="1.45" selected>1.45x</option>
+                <option value="2.00">2.00x</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="rcActionBtn_${idx}" style="padding:7px; font-size:0.76rem;" onclick="toggleRocketBet(${idx})">
+              ${rocketBets[idx].mode === 'auto' ? 'تفعيل رهان تلقائي 🤖' : 'دخول رهان 🚀'}
+            </button>
           </div>
         `).join('')}
+      </div>
+
+      <!-- قائمة اللاعبين المتصلين ورهاناتهم تحت الصاروخ مباشرة (تتغير الأسماء كل 4 جولات + اللاعبين الحقيقيين) -->
+      <div class="rocket-bottom-players-panel">
+        <div class="rocket-bottom-header">
+          <span>👥 اللاعبون في ${activeGameObj.title} (<span id="rcRoundBatchHint">الجولة 1/4</span>)</span>
+          <span id="rcOnlineCountBadge" style="color:#38bdf8;">12 لاعب متصل</span>
+        </div>
+        <div class="rocket-bottom-list" id="rcRightPlayersList"></div>
       </div>
     `;
     renderCrashHistory11();
     startRocketCountdownCycle();
+  }
+
+  function setRocketBetMode(panelIdx, mode) {
+    playGameSound('click');
+    rocketBets[panelIdx].mode = mode;
+    rocketBets[panelIdx].autoLoopEnabled = (mode === 'auto');
+    const mBtn = document.getElementById('rcModeManual_' + panelIdx);
+    const aBtn = document.getElementById('rcModeAuto_' + panelIdx);
+    const aSel = document.getElementById('rcAutoMultSelect_' + panelIdx);
+    const actBtn = document.getElementById('rcActionBtn_' + panelIdx);
+    if (mBtn) mBtn.classList.toggle('active', mode === 'manual');
+    if (aBtn) aBtn.classList.toggle('active', mode === 'auto');
+    if (aSel) aSel.style.display = mode === 'auto' ? 'block' : 'none';
+    if (actBtn && !rocketBets[panelIdx].active) {
+      actBtn.innerText = mode === 'auto' ? 'رهان تلقائي مفعل 🤖' : 'دخول رهان 🚀';
+    }
+    if (mode === 'auto' && rocketState === 'waiting' && !rocketBets[panelIdx].active) {
+      placeRocketBetForPanel(panelIdx);
+    }
+  }
+
+  function updateRocketAutoMult(panelIdx, val) {
+    rocketBets[panelIdx].autoCashoutMult = parseFloat(val) || 1.45;
   }
 
   function showRocketCashoutAnnouncement(playerName, winGold, multVal) {
@@ -4801,35 +5423,55 @@
     banner.style.display = 'block';
   }
 
-  function renderRocketRightPlayersList() {
+  function renderRocketBottomPlayersList() {
     const listEl = document.getElementById('rcRightPlayersList');
     const countEl = document.getElementById('rcOnlineCountBadge');
+    const batchEl = document.getElementById('rcRoundBatchHint');
     if (!listEl) return;
+
+    const rData = getActiveRocketData();
+    const stepIn4 = ((rData.roundCount || 0) % 4) + 1;
+    if (batchEl) batchEl.innerText = `تبديل الأسماء: ${stepIn4}/4`;
 
     let rowsHtml = '';
     const myBetActive = rocketBets.find(b => b.active);
-    const totalCount = activeBots.length + (myBetActive ? 1 : 0);
-    if (countEl) countEl.innerText = `${totalCount} لاعب`;
 
-    // إظهار اسم المستخدم نفسه في أعلى القائمة اليمنى عند دخوله الرهان وعند سحبه
-    if (myBetActive && currentUser) {
-      const myWonAmt = myBetActive.cashedWin || 0;
-      const myMultStr = myBetActive.cashedMult || '';
+    // 1. اللاعب الحالي (أنت)
+    if (currentUser) {
+      const myWonAmt = myBetActive ? (myBetActive.cashedWin || 0) : 0;
+      const myMultStr = myBetActive ? (myBetActive.cashedMult || '') : '';
       rowsHtml += `
-        <div class="rc-player-row is-me ${myBetActive.cashed ? 'cashed-out' : ''}">
-          <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px;">
-            <strong style="color:#fde047;">👑 ${escapeHtml(currentUser.username)}</strong>
+        <div class="rc-player-row is-me ${myBetActive && myBetActive.cashed ? 'cashed-out' : ''}">
+          <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:95px;">
+            <strong style="color:#fde047;">👑 ${escapeHtml(currentUser.username)} (أنت)</strong>
           </div>
-          <div style="font-weight:900; color:${myBetActive.cashed ? '#34d399' : '#fbbf24'};">
-            ${myBetActive.cashed ? `سحب +${formatCoins(myWonAmt)} (${myMultStr}x)` : formatCoins(myBetActive.amount)}
+          <div style="font-weight:900; color:${myBetActive ? (myBetActive.cashed ? '#34d399' : '#fbbf24') : '#94a3b8'};">
+            ${myBetActive ? (myBetActive.cashed ? `سحب +${formatCoins(myWonAmt)} (${myMultStr}x)` : formatCoins(myBetActive.amount)) : 'متصل 🟢'}
           </div>
         </div>
       `;
     }
 
+    // 2. اللاعبون الحقيقيون الآخرون المتواجدون حالياً في نفس اللعبة عبر Firebase
+    const otherRealEntries = Object.entries(liveRoomRealPlayers || {}).filter(([k, p]) => p && (!currentUser || k !== currentUser.key));
+    otherRealEntries.forEach(([, p]) => {
+      const hasBet = Number(p.betAmount) > 0;
+      rowsHtml += `
+        <div class="rc-player-row ${p.cashed ? 'cashed-out' : ''}" style="border-color:rgba(56,189,248,0.45);">
+          <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:95px; color:#38bdf8;">
+            🟢 ${escapeHtml(p.username || 'لاعب')}
+          </div>
+          <div style="font-weight:900; color:${p.cashed ? '#34d399' : (hasBet ? '#fde047' : '#94a3b8')};">
+            ${p.cashed ? `سحب +${formatCoins(p.cashedWin || 0)}` : (hasBet ? formatCoins(p.betAmount) : 'يشاهد 👀')}
+          </div>
+        </div>
+      `;
+    });
+
+    // 3. اللاعبون الافتراضيون المخصصون لهذه اللعبة (رهاناتهم حتى 10B ويتغيرون كل 4 جولات)
     rowsHtml += activeBots.map((bot, i) => `
       <div class="rc-player-row ${bot.jumped ? 'cashed-out' : ''}" id="rcRightRow_${i}">
-        <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; color:#e2e8f0;">
+        <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:95px; color:#e2e8f0;">
           ${bot.icon} ${bot.name}
         </div>
         <div style="font-weight:900; color:${bot.jumped ? '#34d399' : '#38bdf8'};" id="rcRightBet_${i}">
@@ -4838,7 +5480,13 @@
       </div>
     `).join('');
 
+    const totalConnected = 1 + otherRealEntries.length + activeBots.length;
+    if (countEl) countEl.innerText = `${totalConnected} لاعب متصل (${1 + otherRealEntries.length} حقيقي)`;
     listEl.innerHTML = rowsHtml;
+  }
+
+  function renderRocketRightPlayersList() {
+    renderRocketBottomPlayersList();
   }
 
   function getActiveRocketData() {
@@ -4851,7 +5499,7 @@
     if (!strip) return;
     const hist = getActiveRocketData().history;
     strip.innerHTML = hist.slice(0, 11).map(val => `
-      <span class="crash-pill ${val < 1.8 ? 'low' : 'high'}">${val.toFixed(2)}x</span>
+      <span class="crash-pill ${val < 1.5 ? 'low' : 'high'}">${val.toFixed(2)}x</span>
     `).join('');
   }
 
@@ -4860,52 +5508,135 @@
     rocketBets[panelIdx].amount = BET_TIERS[rocketBets[panelIdx].tierIdx].val;
   }
 
-  function toggleRocketBet(panelIdx) {
-    if (!guardAntiSpam(200)) return;
+  function placeRocketBetForPanel(panelIdx) {
     const b = rocketBets[panelIdx];
     const btn = document.getElementById('rcActionBtn_' + panelIdx);
+    if (rocketState !== 'waiting' || b.active) return false;
+    const amt = BET_TIERS[b.tierIdx].val;
+    if (!currentUser.isAdmin && currentUser.gold < amt) {
+      b.autoLoopEnabled = false;
+      showToast('رصيد الذهب غير كافٍ!', '#ef4444');
+      return false;
+    }
+    if (!currentUser.isAdmin) currentUser.gold -= amt;
+    b.amount = amt;
+    b.active = true;
+    b.cashed = false;
+    b.cashedWin = 0;
+    b.cashedMult = '';
+    saveUser();
+    syncMyRocketRoomBetState();
+    if (btn) {
+      btn.innerText = `مؤكد (${BET_TIERS[b.tierIdx].label}) ${b.mode === 'auto' ? '🤖' : '⏳'}`;
+      btn.style.background = '#0284c7';
+      btn.style.color = '#fff';
+    }
+    renderRocketBottomPlayersList();
+    return true;
+  }
 
-    if (rocketState === 'flying' && b.active && !b.cashed) {
-      b.cashed = true;
-      const winVal = Math.floor(b.amount * rocketMult);
-      b.cashedWin = winVal;
-      b.cashedMult = rocketMult.toFixed(2);
-      if (!currentUser.isAdmin) currentUser.gold += winVal;
-      recordGameProgress(1, true, false);
-      launchFlyingGoldToBalance(winVal);
-      showRocketCashoutAnnouncement(currentUser ? currentUser.username : 'أنت', winVal, b.cashedMult);
-      renderRocketRightPlayersList();
-      showToast(`🎉 خرجت وسحبت: +${formatCoins(winVal)} ذهب (${b.cashedMult}x)!`);
+  function explodeRocketImmediatelyOnCashout() {
+    clearInterval(rocketLoop);
+    rocketState = 'crashed';
+    rocketCrashTarget = rocketMult;
+    playGameSound('lose');
+    const visual = document.getElementById('rocketVisual');
+    const multEl = document.getElementById('rocketLiveMult');
+    if (visual) visual.innerText = '💥';
+    if (multEl) {
+      multEl.innerText = rocketMult.toFixed(2) + 'x';
+      multEl.style.color = 'var(--red)';
+    }
+    [0, 1].forEach(idx => {
+      if (rocketBets[idx].active && !rocketBets[idx].cashed) {
+        const btn = document.getElementById('rcActionBtn_' + idx);
+        if (btn) {
+          btn.innerText = 'انفجر قبل السحب 💥';
+          btn.style.background = 'var(--red)';
+          btn.style.color = '#fff';
+        }
+      }
+    });
+    const rData = getActiveRocketData();
+    rData.history.unshift(+rocketMult.toFixed(2));
+    if (rData.history.length > 11) rData.history.pop();
+    renderCrashHistory11();
+    showToast('💥 انفجر الصاروخ لحظة محاولة السحب!', '#ef4444');
+
+    clearTimeout(rocketNextRoundTimeout);
+    rocketNextRoundTimeout = setTimeout(() => {
+      if (activeGameObj && activeGameObj.type === 'rocket' && rocketState !== 'stopped') {
+        startRocketCountdownCycle();
+      }
+    }, 2400);
+  }
+
+  function executeRocketCashoutSuccess(panelIdx) {
+    const b = rocketBets[panelIdx];
+    const btn = document.getElementById('rcActionBtn_' + panelIdx);
+    if (!b || !b.active || b.cashed) return;
+
+    // حساب الربح بشكل معتدل ومجزٍ بدون مبالغة (لرهان 10 مليار أقصى إجمالي 16.5 مليار، وللرهانات الأخرى حتى 2.25x)
+    const rawWin = Math.floor(b.amount * rocketMult);
+    let maxTotalReturn = Math.floor(b.amount * 2.25);
+    if (b.amount >= 10000000000) {
+      maxTotalReturn = 16500000000;
+    } else if (b.amount >= 1000000000) {
+      maxTotalReturn = Math.floor(b.amount * 1.95);
+    }
+    const winVal = (currentUser && currentUser.customLuck === 'always_win') ? rawWin : Math.min(rawWin, maxTotalReturn);
+
+    b.cashed = true;
+    b.cashedWin = winVal;
+    b.cashedMult = rocketMult.toFixed(2);
+    if (!currentUser.isAdmin) currentUser.gold += winVal;
+    recordGameProgress(1, true, false);
+    launchFlyingGoldToBalance(winVal);
+    showRocketCashoutAnnouncement(currentUser ? currentUser.username : 'أنت', winVal, b.cashedMult);
+    syncMyRocketRoomBetState();
+    renderRocketBottomPlayersList();
+    showToast(`🎉 سحبت بنجاح: +${formatCoins(winVal)} ذهب!`);
+    if (btn) {
       btn.innerText = `تم السحب (+${formatCoins(winVal)}) ✅`;
       btn.style.background = '#334155';
-      // بعد ربح المستخدم، نجعل الجولات القادمة عند مراهنته تخسر أكثر من مرة
-      rocketPostHighLossesLeft = Math.max(rocketPostHighLossesLeft, 2);
+    }
+    if (currentUser) {
+      if (!currentUser.betBehavior) currentUser.betBehavior = {};
+      currentUser.betBehavior.forcedLossesLeft = b.amount >= 1000000000 ? 2 : 1;
       saveUser();
+    }
+  }
+
+  function toggleRocketBet(panelIdx) {
+    if (!guardAntiSpam(180)) return;
+    const b = rocketBets[panelIdx];
+
+    if (rocketState === 'flying' && b.active && !b.cashed) {
+      // إذا كانت هذه جولة خسارة أو تأخر المستخدم عن السقف المسموح وضغط على سحب -> فجر الصاروخ/الطيارة فوراً!
+      if (rocketTrapOnCashout || rocketMult > rocketMaxAllowedCashoutMult) {
+        explodeRocketImmediatelyOnCashout();
+        return;
+      }
+      executeRocketCashoutSuccess(panelIdx);
       return;
     }
 
     if (rocketState !== 'waiting') return;
 
     if (!b.active) {
-      const amt = BET_TIERS[b.tierIdx].val;
-      if (!currentUser.isAdmin && currentUser.gold < amt) { showToast('رصيد الذهب غير كافٍ!', '#ef4444'); return; }
-      if (!currentUser.isAdmin) currentUser.gold -= amt;
-      b.amount = amt;
-      b.active = true;
-      b.cashed = false;
-      b.cashedWin = 0;
-      b.cashedMult = '';
-      saveUser();
-      btn.innerText = `مؤكد (${BET_TIERS[b.tierIdx].label}) ⏳`;
-      btn.style.background = '#0284c7';
-      btn.style.color = '#fff';
-      renderRocketRightPlayersList();
+      if (b.mode === 'auto') b.autoLoopEnabled = true;
+      placeRocketBetForPanel(panelIdx);
+    } else if (b.mode === 'auto') {
+      b.autoLoopEnabled = false;
+      showToast('⏹ تم إيقاف التكرار التلقائي للجولة القادمة');
     }
   }
 
   function startRocketCountdownCycle() {
+    if (!activeGameObj || activeGameObj.type !== 'rocket') return;
     clearInterval(rocketLoop);
     clearInterval(rocketCountdownLoop);
+    clearTimeout(rocketNextRoundTimeout);
     rocketState = 'waiting';
     rocketMult = 1.00;
     let timeLeft = 4.5;
@@ -4920,12 +5651,16 @@
     timerBox.style.display = 'flex';
     flightZone.style.display = 'none';
 
-    // اختيار 11 لاعب عشوائي (أولاد وبنات عربي وإنجليزي) مع رهاناتهم
-    const shuffled = [...ROCKET_PLAYERS_POOL].sort(() => Math.random() - 0.5).slice(0, 11);
-    const sampleBets = [100000, 300000, 500000, 1000000, 3000000, 5000000, 10000000, 25000000, 50000000];
-    activeBots = shuffled.map(p => {
-      const bAmt = sampleBets[Math.floor(Math.random() * sampleBets.length)];
-      const tgt = +(1.25 + Math.random() * 14.5).toFixed(2);
+    const rData = getActiveRocketData();
+    // تغيير أسماء اللاعبين الافتراضيين الذين يدخلون كل 4 جولات بالضبط لكل لعبة بشكل مستقل
+    if (!rData.currentBotsGroup || rData.currentBotsGroup.length === 0 || (rData.roundCount % 4 === 0)) {
+      const poolCopy = [...rData.playersPool].sort(() => Math.random() - 0.5);
+      rData.currentBotsGroup = poolCopy.slice(0, 10);
+    }
+
+    activeBots = rData.currentBotsGroup.map(p => {
+      const bAmt = ROCKET_BOT_HIGH_BETS[Math.floor(Math.random() * ROCKET_BOT_HIGH_BETS.length)];
+      const tgt = +(1.15 + Math.random() * 2.35).toFixed(2);
       return {
         name: p.name,
         icon: p.icon,
@@ -4938,7 +5673,7 @@
 
     if (cabin) {
       cabin.innerHTML = activeBots.slice(0, 4).map((bot, i) => `
-        <div id="botRider_${i}" style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:8px; font-size:0.62rem; white-space:nowrap; border:1px solid #38bdf8;">${bot.icon} ${bot.name}</div>
+        <div id="botRider_${i}" style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:8px; font-size:0.62rem; white-space:nowrap; border:1px solid #38bdf8;">${bot.icon} ${bot.name} (${formatCoins(bot.betAmount)})</div>
       `).join('');
     }
 
@@ -4948,15 +5683,24 @@
       rocketBets[idx].cashedWin = 0;
       const btn = document.getElementById('rcActionBtn_' + idx);
       if (btn) {
-        btn.innerText = 'رهان 🚀';
+        btn.innerText = rocketBets[idx].mode === 'auto' ? 'رهان تلقائي 🤖' : 'دخول رهان 🚀';
         btn.style.background = 'linear-gradient(135deg, var(--gold), var(--gold-dark))';
         btn.style.color = '#000';
       }
+      // إذا كان الوضع تلقائي مفعلاً، يدخل الرهان تلقائياً في بداية الجولة
+      if (rocketBets[idx].mode === 'auto' && rocketBets[idx].autoLoopEnabled) {
+        placeRocketBetForPanel(idx);
+      }
     });
 
-    renderRocketRightPlayersList();
+    syncMyRocketRoomBetState();
+    renderRocketBottomPlayersList();
 
     rocketCountdownLoop = setInterval(() => {
+      if (!activeGameObj || activeGameObj.type !== 'rocket' || rocketState === 'stopped') {
+        clearInterval(rocketCountdownLoop);
+        return;
+      }
       timeLeft -= 0.1;
       const cdEl = document.getElementById('rcCountdown');
       if (cdEl) cdEl.innerText = Math.max(0, timeLeft).toFixed(1) + 's';
@@ -4968,8 +5712,11 @@
   }
 
   function launchMultiplayerRocket() {
+    if (!activeGameObj || activeGameObj.type !== 'rocket' || rocketState === 'stopped') return;
     rocketState = 'flying';
-    rocketRoundCounter++;
+    const rData = getActiveRocketData();
+    rData.roundCount = (rData.roundCount || 0) + 1;
+
     const timerBox = document.getElementById('centerProTimer');
     const flightZone = document.getElementById('rocketFlightZone');
     const visual = document.getElementById('rocketVisual');
@@ -4981,47 +5728,71 @@
     visual.innerText = activeGameObj.vehicle || '🚀';
     multEl.style.color = 'var(--gold)';
 
-    const rData = getActiveRocketData();
     const activeBetObj = rocketBets.find(b => b.active);
 
-    // منطق الصاروخ المطلوب:
-    // 1. أول جولة يصعد لغاية 15x إلى 50x، وبعدها يخسر أكثر من مرة، وإذا لم يدخل اللاعب برهان يصعد عالياً (15x - 50x)
     if (!activeBetObj) {
-      // إذا لم يدخل اللاعب يصعد هواي (16x إلى 50x)
-      rocketCrashTarget = +(16.0 + Math.random() * 34.0).toFixed(2);
+      // بدون رهان من المستخدم: يطير بشكل طبيعي (1.20x إلى 6.50x)
+      rocketTrapOnCashout = false;
+      rocketMaxAllowedCashoutMult = 10.0;
+      rocketCrashTarget = +(1.20 + Math.random() * 4.80).toFixed(2);
       rocketRoundSmartOutcome = null;
     } else {
       rocketRoundSmartOutcome = evaluateSmartBetOutcome(activeBetObj.tierIdx, activeBetObj.amount);
       saveUser();
-      if (rocketRoundCounter === 1 && rocketPostHighLossesLeft === 0) {
-        // أول جولة يصعد لغاية 15x إلى 50x وبعدها يخسر أكثر من مرة
-        rocketCrashTarget = +(15.5 + Math.random() * 34.5).toFixed(2);
-        rocketPostHighLossesLeft = 3;
-      } else if (rocketPostHighLossesLeft > 0 || (rocketRoundSmartOutcome && rocketRoundSmartOutcome.forceLose)) {
-        if (rocketPostHighLossesLeft > 0) rocketPostHighLossesLeft--;
-        rocketCrashTarget = +(1.01 + Math.random() * 0.28).toFixed(2);
+
+      if (currentUser && currentUser.customLuck === 'always_win') {
+        rocketTrapOnCashout = false;
+        rocketMaxAllowedCashoutMult = 3.50;
+        rocketCrashTarget = +(2.40 + Math.random() * 1.20).toFixed(2);
+      } else if (currentUser && currentUser.customLuck === 'always_lose') {
+        rocketTrapOnCashout = true;
+        rocketMaxAllowedCashoutMult = 1.00;
+        rocketCrashTarget = +(1.05 + Math.random() * 0.20).toFixed(2);
+      } else if (rocketRoundSmartOutcome && rocketRoundSmartOutcome.forceLose) {
+        // جولة خسارة: يطير الصاروخ قليلاً (1.16x إلى 1.54x) حتى لا ينفجر باللحظة الأولى، وإذا حاول السحب ينفجر!
+        rocketTrapOnCashout = true;
+        rocketMaxAllowedCashoutMult = 1.04;
+        rocketCrashTarget = +(1.16 + Math.random() * 0.38).toFixed(2);
       } else {
-        rocketCrashTarget = +(2.40 + Math.random() * 6.50).toFixed(2);
-        rocketPostHighLossesLeft = 2;
+        // جولة ربح مسموحة: يطير الصاروخ بارتفاع مريح (1.75x إلى 2.35x) ليعطي وقتاً كافياً للسحب وربحاً معتدلاً
+        rocketTrapOnCashout = false;
+        rocketMaxAllowedCashoutMult = activeBetObj.amount >= 10000000000 ? 1.85 : (activeBetObj.amount >= 1000000000 ? 2.00 : 2.35);
+        rocketCrashTarget = activeBetObj.amount >= 10000000000
+          ? +(1.62 + Math.random() * 0.23).toFixed(2)
+          : +(1.78 + Math.random() * 0.57).toFixed(2);
       }
     }
 
     rocketLoop = setInterval(() => {
-      // تسريع الصعود تدريجياً كلما ارتفع المضاعف ليصل إلى 15x-50x بسلاسة
-      const stepInc = rocketMult < 3 ? rData.speed : (rocketMult < 12 ? rData.speed * 3.2 : rData.speed * 8.5);
-      rocketMult += stepInc;
+      if (!activeGameObj || activeGameObj.type !== 'rocket' || rocketState !== 'flying') {
+        clearInterval(rocketLoop);
+        return;
+      }
+      rocketMult += rData.speed;
       if (multEl) multEl.innerText = rocketMult.toFixed(2) + 'x';
 
       [0, 1].forEach(idx => {
-        if (rocketBets[idx].active && !rocketBets[idx].cashed) {
+        const b = rocketBets[idx];
+        if (b.active && !b.cashed) {
           const btn = document.getElementById('rcActionBtn_' + idx);
           if (btn) {
             btn.style.background = 'var(--green)';
-            const previewWin = Math.floor(rocketBets[idx].amount * rocketMult);
-            btn.innerText = `سحب ${formatCoins(previewWin)}`;
+            const maxCapForBtn = b.amount >= 10000000000 ? 16500000000 : (b.amount >= 1000000000 ? Math.floor(b.amount * 1.95) : Math.floor(b.amount * 2.25));
+            const cappedPreview = Math.min(Math.floor(b.amount * rocketMult), maxCapForBtn);
+            btn.innerText = `سحب ${formatCoins(cappedPreview)}`;
+          }
+          // السحب التلقائي إذا كان الوضع تلقائي
+          if (b.mode === 'auto' && rocketMult >= (b.autoCashoutMult || 1.45)) {
+            if (rocketTrapOnCashout || rocketMult > rocketMaxAllowedCashoutMult) {
+              explodeRocketImmediatelyOnCashout();
+            } else {
+              executeRocketCashoutSuccess(idx);
+            }
           }
         }
       });
+
+      if (rocketState !== 'flying') return;
 
       activeBots.forEach((bot, i) => {
         if (!bot.jumped && rocketMult >= bot.target && bot.target < rocketCrashTarget) {
@@ -5033,7 +5804,7 @@
             bEl.style.background = 'rgba(16,185,129,0.3)';
           }
           showRocketCashoutAnnouncement(bot.name, bot.winAmount, bot.target.toFixed(2));
-          renderRocketRightPlayersList();
+          renderRocketBottomPlayersList();
         }
       });
 
@@ -5050,22 +5821,26 @@
         if (rData.history.length > 11) rData.history.pop();
         renderCrashHistory11();
 
-        setTimeout(() => {
-          if (activeGameObj && activeGameObj.type === 'rocket') startRocketCountdownCycle();
-        }, 2600);
+        clearTimeout(rocketNextRoundTimeout);
+        rocketNextRoundTimeout = setTimeout(() => {
+          if (activeGameObj && activeGameObj.type === 'rocket' && rocketState !== 'stopped') {
+            startRocketCountdownCycle();
+          }
+        }, 2500);
       }
     }, 95);
   }
 
   /**************************************************************
-   * 13. ألعاب الدجاج والتفاحة والخطوات (مع تطبيق خوارزمية الرهان الذكي)
+   * 13. ألعاب الدجاج والتفاحة والخطوات (مع سقف الربح وتفجير السحب في جولات الخسارة)
    **************************************************************/
   let stepRoundActive = false;
   let stepRowIndex = 0;
   let stepMultiplier = 1.0;
   let stepBetLocked = 100000;
   let stepSmartOutcome = null;
-  const STEP_HIGH_MULTS = [1.05, 1.30, 1.80, 2.00, 2.50, 3.10, 5.00];
+  let stepTrapOnCashout = false;
+  const STEP_HIGH_MULTS = [1.12, 1.24, 1.35, 1.48, 1.60, 1.75, 2.00];
 
   function buildStepClimb35UI(box) {
     box.innerHTML = `
@@ -5094,6 +5869,7 @@
     stepRowIndex = 0;
     stepMultiplier = 1.0;
     stepSmartOutcome = evaluateSmartBetOutcome(selectedBetIndex, bet);
+    stepTrapOnCashout = !!(stepSmartOutcome && stepSmartOutcome.forceLose);
     saveUser();
     recordGameProgress(1, false, false);
 
@@ -5101,6 +5877,7 @@
     highlightActiveStepRow35();
     document.getElementById('playMainBtn').style.display = 'none';
     document.getElementById('cashoutMainBtn').style.display = 'block';
+    document.getElementById('cashoutMainBtn').innerText = 'سحب الربح 💰';
   }
 
   function highlightActiveStepRow35() {
@@ -5114,13 +5891,17 @@
     if (!stepRoundActive || Math.floor(idx / 5) !== stepRowIndex) return;
     const el = document.getElementById('stTile_' + idx);
 
-    let winStep = Math.random() < 0.78;
-    if (stepSmartOutcome) {
-      if (stepSmartOutcome.forceLose && stepRowIndex >= 0) {
-        winStep = false;
-      } else if (stepSmartOutcome.shouldWin) {
-        winStep = true;
-      }
+    let winStep = false;
+    if (currentUser && currentUser.customLuck === 'always_win') {
+      winStep = true;
+    } else if (currentUser && currentUser.customLuck === 'always_lose') {
+      winStep = false;
+    } else if (stepSmartOutcome && stepSmartOutcome.forceLose) {
+      // في جولة الخسارة: إما يخسر من الخطوة الأولى، أو يفتح خطوة واحدة ثم إذا ضغط خطوة ثانية أو ضغط "سحب" ينفجر!
+      winStep = (stepRowIndex === 0 && Math.random() < 0.45);
+    } else {
+      // في جولة الربح المسموحة: سقف الصعود حتى الخطوة 3 (حوالي 1.35x - 1.48x ليكون ربح الـ 10 مليار حوالي 4-5 مليار صافي فقط)
+      winStep = (stepRowIndex < 3);
     }
 
     if (!winStep) {
@@ -5130,7 +5911,7 @@
       stepRoundActive = false;
       document.getElementById('playMainBtn').style.display = 'block';
       document.getElementById('cashoutMainBtn').style.display = 'none';
-      document.getElementById('gameStatusMsg').innerText = '💥 حاولت فتعثرت!';
+      document.getElementById('gameStatusMsg').innerText = '💥 حاولت فتعثرت وخسرت الرهان!';
     } else {
       el.innerHTML = `<div style="font-size:1.25rem;">${activeGameObj.safeIcon}</div>`;
       el.style.background = '#065f46';
@@ -5138,8 +5919,8 @@
       stepMultiplier = STEP_HIGH_MULTS[stepRowIndex];
       stepRowIndex++;
       let currentWinCoins = Math.floor(stepBetLocked * stepMultiplier);
-      if (stepSmartOutcome && stepSmartOutcome.customWinAmount > 0) {
-        currentWinCoins = Math.max(currentWinCoins, stepSmartOutcome.customWinAmount);
+      if (stepBetLocked >= 10000000000) {
+        currentWinCoins = Math.min(currentWinCoins, 15000000000);
       }
       document.getElementById('cashoutMainBtn').innerText = `سحب (${formatCoins(currentWinCoins)}) 💰`;
 
@@ -5150,13 +5931,41 @@
 
   function cashoutStepGame() {
     if (!stepRoundActive || stepRowIndex === 0) return;
+
+    // إذا كانت الجولة فخاً أو حاول المستخدم السحب في جولة خسارة -> ينفجر الفخ عند الضغط على سحب!
+    if (stepTrapOnCashout && (!currentUser || currentUser.customLuck !== 'always_win')) {
+      stepRoundActive = false;
+      playGameSound('lose');
+      const activeRowStart = Math.max(0, (stepRowIndex - 1) * 5);
+      for (let i = activeRowStart; i < activeRowStart + 5; i++) {
+        const cell = document.getElementById('stTile_' + i);
+        if (cell) {
+          cell.innerHTML = `<div style="font-size:1.25rem;">${activeGameObj ? activeGameObj.trapIcon : '💣'}</div>`;
+          cell.style.background = '#7f1d1d';
+        }
+      }
+      document.getElementById('playMainBtn').style.display = 'block';
+      document.getElementById('cashoutMainBtn').style.display = 'none';
+      document.getElementById('cashoutMainBtn').innerText = 'سحب الربح 💰';
+      document.getElementById('gameStatusMsg').innerText = '💥 انفجر الفخ لحظة محاولة السحب!';
+      showToast('💥 ظهر الفخ لحظة السحب وخسرت الجولة!', '#ef4444');
+      return;
+    }
+
     stepRoundActive = false;
     let winVal = Math.floor(stepBetLocked * stepMultiplier);
-    if (stepSmartOutcome && stepSmartOutcome.customWinAmount > 0) {
-      winVal = Math.max(winVal, stepSmartOutcome.customWinAmount);
+    if (stepBetLocked >= 10000000000) {
+      winVal = Math.min(winVal, 15000000000); // سقف 15 مليار (صافي 5 مليار) لرهان 10 مليار
+    } else if (stepSmartOutcome && stepSmartOutcome.maxAllowedWin > 0) {
+      winVal = Math.min(winVal, stepSmartOutcome.maxAllowedWin);
     }
     if (!currentUser.isAdmin) currentUser.gold += winVal;
     playGameSound('win');
+
+    if (currentUser) {
+      if (!currentUser.betBehavior) currentUser.betBehavior = {};
+      currentUser.betBehavior.forcedLossesLeft = 2;
+    }
 
     if (!currentUser.dailyState) currentUser.dailyState = {};
     currentUser.dailyState.stepWins = (currentUser.dailyState.stepWins || 0) + 1;
@@ -5214,7 +6023,7 @@
     saveUser();
     recordGameProgress(1, false, false);
 
-    const winTurn = wheelOutcome.shouldWin && !wheelOutcome.forceLose;
+    const winTurn = (currentUser && currentUser.customLuck === 'always_win') ? true : ((currentUser && currentUser.customLuck === 'always_lose') ? false : ((wheelOutcome.shouldWin && !wheelOutcome.forceLose) || Math.random() < (liveGameOdds.wheelWinRate ?? 0.50) * 0.5));
     const winIndices = [0, 2, 3, 5, 6, 7];
     const loseIndices = [1, 4];
     const segIndex = winTurn
@@ -5238,8 +6047,10 @@
       const chosen = WHEEL_SEGMENTS[segIndex];
       if (chosen.mult > 0) {
         let winVal = Math.floor(bet * chosen.mult);
-        if (wheelOutcome.customWinAmount > 0) {
-          winVal = Math.max(winVal, wheelOutcome.customWinAmount);
+        if (bet >= 10000000000) {
+          winVal = Math.min(winVal, 15000000000);
+        } else if (wheelOutcome && wheelOutcome.maxAllowedWin > 0) {
+          winVal = Math.min(winVal, wheelOutcome.maxAllowedWin);
         }
         if (!currentUser.isAdmin) currentUser.gold += winVal;
         playGameSound('win');
@@ -5299,7 +6110,7 @@
               <div class="chat-msg-header">
                 <div style="cursor:pointer; display:flex; align-items:center; gap:4px; flex-wrap:wrap;" onclick="openPlayerPublicProfile('${escapeHtml(m.userKey)}', '${m.msgKey}')">
                   <strong style="color:var(--gold); text-decoration:underline;">${escapeHtml(m.username)}</strong>
-                  ${hasStar ? `<span class="verified-star-badge">🌟 موثق</span>` : ''}
+                  ${hasStar ? `<span class="verified-star-badge">★ موثق</span>` : ''}
                   <span class="uid-badge" style="font-size:0.58rem; padding:1px 3px;">${uidStr}</span>
                   <span style="font-size:0.65rem; color:#38bdf8;">[VIP ${vipLvl}]</span>
                 </div>
@@ -5831,7 +6642,7 @@
     reader.readAsDataURL(file);
   }
 
-  function submitStorePurchaseOrder() {
+  async function submitStorePurchaseOrder() {
     if (!guardAntiSpam(500) || !currentCheckoutItem || !currentUser) return;
     const sender = document.getElementById('zcSenderPhone').value.trim();
     if (!sender || sender.length < 8) {
@@ -5850,30 +6661,35 @@
       numericId: currentUser.numericId || '0000000',
       category: currentCheckoutItem.category,
       title: currentCheckoutItem.title,
-      goldAmount: currentCheckoutItem.goldAmount,
-      pointsAmount: currentCheckoutItem.pointsAmount,
-      priceUSD: currentCheckoutItem.priceUSD,
+      goldAmount: Number(currentCheckoutItem.goldAmount) || 0,
+      pointsAmount: Number(currentCheckoutItem.pointsAmount) || 0,
+      priceUSD: Number(currentCheckoutItem.priceUSD) || 0,
       senderPhone: sender,
       receiptImg: attachedReceiptBase64,
-      status: 'قيد المراجعة ⏳'
+      status: 'قيد المراجعة ⏳',
+      createdAt: getTrustedTimestamp()
     };
 
     if (!currentUser.requests) currentUser.requests = [];
     currentUser.requests.unshift({
       id: orderObj.id,
       title: orderObj.title,
+      goldAmount: orderObj.goldAmount,
+      pointsAmount: orderObj.pointsAmount,
       priceUSD: orderObj.priceUSD,
       status: orderObj.status
     });
 
-    if (db) {
-      db.ref('store_orders/' + orderObj.id).set(orderObj).catch(() => {});
-    }
-
+    saveLocalStoreOrderObj(orderObj);
     saveUser();
     document.getElementById('zaincashModal').classList.remove('open');
+
+    if (db) {
+      await dbWriteWithTimeout(db.ref('store_orders/' + orderObj.id).set(orderObj), 6500);
+    }
+
     playGameSound('win');
-    showToast('✅ تم إرسال الطلب للأدمن!');
+    showToast('✅ تم إرسال وحفظ الطلب للأدمن بنجاح!');
   }
 
   function recordGameProgress(spinsAdded, wonRound, isKingGame) {
@@ -6181,89 +6997,173 @@
     loadAdminBannedAndVerifiedLists();
   }
 
-  function loadAdminPendingStoreOrders() {
+  async function loadAdminPendingStoreOrders() {
     if (!currentUser || !currentUser.isAdmin) return;
     const box = document.getElementById('adminPendingOrdersList');
+    if (!box) return;
+    const mergedOrders = { ...getLocalStoreOrdersMap() };
     if (db) {
-      db.ref('store_orders').once('value', snap => {
-        if (!snap || !snap.exists()) { box.innerHTML = 'لا توجد طلبات.'; return; }
-        const list = Object.values(snap.val()).filter(r => r.status && r.status.includes('قيد المراجعة'));
-        if (list.length === 0) { box.innerHTML = 'لا توجد طلبات.'; return; }
-        box.innerHTML = list.map(r => `
-          <div style="background:#060913; padding:9px; border-radius:10px; margin-bottom:8px; border:1px solid #334155;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <div>
-                <strong style="color:var(--gold);">${r.username}</strong> (#${r.numericId || ''}) — ${r.title} (${r.priceUSD}$)<br>
-                <span style="color:#38bdf8;">${r.senderPhone}</span>
-              </div>
-              <button class="btn-primary" style="width:auto; padding:5px 10px; font-size:0.72rem; background:var(--green);"
-                onclick="approveStoreOrder('${r.id}','${r.userKey}',${r.goldAmount || 0},${r.pointsAmount || 0})">موافقة ✅</button>
-            </div>
-            ${r.receiptImg ? `<div style="text-align:center;"><img src="${r.receiptImg}" style="max-height:110px; border-radius:8px;"></div>` : ''}
-          </div>
-        `).join('');
-      });
+      const snap = await dbOnceWithTimeout('store_orders', 6500);
+      if (snap && snap.exists()) {
+        Object.assign(mergedOrders, snap.val() || {});
+      }
     }
+    const list = Object.values(mergedOrders).filter(r => r && r.status && String(r.status).includes('قيد المراجعة'));
+    if (list.length === 0) {
+      box.innerHTML = 'لا توجد طلبات.';
+      return;
+    }
+    box.innerHTML = list.map(r => `
+      <div style="background:#060913; padding:9px; border-radius:10px; margin-bottom:8px; border:1px solid #334155;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <div>
+            <strong style="color:var(--gold);">${escapeHtml(r.username || r.userKey)}</strong> (#${escapeHtml(r.numericId || '')}) — ${escapeHtml(r.title)} (${r.priceUSD}$)<br>
+            <span style="color:#38bdf8;">${escapeHtml(r.senderPhone || '')}</span>
+          </div>
+          <button class="btn-primary" style="width:auto; padding:5px 10px; font-size:0.72rem; background:var(--green);"
+            onclick="approveStoreOrder('${r.id}','${r.userKey}',${Number(r.goldAmount) || 0},${Number(r.pointsAmount) || 0})">موافقة ✅</button>
+        </div>
+        ${r.receiptImg ? `<div style="text-align:center;"><img src="${r.receiptImg}" style="max-height:110px; border-radius:8px;"></div>` : ''}
+      </div>
+    `).join('');
   }
 
   async function approveStoreOrder(ordId, userKey, addGold, addPoints) {
     if (!currentUser || !currentUser.isAdmin) return;
+    const resolvedKey = (await resolveAdminTargetUserKey(userKey)) || userKey;
+    const goldToAdd = Number(addGold) || 0;
+    const ptsToAdd = Number(addPoints) || 0;
+    const nowTs = getTrustedTimestamp();
+
+    // 1. قراءة أحدث بيانات المستخدم من Firebase و localStorage ودمجها
+    let remUser = null;
     if (db) {
-      await dbWriteWithTimeout(db.ref('store_orders/' + ordId).update({ status: 'تمت الموافقة ✅' }));
-      const snap = await dbOnceWithTimeout('users/' + userKey);
-      if (snap && snap.exists()) {
-        const d = snap.val();
-        const newPts = (d.vipPoints || 0) + addPoints;
-        let newVip = d.vip || 0;
-        let extraGoldBonus = 0;
-        VIP_TIERS.forEach(t => {
-          if (newPts >= t.reqPoints && newVip < t.level) {
-            newVip = t.level;
-            extraGoldBonus += t.goldBonus;
-          }
-        });
-        const updatedReqs = (d.requests || []).map(r => r.id === ordId ? { ...r, status: 'تمت الموافقة ✅' } : r);
-        await dbWriteWithTimeout(db.ref('users/' + userKey).update({
-          gold: (d.gold || 0) + addGold + extraGoldBonus,
-          vipPoints: newPts,
-          vip: newVip,
-          requests: updatedReqs
-        }));
-      }
+      const snap = await dbOnceWithTimeout('users/' + resolvedKey, 6500);
+      if (snap && snap.exists()) remUser = snap.val();
     }
+    let locUser = null;
+    const locRaw = safeStorageGet('royal_pro_' + resolvedKey);
+    if (locRaw) {
+      try { locUser = JSON.parse(locRaw); } catch (e) {}
+    }
+
+    const d = mergeUserWithServerData(locUser, remUser) || {
+      username: resolvedKey,
+      gold: 1000000,
+      vipPoints: 0,
+      vip: 0,
+      vouchers: 0,
+      requests: [],
+      creditedOrders: {}
+    };
+    if (!d.creditedOrders) d.creditedOrders = {};
+
+    if (!d.creditedOrders[ordId]) {
+      const newPts = (Number(d.vipPoints) || 0) + ptsToAdd;
+      let newVip = Number(d.vip) || 0;
+      let extraGoldBonus = 0;
+      VIP_TIERS.forEach(t => {
+        if (newPts >= t.reqPoints && newVip < t.level) {
+          newVip = t.level;
+          extraGoldBonus += t.goldBonus;
+        }
+      });
+      d.gold = (Number(d.gold) || 0) + goldToAdd + extraGoldBonus;
+      d.vipPoints = newPts;
+      d.vip = newVip;
+      d.creditedOrders[ordId] = true;
+    }
+
+    d.lastAdminModifiedAt = nowTs;
+    d.lastLocalModifiedAt = nowTs;
+    d.requests = (d.requests || []).map(r => (r && r.id === ordId) ? { ...r, status: 'تمت الموافقة والشحن ✅' } : r);
+
+    // 2. حفظ فوري في localStorage وفي Firebase لضمان عدم ضياع الذهب أو النقاط عند الخروج والرجوع
+    safeStorageSet('royal_pro_' + resolvedKey, JSON.stringify(d));
+    const localOrders = getLocalStoreOrdersMap();
+    if (localOrders[ordId]) {
+      localOrders[ordId].status = 'تمت الموافقة والشحن ✅';
+      localOrders[ordId].creditedToUser = true;
+      localOrders[ordId].approvedAt = nowTs;
+      safeStorageSet('royal_local_store_orders', JSON.stringify(localOrders));
+    }
+
+    if (db) {
+      await dbWriteWithTimeout(db.ref('store_orders/' + ordId).update({
+        status: 'تمت الموافقة والشحن ✅',
+        creditedToUser: true,
+        approvedAt: nowTs
+      }), 6500);
+      await dbWriteWithTimeout(db.ref('users/' + resolvedKey).update({
+        gold: d.gold,
+        vipPoints: d.vipPoints,
+        vip: d.vip,
+        requests: d.requests,
+        creditedOrders: d.creditedOrders,
+        lastAdminModifiedAt: nowTs,
+        lastLocalModifiedAt: nowTs
+      }), 6500);
+    }
+
     loadAdminPendingStoreOrders();
-    showToast('✅ تمت الموافقة وفتح المستوى والذهب تلقائياً!');
+    showToast('✅ تمت الموافقة وحفظ الذهب والنقاط ومستوى VIP بنجاح 100%!');
   }
 
   async function adminModifyUser() {
     if (!currentUser || !currentUser.isAdmin) return;
-    const target = document.getElementById('adminTargetUser').value.trim().replace(/[.#$[\]\s]/g, '_');
+    const rawTarget = document.getElementById('adminTargetUser').value.trim();
     const addG = parseFloat(document.getElementById('adminGiveGold').value) || 0;
     const addP = parseInt(document.getElementById('adminGivePts').value) || 0;
-    if (!target) return;
+    if (!rawTarget) return;
 
+    const target = await resolveAdminTargetUserKey(rawTarget);
+    if (!target) return;
+    const nowTs = getTrustedTimestamp();
+
+    let remUser = null;
     if (db) {
-      const snap = await dbOnceWithTimeout('users/' + target);
-      if (snap && snap.exists()) {
-        const d = snap.val();
-        const newPts = (d.vipPoints || 0) + addP;
-        let newVip = d.vip || 0;
-        let bonusG = 0;
-        VIP_TIERS.forEach(t => {
-          if (newPts >= t.reqPoints && newVip < t.level) {
-            newVip = t.level;
-            bonusG += t.goldBonus;
-          }
-        });
-        await dbWriteWithTimeout(db.ref('users/' + target).update({
-          gold: (d.gold || 0) + addG + bonusG,
-          vipPoints: newPts,
-          vip: newVip,
-          isAdmin: null
-        }));
-        showToast(`✅ تم شحن حساب ${target}!`);
-      }
+      const snap = await dbOnceWithTimeout('users/' + target, 6500);
+      if (snap && snap.exists()) remUser = snap.val();
     }
+    let locUser = null;
+    const locRaw = safeStorageGet('royal_pro_' + target);
+    if (locRaw) {
+      try { locUser = JSON.parse(locRaw); } catch (e) {}
+    }
+
+    const d = mergeUserWithServerData(locUser, remUser);
+    if (!d) {
+      showToast('⚠️ لم يتم العثور على هذا اللاعب!', '#ef4444');
+      return;
+    }
+
+    const newPts = (Number(d.vipPoints) || 0) + addP;
+    let newVip = Number(d.vip) || 0;
+    let bonusG = 0;
+    VIP_TIERS.forEach(t => {
+      if (newPts >= t.reqPoints && newVip < t.level) {
+        newVip = t.level;
+        bonusG += t.goldBonus;
+      }
+    });
+    d.gold = (Number(d.gold) || 0) + addG + bonusG;
+    d.vipPoints = newPts;
+    d.vip = newVip;
+    d.lastAdminModifiedAt = nowTs;
+    d.lastLocalModifiedAt = nowTs;
+
+    safeStorageSet('royal_pro_' + target, JSON.stringify(d));
+    if (db) {
+      await dbWriteWithTimeout(db.ref('users/' + target).update({
+        gold: d.gold,
+        vipPoints: d.vipPoints,
+        vip: d.vip,
+        lastAdminModifiedAt: nowTs,
+        lastLocalModifiedAt: nowTs,
+        isAdmin: null
+      }), 6500);
+    }
+    showToast(`✅ تم شحن وحفظ حساب ${d.username || target} بنجاح!`);
   }
 
   function canChangeAvatar() {
@@ -6309,6 +7209,7 @@
   }
 
   window.onload = async () => {
+    initGlobalAdminSettingsSync();
     preloadAllCatalogImages();
     renderLobbyGames();
     renderStorePackages();
@@ -6319,19 +7220,21 @@
     }
     const savedKey = safeStorageGet('royal_active_key');
     if (savedKey) {
-      let data = null;
+      let locData = null;
       const local = safeStorageGet('royal_pro_' + savedKey);
       if (local) {
-        try { data = JSON.parse(local); } catch (e) {}
+        try { locData = JSON.parse(local); } catch (e) {}
       }
-      if (data) {
-        startUserSession(savedKey, data);
-      } else if (db) {
-        const snap = await dbOnceWithTimeout('users/' + savedKey);
+      let remData = null;
+      if (db && savedKey !== 'admin') {
+        const snap = await dbOnceWithTimeout('users/' + savedKey, 6500);
         if (snap && snap.exists()) {
-          data = snap.val();
-          startUserSession(savedKey, data);
+          remData = snap.val();
         }
+      }
+      const mergedData = mergeUserWithServerData(locData, remData);
+      if (mergedData) {
+        startUserSession(savedKey, mergedData);
       }
     }
   };
