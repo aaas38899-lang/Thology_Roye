@@ -1759,6 +1759,90 @@
       border-bottom: none;
     }
 
+    /* جرس الإشعارات ونافذة الإشعارات الملكية */
+    .notif-bell-btn {
+      position: relative;
+      background: linear-gradient(145deg, #1e2946, #0f172a);
+      border: 1.5px solid var(--gold);
+      color: #fff;
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.92rem;
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.35);
+      flex-shrink: 0;
+      transition: transform 0.15s ease;
+    }
+    .notif-bell-btn:active {
+      transform: scale(0.9);
+    }
+    .notif-bell-btn.bell-ringing {
+      animation: bellShakeAnim 1.2s infinite ease-in-out;
+      border-color: #fde047;
+      box-shadow: 0 0 16px rgba(251, 191, 36, 0.85);
+    }
+    @keyframes bellShakeAnim {
+      0%, 100% { transform: rotate(0deg); }
+      15% { transform: rotate(16deg); }
+      30% { transform: rotate(-14deg); }
+      45% { transform: rotate(10deg); }
+      60% { transform: rotate(-8deg); }
+      75% { transform: rotate(4deg); }
+    }
+    .notif-unread-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: #fff;
+      font-size: 0.58rem;
+      font-weight: 900;
+      min-width: 17px;
+      height: 17px;
+      padding: 0 4px;
+      border-radius: 10px;
+      border: 1.5px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.9);
+      z-index: 5;
+    }
+    .notif-card-item {
+      background: linear-gradient(155deg, #111a30 0%, #070b16 100%);
+      border: 1px solid #263354;
+      border-radius: 14px;
+      padding: 11px 12px;
+      margin-bottom: 9px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .notif-card-item.unread {
+      border-color: var(--gold);
+      box-shadow: 0 0 14px rgba(251, 191, 36, 0.25);
+      background: linear-gradient(155deg, #1a2747 0%, #091022 100%);
+    }
+    .notif-scope-pill {
+      font-size: 0.64rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+    .notif-scope-private {
+      background: rgba(168, 85, 247, 0.22);
+      color: #e9d5ff;
+      border: 1px solid #a855f7;
+    }
+    .notif-scope-global {
+      background: rgba(56, 189, 248, 0.2);
+      color: #7dd3fc;
+      border: 1px solid #38bdf8;
+    }
   </style>
 </head>
 <body>
@@ -1931,6 +2015,10 @@
       <div class="curr-pill curr-gold" onclick="switchView('storeView')">🪙 <span id="goldBalance">1.0M</span></div>
       <div class="curr-pill curr-pts" onclick="switchView('storeView')">💎 <span id="vipPointsBalance">0</span></div>
       <div class="curr-pill curr-ticket" onclick="switchView('walletView')">🎫 <span id="voucherBalance">0</span></div>
+      <button onclick="openUserNotificationsModal()" id="notifBellBtn" class="notif-bell-btn" title="جرس الإشعارات">
+        <span>🔔</span>
+        <span id="notifUnreadBadge" class="notif-unread-badge" style="display:none;">0</span>
+      </button>
       <button onclick="toggleSound()" id="soundBtn" style="background:#1e2946; border:none; color:#fff; width:28px; height:28px; border-radius:50%; cursor:pointer;">🔊</button>
     </div>
   </div>
@@ -2406,6 +2494,33 @@
   </div>
 </div>
 
+<!-- نافذة جرس الإشعارات الملكي للمستخدم -->
+<div class="popup-overlay" id="userNotificationsModal">
+  <div class="popup-box" style="max-width: 440px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid #263354; padding-bottom:8px;">
+      <div style="display:flex; align-items:center; gap:7px;">
+        <span style="font-size:1.45rem;">🔔</span>
+        <div>
+          <h3 style="color:var(--gold); font-size:0.98rem; margin:0;">مركز الإشعارات الملكي</h3>
+          <div style="font-size:0.68rem; color:#94a3b8;">إشعارات الإدارة والمكافآت والتنبيهات المباشرة</div>
+        </div>
+      </div>
+      <button type="button" onclick="closeUserNotificationsModal()" style="background:#334155; color:#fff; border:none; width:30px; height:30px; border-radius:50%; font-weight:900; cursor:pointer;">✖</button>
+    </div>
+
+    <div style="display:flex; gap:6px; margin-bottom:10px;">
+      <button type="button" class="btn-primary" style="flex:1; padding:7px; font-size:0.75rem; background:linear-gradient(135deg,#0284c7,#2563eb); color:#fff;" onclick="markAllUserNotificationsRead()">✔️ تحديد الكل كمقروء</button>
+      <button type="button" class="btn-primary" style="flex:1; padding:7px; font-size:0.75rem; background:#1e293b; color:#cbd5e1; border:1px solid #475569;" onclick="clearUserNotificationsModal()">🧹 إخفاء المقروءة</button>
+    </div>
+
+    <div id="userNotificationsListBox" style="max-height: 360px; overflow-y: auto; padding-right:2px;">
+      <div style="text-align:center; color:#64748b; padding:24px; font-size:0.82rem;">لا توجد إشعارات جديدة حالياً 🔔</div>
+    </div>
+
+    <button type="button" class="btn-primary" style="margin-top:10px; background:#334155; color:#fff; padding:9px;" onclick="closeUserNotificationsModal()">إغلاق</button>
+  </div>
+</div>
+
 <!-- نافذة الإبلاغ عن الرسائل -->
 <div class="popup-overlay" id="reportChatModal">
   <div class="popup-box">
@@ -2465,11 +2580,24 @@
     <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px;">
       <h4 style="color:var(--gold); font-size:0.82rem; margin-bottom:6px;">🎁 شحن مباشر للاعب:</h4>
       <div style="display:flex; gap:5px; margin-bottom:6px;">
-        <input type="text" id="adminTargetUser" class="form-input" placeholder="اسم المستخدم" style="font-size:0.76rem;">
+        <input type="text" id="adminTargetUser" class="form-input" placeholder="اسم المستخدم أو المعرف" style="font-size:0.76rem;">
         <input type="number" id="adminGiveGold" class="form-input" placeholder="ذهب" style="font-size:0.76rem;">
         <input type="number" id="adminGivePts" class="form-input" placeholder="نقاط VIP" style="font-size:0.76rem;">
       </div>
       <button class="btn-primary" style="background:var(--green); font-size:0.78rem; padding:8px;" onclick="adminModifyUser()">تنفيذ الشحن ⚡</button>
+    </div>
+
+    <!-- إرسال إشعار فوري من داخل التطبيق (للجميع أو لمستخدم واحد) -->
+    <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px; background:#091326; padding:8px; border-radius:10px; border:1px solid rgba(56,189,248,0.35);">
+      <h4 style="color:#38bdf8; font-size:0.82rem; margin-bottom:6px;">🔔 إرسال إشعار للجرس (للجميع أو للاعب محدد):</h4>
+      <select id="inAppAdminNotifScope" class="form-input" style="font-size:0.75rem; padding:6px; margin-bottom:6px;" onchange="document.getElementById('inAppAdminNotifTarget').style.display = this.value === 'single' ? 'block' : 'none'">
+        <option value="all">📢 إرسال لجميع المستخدمين (إشعار عام)</option>
+        <option value="single">👤 إرسال لمستخدم واحد محدد</option>
+      </select>
+      <input type="text" id="inAppAdminNotifTarget" class="form-input" placeholder="اسم اللاعب أو المعرف #1234567" style="font-size:0.75rem; margin-bottom:6px; display:none;">
+      <input type="text" id="inAppAdminNotifTitle" class="form-input" placeholder="عنوان الإشعار" value="👑 إشعار من الإدارة" style="font-size:0.75rem; margin-bottom:6px;">
+      <input type="text" id="inAppAdminNotifMsg" class="form-input" placeholder="نص رسالة الإشعار..." style="font-size:0.75rem; margin-bottom:6px;">
+      <button type="button" class="btn-primary" style="background:linear-gradient(135deg,#0284c7,#2563eb); color:#fff; font-size:0.78rem; padding:8px;" onclick="adminSendNotifFromModal()">🔔 إرسال الإشعار الآن</button>
     </div>
 
     <button class="btn-primary" style="background:var(--red); color:#fff;" onclick="document.getElementById('adminModal').classList.remove('open')">إغلاق</button>
@@ -2520,24 +2648,71 @@
     try { localStorage.removeItem(k); } catch (e) {}
   }
 
-  function dbOnceWithTimeout(path, timeoutMs = 6500) {
-    if (!db) return Promise.resolve(null);
+  const DB_REST_URL = "https://bott-12bfe-default-rtdb.firebaseio.com";
+  const liveSyncChannel = (typeof BroadcastChannel !== 'undefined') ? new BroadcastChannel('royal_live_sync_v2') : null;
+
+  async function restGetJson(path) {
+    try {
+      const cleanPath = String(path || '').replace(/^\/+|\/+$/g, '');
+      const res = await fetch(`https://bott-12bfe-default-rtdb.firebaseio.com/${cleanPath}.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return null;
+  }
+
+  async function restWriteJson(path, data, method = 'PATCH') {
+    try {
+      const cleanPath = String(path || '').replace(/^\/+|\/+$/g, '');
+      const res = await fetch(`https://bott-12bfe-default-rtdb.firebaseio.com/${cleanPath}.json`, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: method === 'DELETE' ? null : JSON.stringify(data)
+      });
+      return res.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function dbOnceWithTimeout(path, timeoutMs = 4500) {
+    const cleanPath = String(path || '').replace(/^\/+|\/+$/g, '');
     return new Promise(resolve => {
       let done = false;
       const timer = setTimeout(() => {
         if (!done) { done = true; resolve(null); }
       }, timeoutMs);
-      db.ref(path).once('value')
-        .then(snap => {
-          if (!done) { done = true; clearTimeout(timer); resolve(snap); }
-        })
-        .catch(() => {
-          if (!done) { done = true; clearTimeout(timer); resolve(null); }
-        });
+
+      // نسحب من Firebase SDK ومن REST API بالتوازي لضمان السرعة وعدم الفشل أبداً
+      if (db) {
+        db.ref(cleanPath).once('value')
+          .then(snap => {
+            if (!done && snap && snap.exists()) {
+              done = true;
+              clearTimeout(timer);
+              resolve(snap);
+            }
+          })
+          .catch(() => {});
+      }
+
+      restGetJson(cleanPath).then(jsonVal => {
+        if (!done && jsonVal !== null && jsonVal !== undefined) {
+          done = true;
+          clearTimeout(timer);
+          resolve({
+            exists: () => true,
+            val: () => jsonVal
+          });
+        } else if (!done && !db) {
+          done = true;
+          clearTimeout(timer);
+          resolve(null);
+        }
+      });
     });
   }
 
-  function dbWriteWithTimeout(promiseObj, timeoutMs = 6500) {
+  function dbWriteWithTimeout(promiseObj, timeoutMs = 5000) {
     if (!promiseObj) return Promise.resolve();
     return Promise.race([
       promiseObj.catch(() => {}),
@@ -2561,7 +2736,7 @@
     safeStorageSet('royal_local_store_orders', JSON.stringify(map));
   }
 
-  // دمج ذكي بين بيانات السيرفر (Firebase) والتخزين المحلي لضمان عدم ضياع أي ذهب أو نقاط VIP أو شحن موافق عليه
+  // اعتماد بيانات السيرفر (Firebase) كمصدر أساسي 100% عند توفرها حتى تظهر جميع تعديلات لوحة التحكم فوراً ولا تُمسح أبداً
   function mergeUserWithServerData(localObj, remObj) {
     if (!localObj && !remObj) return null;
     if (!localObj) return { ...remObj };
@@ -2576,30 +2751,31 @@
     const remUpdatedTs = Number(remObj.lastLocalModifiedAt || 0);
     const locUpdatedTs = Number(localObj.lastLocalModifiedAt || 0);
 
-    const serverHasNewAdminAction = (remAdminTs > locAdminTs) ||
-      (Object.keys(remObj.creditedOrders || {}).length > Object.keys(localObj.creditedOrders || {}).length);
-
+    // بيانات Firebase هي المعتمدة دائماً للذهب والنقاط ومستوى VIP والقسائم والحظر والتوثيق والإشعارات
     const base = { ...localObj, ...remObj };
-    if (serverHasNewAdminAction || remUpdatedTs >= locUpdatedTs) {
-      base.gold = Number(remObj.gold !== undefined ? remObj.gold : (remObj.balance !== undefined ? remObj.balance : localObj.gold)) || 0;
-      base.vipPoints = Math.max(Number(remObj.vipPoints !== undefined ? remObj.vipPoints : (remObj.points || 0)) || 0, Number(localObj.vipPoints) || 0);
-      base.vip = Math.max(Number(remObj.vip !== undefined ? remObj.vip : 0) || 0, Number(localObj.vip) || 0);
-      base.vouchers = Number(remObj.vouchers !== undefined ? remObj.vouchers : (remObj.tickets !== undefined ? remObj.tickets : localObj.vouchers)) || 0;
-      base.requests = Array.isArray(remObj.requests) && remObj.requests.length > 0 ? remObj.requests : (localObj.requests || []);
-    } else {
-      base.gold = Number(localObj.gold !== undefined ? localObj.gold : remObj.gold) || 0;
-      base.vipPoints = Math.max(Number(localObj.vipPoints) || 0, Number(remObj.vipPoints) || 0);
-      base.vip = Math.max(Number(localObj.vip) || 0, Number(remObj.vip) || 0);
-      base.vouchers = Math.max(Number(localObj.vouchers) || 0, Number(remObj.vouchers) || 0);
-      base.requests = Array.isArray(localObj.requests) && localObj.requests.length > 0 ? localObj.requests : (remObj.requests || []);
-    }
+    const remGold = remObj.gold !== undefined ? remObj.gold : (remObj.balance !== undefined ? remObj.balance : (remObj.coins !== undefined ? remObj.coins : localObj.gold));
+    const remPts = remObj.vipPoints !== undefined ? remObj.vipPoints : (remObj.points !== undefined ? remObj.points : localObj.vipPoints);
+    const remVip = remObj.vip !== undefined ? remObj.vip : (remObj.vipLevel !== undefined ? remObj.vipLevel : localObj.vip);
+    const remVouch = remObj.vouchers !== undefined ? remObj.vouchers : (remObj.tickets !== undefined ? remObj.tickets : localObj.vouchers);
 
-    // دمج حالة الطلبات الموافق عليها بين السيرفر والمحلي
+    base.gold = Number(remGold) || 0;
+    base.vipPoints = Number(remPts) || 0;
+    base.vip = Number(remVip) || 0;
+    base.vouchers = Number(remVouch) || 0;
+    base.isBanned = !!remObj.isBanned;
+    base.banReason = remObj.banReason || '';
+    base.customLuck = remObj.customLuck || 'normal';
+    base.traderStarGrantedByAdmin = !!remObj.traderStarGrantedByAdmin;
+    base.traderStarRevoked = !!remObj.traderStarRevoked;
+    base.notifications = { ...(localObj.notifications || {}), ...(remObj.notifications || {}) };
+    base.readNotifIds = { ...(localObj.readNotifIds || {}), ...(remObj.readNotifIds || {}) };
+    base.requests = Array.isArray(remObj.requests) && remObj.requests.length > 0 ? remObj.requests : (localObj.requests || []);
+
     if (Array.isArray(remObj.requests) && Array.isArray(localObj.requests)) {
       const remReqMap = {};
       remObj.requests.forEach(r => { if (r && r.id) remReqMap[r.id] = r; });
       base.requests = base.requests.map(r => {
-        if (r && r.id && remReqMap[r.id] && String(remReqMap[r.id].status || '').includes('تم')) {
+        if (r && r.id && remReqMap[r.id]) {
           return { ...r, ...remReqMap[r.id] };
         }
         return r;
@@ -3196,12 +3372,12 @@
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
       <defs>
         <radialGradient id="g" cx="50%" cy="50%" r="55%">
-          <stop offset="0%" stop-color="#fbbf24"/>
-          <stop offset="65%" stop-color="#b45309"/>
-          <stop offset="100%" stop-color="#1e1b4b"/>
+          <stop offset="0%" stop-color="#fbbf24"></stop>
+          <stop offset="65%" stop-color="#b45309"></stop>
+          <stop offset="100%" stop-color="#1e1b4b"></stop>
         </radialGradient>
       </defs>
-      <rect width="160" height="160" rx="26" fill="url(#g)" stroke="#fde047" stroke-width="5"/>
+      <rect width="160" height="160" rx="26" fill="url(#g)" stroke="#fde047" stroke-width="5"></rect>
       <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="38" fill="#ffffff" font-family="Cairo, sans-serif" font-weight="900">${safeLbl}</text>
     </svg>`;
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
@@ -3960,10 +4136,139 @@
     }
   }
 
+  let userRealtimePollTimer = null;
+  let globalNotificationsCache = {};
+  let privateNotificationsCache = {};
+  let knownToastNotifIds = {};
+  let initialNotifsLoaded = false;
+
+  // تطبيق أي تحديث قادم من لوحة التحكم (Firebase أو REST أو BroadcastChannel) فوراً على حساب المستخدم
+  function applyRemoteUserSnap(rem, isFromAdminPush = false) {
+    if (!currentUser || !rem || typeof rem !== 'object' || currentUser.isAdmin) return;
+
+    const prevGold = Number(currentUser.gold) || 0;
+    const prevPts = Number(currentUser.vipPoints) || 0;
+    const prevVip = Number(currentUser.vip) || 0;
+    const prevVouch = Number(currentUser.vouchers) || 0;
+    const prevAdminTs = Number(currentUser.lastAdminModifiedAt || 0);
+    const incomingAdminTs = Number(rem.lastAdminModifiedAt || 0);
+    const hasNewAdminStamp = incomingAdminTs > prevAdminTs;
+
+    currentUser.isBanned = !!rem.isBanned;
+    currentUser.banReason = rem.banReason || '';
+    currentUser.traderStarRevoked = !!rem.traderStarRevoked;
+    if (rem.traderStarGrantedByAdmin !== undefined) currentUser.traderStarGrantedByAdmin = !!rem.traderStarGrantedByAdmin;
+    handleBanStatus(currentUser.isBanned, currentUser.banReason);
+
+    if (rem.username) currentUser.username = rem.username;
+    if (rem.pass !== undefined) currentUser.pass = rem.pass;
+    if (rem.phone !== undefined) currentUser.phone = rem.phone;
+    if (rem.numericId) currentUser.numericId = String(rem.numericId);
+    if (rem.customLuck !== undefined) currentUser.customLuck = rem.customLuck;
+    if (rem.first10MScatterClaimed !== undefined) currentUser.first10MScatterClaimed = !!rem.first10MScatterClaimed;
+    if (rem.newUserKingSpinsCount !== undefined) currentUser.newUserKingSpinsCount = Number(rem.newUserKingSpinsCount) || 0;
+    if (rem.avatar) currentUser.avatar = rem.avatar;
+    if (rem.coverPhoto !== undefined) currentUser.coverPhoto = rem.coverPhoto;
+
+    // إذا كان التحديث من الأدمن أو لم يكن اللاعب في منتصف لفة، نعتمد أرقام السيرفر فوراً
+    if (hasNewAdminStamp || isFromAdminPush || !isActionLocked) {
+      const remGold = rem.gold !== undefined ? rem.gold : (rem.balance !== undefined ? rem.balance : (rem.coins !== undefined ? rem.coins : undefined));
+      if (remGold !== undefined) currentUser.gold = Number(remGold) || 0;
+
+      const remPts = rem.vipPoints !== undefined ? rem.vipPoints : (rem.points !== undefined ? rem.points : undefined);
+      if (remPts !== undefined) currentUser.vipPoints = Number(remPts) || 0;
+
+      const remVouch = rem.vouchers !== undefined ? rem.vouchers : (rem.tickets !== undefined ? rem.tickets : undefined);
+      if (remVouch !== undefined) currentUser.vouchers = Number(remVouch) || 0;
+
+      if (rem.vip !== undefined) currentUser.vip = Number(rem.vip) || 0;
+    }
+
+    if (rem.bio !== undefined) {
+      currentUser.bio = rem.bio;
+      const bioInp = document.getElementById('profileBioInput');
+      if (bioInp && document.activeElement !== bioInp) {
+        bioInp.value = (rem.bio || '').slice(0, 100);
+        updateBioCharCounter();
+      }
+    }
+    if (rem.traderPhone !== undefined) {
+      currentUser.traderPhone = rem.traderPhone;
+      const tp = document.getElementById('vipTraderPhoneInput');
+      if (tp && document.activeElement !== tp) tp.value = rem.traderPhone || '';
+    }
+    if (rem.traderTelegram !== undefined) {
+      currentUser.traderTelegram = rem.traderTelegram;
+      const tt = document.getElementById('vipTraderTelegramInput');
+      if (tt && document.activeElement !== tt) tt.value = rem.traderTelegram || '';
+    }
+    if (rem.traderOffer !== undefined) {
+      currentUser.traderOffer = rem.traderOffer;
+      const to = document.getElementById('vipTraderOfferInput');
+      if (to && document.activeElement !== to) to.value = rem.traderOffer || '';
+    }
+
+    if (rem.notifications && typeof rem.notifications === 'object') {
+      currentUser.notifications = { ...(currentUser.notifications || {}), ...rem.notifications };
+      Object.entries(rem.notifications).forEach(([nid, nObj]) => {
+        if (nObj && typeof nObj === 'object') {
+          privateNotificationsCache[nid] = nObj;
+        }
+      });
+    }
+    if (rem.readNotifIds && typeof rem.readNotifIds === 'object') {
+      currentUser.readNotifIds = { ...(currentUser.readNotifIds || {}), ...rem.readNotifIds };
+    }
+
+    currentUser.creditedOrders = {
+      ...(currentUser.creditedOrders || {}),
+      ...(rem.creditedOrders || {})
+    };
+    currentUser.lastAdminModifiedAt = Math.max(prevAdminTs, incomingAdminTs);
+    if (Array.isArray(rem.requests)) currentUser.requests = rem.requests;
+    if (Array.isArray(rem.friendsList)) currentUser.friendsList = rem.friendsList;
+    currentUser.friendsCount = rem.friendsCount !== undefined ? Number(rem.friendsCount) : (currentUser.friendsList ? currentUser.friendsList.length : 0);
+
+    checkAutoVipLevelUp();
+    safeStorageSet('royal_pro_' + currentUser.key, JSON.stringify(currentUser));
+    refreshAllUI();
+    renderUserNotificationsBellAndList();
+
+    if (hasNewAdminStamp && prevAdminTs > 0) {
+      const diffG = (Number(currentUser.gold) || 0) - prevGold;
+      const diffP = (Number(currentUser.vipPoints) || 0) - prevPts;
+      const diffV = (Number(currentUser.vouchers) || 0) - prevVouch;
+      if (diffG > 0 || diffP > 0 || diffV > 0) {
+        playGameSound('scatterBell');
+        const parts = [];
+        if (diffG > 0) parts.push(`+${formatCoins(diffG)} ذهب 🪙`);
+        if (diffP > 0) parts.push(`+${diffP.toLocaleString()} نقطة VIP 💎`);
+        if (diffV > 0) parts.push(`+${diffV.toLocaleString()} قسيمة 🎫`);
+        showToast(`🎁 تم تحديث رصيدك من الإدارة: ${parts.join(' | ')}!`);
+      } else if (currentUser.vip > prevVip) {
+        playGameSound('scatterBell');
+        showToast(`👑 تمت ترقية مستواك إلى VIP ${currentUser.vip} من الإدارة!`);
+      }
+    }
+  }
+
   function startUserSession(key, data) {
     const isStrictlyAdmin = (key === 'admin' && data.pass === '12345');
     const localClaimed10M = safeStorageGet('royal_10m_done_' + key) === '1';
     const isExistingVeteran = (data.first10MScatterClaimed === true) || localClaimed10M || isStrictlyAdmin || ((Number(data.gold) || 0) > 1000000) || ((Number(data.vip) || 0) > 0) || ((Number(data.newUserKingSpinsCount) || 0) > 5);
+
+    let localReadMap = {};
+    try {
+      const rawRead = safeStorageGet('royal_read_notifs_' + key);
+      if (rawRead) localReadMap = JSON.parse(rawRead) || {};
+    } catch (e) {}
+
+    let localClearedMap = {};
+    try {
+      const rawCleared = safeStorageGet('royal_cleared_notifs_' + key);
+      if (rawCleared) localClearedMap = JSON.parse(rawCleared) || {};
+    } catch (e) {}
+
     currentUser = {
       vipPoints: 0,
       numericId: data.numericId || generate7DigitUid(),
@@ -3979,6 +4284,9 @@
       firstBetBonusClaimed: !!data.firstBetBonusClaimed,
       betBehavior: data.betBehavior || { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
       friendsList: data.friendsList || [],
+      notifications: data.notifications || {},
+      readNotifIds: { ...(data.readNotifIds || {}), ...localReadMap },
+      clearedNotifIds: localClearedMap,
       ...data,
       key,
       isAdmin: isStrictlyAdmin
@@ -3993,12 +4301,27 @@
       currentUser.traderStarRevoked = false;
     }
 
-    if (!currentUser.numericId || currentUser.numericId.length !== 7) {
+    if (!currentUser.numericId || String(currentUser.numericId).length !== 7) {
       currentUser.numericId = generate7DigitUid();
       if (db) db.ref('id_to_user/' + currentUser.numericId).set(currentUser.key).catch(() => {});
+      restWriteJson('id_to_user/' + currentUser.numericId, currentUser.key, 'PUT');
     }
 
-    checkAndResetDailyTasks();
+    const now = getTrustedTimestamp();
+    const today = getTrustedDayKey();
+    if (!currentUser.dailyState || (now - (currentUser.lastDailyReset || 0) >= 24 * 60 * 60 * 1000) || currentUser.dailyState.dayKey !== today) {
+      currentUser.lastDailyReset = now;
+      currentUser.dailyState = {
+        dayKey: today,
+        spins: 0,
+        kingSpins: 0,
+        wins: 0,
+        stepWins: 0,
+        chatMsgs: 0,
+        vouchersToday: 0,
+        claimed: {}
+      };
+    }
 
     const thisMonth = getTrustedMonthKey();
     if (currentUser.avatarMonth !== thisMonth) {
@@ -4012,6 +4335,8 @@
       safeStorageSet('royal_active_key', key);
     }
     safeStorageSet('royal_last_saved_key', key);
+    safeStorageSet('royal_pro_' + key, JSON.stringify(currentUser));
+
     document.getElementById('authScreen').style.display = 'none';
     document.getElementById('exclusiveAdminBtn').style.display = isStrictlyAdmin ? 'inline-block' : 'none';
 
@@ -4029,86 +4354,48 @@
 
     handleBanStatus(currentUser.isBanned, currentUser.banReason);
 
-    if (db && !isStrictlyAdmin) {
-      db.ref('users/' + key).on('value', snap => {
-        if (snap && snap.exists()) {
-          const rem = snap.val();
-          currentUser.isBanned = !!rem.isBanned;
-          currentUser.banReason = rem.banReason || '';
-          currentUser.traderStarRevoked = !!rem.traderStarRevoked;
-          if (rem.traderStarGrantedByAdmin !== undefined) currentUser.traderStarGrantedByAdmin = !!rem.traderStarGrantedByAdmin;
-          handleBanStatus(currentUser.isBanned, currentUser.banReason);
-
-          if (rem.username) currentUser.username = rem.username;
-          if (rem.pass !== undefined) currentUser.pass = rem.pass;
-          if (rem.phone !== undefined) currentUser.phone = rem.phone;
-          if (rem.numericId) currentUser.numericId = String(rem.numericId);
-          if (rem.customLuck !== undefined) currentUser.customLuck = rem.customLuck;
-          if (rem.first10MScatterClaimed !== undefined) currentUser.first10MScatterClaimed = !!rem.first10MScatterClaimed;
-          if (rem.newUserKingSpinsCount !== undefined) currentUser.newUserKingSpinsCount = Number(rem.newUserKingSpinsCount) || 0;
-          if (rem.avatar) currentUser.avatar = rem.avatar;
-          if (rem.coverPhoto !== undefined) currentUser.coverPhoto = rem.coverPhoto;
-
-          const remGold = rem.gold !== undefined ? rem.gold : (rem.balance !== undefined ? rem.balance : undefined);
-          if (remGold !== undefined) currentUser.gold = Number(remGold) || 0;
-
-          const remPts = rem.vipPoints !== undefined ? rem.vipPoints : (rem.points !== undefined ? rem.points : undefined);
-          if (remPts !== undefined) currentUser.vipPoints = Number(remPts) || 0;
-
-          const remVouch = rem.vouchers !== undefined ? rem.vouchers : (rem.tickets !== undefined ? rem.tickets : undefined);
-          if (remVouch !== undefined) currentUser.vouchers = Number(remVouch) || 0;
-
-          if (rem.vip !== undefined) currentUser.vip = Number(rem.vip) || 0;
-          if (rem.bio !== undefined) {
-            currentUser.bio = rem.bio;
-            const bioInp = document.getElementById('profileBioInput');
-            if (bioInp && document.activeElement !== bioInp) {
-              bioInp.value = (rem.bio || '').slice(0, 100);
-              updateBioCharCounter();
-            }
+    // ربط المستمعات الحية من Firebase + REST API + BroadcastChannel بدون الكتابة الفوقية على السيرفر عند بدء الجلسة
+    if (!isStrictlyAdmin) {
+      if (db) {
+        db.ref('users/' + key).off();
+        db.ref('users/' + key).on('value', snap => {
+          if (snap && snap.exists()) {
+            applyRemoteUserSnap(snap.val(), false);
           }
-          if (rem.traderPhone !== undefined) {
-            currentUser.traderPhone = rem.traderPhone;
-            const tp = document.getElementById('vipTraderPhoneInput');
-            if (tp && document.activeElement !== tp) tp.value = rem.traderPhone || '';
-          }
-          if (rem.traderTelegram !== undefined) {
-            currentUser.traderTelegram = rem.traderTelegram;
-            const tt = document.getElementById('vipTraderTelegramInput');
-            if (tt && document.activeElement !== tt) tt.value = rem.traderTelegram || '';
-          }
-          if (rem.traderOffer !== undefined) {
-            currentUser.traderOffer = rem.traderOffer;
-            const to = document.getElementById('vipTraderOfferInput');
-            if (to && document.activeElement !== to) to.value = rem.traderOffer || '';
-          }
-          currentUser.creditedOrders = {
-            ...(currentUser.creditedOrders || {}),
-            ...(rem.creditedOrders || {})
-          };
-          currentUser.lastAdminModifiedAt = Math.max(
-            Number(currentUser.lastAdminModifiedAt || 0),
-            Number(rem.lastAdminModifiedAt || 0)
-          );
-          currentUser.requests = rem.requests || currentUser.requests || [];
-          currentUser.friendsList = rem.friendsList || currentUser.friendsList || [];
-          currentUser.friendsCount = rem.friendsCount !== undefined ? Number(rem.friendsCount) : currentUser.friendsList.length;
-          safeStorageSet('royal_pro_' + key, JSON.stringify(currentUser));
-          checkAutoVipLevelUp();
-          refreshAllUI();
+        });
+
+        db.ref('store_orders').off();
+        db.ref('store_orders').on('value', snap => {
+          if (!currentUser || currentUser.isAdmin) return;
+          const remoteOrders = (snap && snap.exists()) ? (snap.val() || {}) : {};
+          reconcileApprovedOrdersForCurrentUser(remoteOrders);
+        });
+      }
+
+      // جلب أحدث نسخة من السيرفر فوراً عبر REST لضمان ظهور أي تعديل من لوحة التحكم في الحال
+      restGetJson('users/' + key).then(rem => {
+        if (rem && typeof rem === 'object') {
+          applyRemoteUserSnap(rem, true);
+        } else {
+          // إذا لم يكن الحساب موجوداً بعد في السيرفر، نحفظه الآن
+          saveUser();
         }
       });
 
-      // مزامنة تلقائية لأي طلب شراء تمت الموافقة عليه لضمان إضافة الذهب والنقاط وعدم ضياعها أبداً
-      db.ref('store_orders').on('value', snap => {
+      clearInterval(userRealtimePollTimer);
+      userRealtimePollTimer = setInterval(() => {
         if (!currentUser || currentUser.isAdmin) return;
-        const remoteOrders = (snap && snap.exists()) ? (snap.val() || {}) : {};
-        reconcileApprovedOrdersForCurrentUser(remoteOrders);
-      });
+        restGetJson('users/' + currentUser.key).then(rem => {
+          if (rem && typeof rem === 'object') {
+            applyRemoteUserSnap(rem, false);
+          }
+        });
+        pollNotificationsFromRest();
+      }, 2500);
     }
 
+    initUserNotificationsSync();
     reconcileApprovedOrdersForCurrentUser({});
-    saveUser();
     refreshAllUI();
     initLiveChat();
     updateTasksCountdown();
@@ -4132,7 +4419,6 @@
       const isApproved = st.includes('تمت الموافقة') || st.includes('مقبول');
       if (isApproved && !currentUser.creditedOrders[ord.id]) {
         currentUser.creditedOrders[ord.id] = true;
-        // إذا لم يكن قد تم احتسابها مسبقاً ضمن الرصيد المحفوظ، نضيفها فوراً
         if (!ord.creditedToUser) {
           const addG = Number(ord.goldAmount) || 0;
           const addP = Number(ord.pointsAmount) || 0;
@@ -4163,53 +4449,78 @@
       currentUser.vip = 10;
       currentUser.isBanned = false;
     }
-    currentUser.lastLocalModifiedAt = getTrustedTimestamp();
+    const nowTs = getTrustedTimestamp();
+    currentUser.lastLocalModifiedAt = nowTs;
     safeStorageSet('royal_pro_' + currentUser.key, JSON.stringify(currentUser));
+
+    const userPayload = {
+      username: currentUser.username,
+      pass: currentUser.pass || '',
+      phone: currentUser.phone || '',
+      fullPhoneDigits: currentUser.fullPhoneDigits || '',
+      localPhoneDigits: currentUser.localPhoneDigits || '',
+      rawPhoneDigits: currentUser.rawPhoneDigits || '',
+      countryCode: currentUser.countryCode || '',
+      numericId: currentUser.numericId,
+      isBanned: !!currentUser.isBanned,
+      banReason: currentUser.banReason || '',
+      gold: Number(currentUser.gold) || 0,
+      balance: Number(currentUser.gold) || 0,
+      vipPoints: Number(currentUser.vipPoints) || 0,
+      vouchers: Number(currentUser.vouchers) || 0,
+      vip: Number(currentUser.vip) || 0,
+      bio: (currentUser.bio || '').slice(0, 100),
+      traderStarRevoked: !!currentUser.traderStarRevoked,
+      traderStarGrantedByAdmin: !!currentUser.traderStarGrantedByAdmin,
+      traderPhone: currentUser.traderPhone || '',
+      traderTelegram: currentUser.traderTelegram || '',
+      traderOffer: currentUser.traderOffer || '',
+      customLuck: currentUser.customLuck || 'normal',
+      first10MScatterClaimed: !!currentUser.first10MScatterClaimed,
+      newUserKingSpinsCount: currentUser.newUserKingSpinsCount || 0,
+      firstBetBonusClaimed: !!currentUser.firstBetBonusClaimed,
+      betBehavior: currentUser.betBehavior || { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
+      isAdmin: currentUser.isAdmin ? true : null,
+      friendsCount: (currentUser.friendsList ? currentUser.friendsList.length : 0),
+      friendsList: currentUser.friendsList || [],
+      avatar: currentUser.avatar || '🦁',
+      coverPhoto: currentUser.coverPhoto || '',
+      avatarMonth: currentUser.avatarMonth,
+      avatarChangesUsed: currentUser.avatarChangesUsed || 0,
+      totalLostUnrecovered: currentUser.totalLostUnrecovered || 0,
+      lastDailyReset: currentUser.lastDailyReset || nowTs,
+      dailyState: currentUser.dailyState,
+      requests: currentUser.requests || [],
+      creditedOrders: currentUser.creditedOrders || {},
+      notifications: currentUser.notifications || {},
+      readNotifIds: currentUser.readNotifIds || {},
+      lastAdminModifiedAt: currentUser.lastAdminModifiedAt || 0,
+      lastLocalModifiedAt: nowTs
+    };
+
+    // حفظ مزدوج في Firebase SDK وفي REST API المباشر لضمان الحفظ 100% تحت أي ظرف
     if (db) {
-      db.ref('users/' + currentUser.key).update({
-        username: currentUser.username,
-        phone: currentUser.phone || '',
-        fullPhoneDigits: currentUser.fullPhoneDigits || '',
-        localPhoneDigits: currentUser.localPhoneDigits || '',
-        rawPhoneDigits: currentUser.rawPhoneDigits || '',
-        countryCode: currentUser.countryCode || '',
-        numericId: currentUser.numericId,
-        isBanned: !!currentUser.isBanned,
-        banReason: currentUser.banReason || '',
-        gold: Number(currentUser.gold) || 0,
-        vipPoints: Number(currentUser.vipPoints) || 0,
-        vouchers: Number(currentUser.vouchers) || 0,
-        vip: Number(currentUser.vip) || 0,
-        bio: (currentUser.bio || '').slice(0, 100),
-        traderStarRevoked: !!currentUser.traderStarRevoked,
-        traderStarGrantedByAdmin: !!currentUser.traderStarGrantedByAdmin,
-        traderPhone: currentUser.traderPhone || '',
-        traderTelegram: currentUser.traderTelegram || '',
-        traderOffer: currentUser.traderOffer || '',
-        customLuck: currentUser.customLuck || 'normal',
-        first10MScatterClaimed: !!currentUser.first10MScatterClaimed,
-        newUserKingSpinsCount: currentUser.newUserKingSpinsCount || 0,
-        firstBetBonusClaimed: !!currentUser.firstBetBonusClaimed,
-        betBehavior: currentUser.betBehavior || { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
-        isAdmin: currentUser.isAdmin ? true : null,
-        friendsCount: (currentUser.friendsList ? currentUser.friendsList.length : 0),
-        friendsList: currentUser.friendsList || [],
-        avatar: currentUser.avatar || '🦁',
-        coverPhoto: currentUser.coverPhoto || '',
-        avatarMonth: currentUser.avatarMonth,
-        avatarChangesUsed: currentUser.avatarChangesUsed || 0,
-        totalLostUnrecovered: currentUser.totalLostUnrecovered || 0,
-        lastDailyReset: currentUser.lastDailyReset || getTrustedTimestamp(),
-        dailyState: currentUser.dailyState,
-        requests: currentUser.requests || [],
-        creditedOrders: currentUser.creditedOrders || {},
-        lastAdminModifiedAt: currentUser.lastAdminModifiedAt || 0,
-        lastLocalModifiedAt: currentUser.lastLocalModifiedAt
-      }).catch(() => {});
+      db.ref('users/' + currentUser.key).update(userPayload).catch(() => {});
       if (currentUser.numericId) {
         db.ref('id_to_user/' + currentUser.numericId).set(currentUser.key).catch(() => {});
       }
     }
+    restWriteJson('users/' + currentUser.key, userPayload, 'PATCH');
+    if (currentUser.numericId) {
+      restWriteJson('id_to_user/' + currentUser.numericId, currentUser.key, 'PUT');
+    }
+
+    try {
+      if (liveSyncChannel) {
+        liveSyncChannel.postMessage({
+          type: 'USER_ACTION_SYNC',
+          userKey: currentUser.key,
+          userData: { ...currentUser, ...userPayload },
+          ts: nowTs
+        });
+      }
+    } catch (e) {}
+
     refreshAllUI();
   }
 
@@ -6252,11 +6563,11 @@
   function escapeHtml(text) {
     if (!text) return '';
     return text.toString()
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
+      .replace(/&/g, "&")
+      .replace(/</g, "<")
+      .replace(/>/g, ">")
+      .replace(/"/g, """)
+      .replace(/'/g, "'");
   }
 
   async function sendLiveChatMessage() {
@@ -6523,14 +6834,16 @@
     if (!currentUser.requests) currentUser.requests = [];
     currentUser.requests.unshift(r);
 
+    const redeemPayload = {
+      userKey: currentUser.key,
+      username: currentUser.username,
+      numericId: currentUser.numericId || '0000000',
+      ...r
+    };
     if (db) {
-      db.ref('voucher_redeems/' + r.id).set({
-        userKey: currentUser.key,
-        username: currentUser.username,
-        numericId: currentUser.numericId || '0000000',
-        ...r
-      }).catch(() => {});
+      db.ref('voucher_redeems/' + r.id).set(redeemPayload).catch(() => {});
     }
+    restWriteJson('voucher_redeems/' + r.id, redeemPayload, 'PUT');
 
     saveUser();
     playGameSound('win');
@@ -6685,8 +6998,9 @@
     document.getElementById('zaincashModal').classList.remove('open');
 
     if (db) {
-      await dbWriteWithTimeout(db.ref('store_orders/' + orderObj.id).set(orderObj), 6500);
+      await dbWriteWithTimeout(db.ref('store_orders/' + orderObj.id).set(orderObj), 5000);
     }
+    await restWriteJson('store_orders/' + orderObj.id, orderObj, 'PUT');
 
     playGameSound('win');
     showToast('✅ تم إرسال وحفظ الطلب للأدمن بنجاح!');
@@ -7153,16 +7467,19 @@
     d.lastLocalModifiedAt = nowTs;
 
     safeStorageSet('royal_pro_' + target, JSON.stringify(d));
+    const modPayload = {
+      gold: d.gold,
+      balance: d.gold,
+      vipPoints: d.vipPoints,
+      vip: d.vip,
+      lastAdminModifiedAt: nowTs,
+      lastLocalModifiedAt: nowTs,
+      isAdmin: null
+    };
     if (db) {
-      await dbWriteWithTimeout(db.ref('users/' + target).update({
-        gold: d.gold,
-        vipPoints: d.vipPoints,
-        vip: d.vip,
-        lastAdminModifiedAt: nowTs,
-        lastLocalModifiedAt: nowTs,
-        isAdmin: null
-      }), 6500);
+      await dbWriteWithTimeout(db.ref('users/' + target).update(modPayload), 5000);
     }
+    await restWriteJson('users/' + target, modPayload, 'PATCH');
     showToast(`✅ تم شحن وحفظ حساب ${d.username || target} بنجاح!`);
   }
 
@@ -7208,7 +7525,348 @@
     }
   }
 
+  /**************************************************************
+   * 18. نظام جرس الإشعارات الملكي والمزامنة الفورية مع لوحة التحكم
+   **************************************************************/
+  function initCrossTabAdminSync() {
+    if (liveSyncChannel) {
+      liveSyncChannel.onmessage = (ev) => {
+        const msg = ev.data || {};
+        if (msg.type === 'ADMIN_UPDATE') {
+          handleAdminLiveEvent(msg.path, msg.data, msg.method);
+        }
+      };
+    }
+    window.addEventListener('storage', (ev) => {
+      if (ev.key === 'royal_admin_live_event' && ev.newValue) {
+        try {
+          const parsed = JSON.parse(ev.newValue);
+          if (parsed && parsed.path) {
+            handleAdminLiveEvent(parsed.path, parsed.data, parsed.method);
+          }
+        } catch (e) {}
+      } else if (currentUser && ev.key === 'royal_pro_' + currentUser.key && ev.newValue) {
+        try {
+          const parsed = JSON.parse(ev.newValue);
+          if (parsed && Number(parsed.lastAdminModifiedAt || 0) > Number(currentUser.lastAdminModifiedAt || 0)) {
+            applyRemoteUserSnap(parsed, true);
+          }
+        } catch (e) {}
+      }
+    });
+  }
+
+  function handleAdminLiveEvent(path, data, method) {
+    if (!currentUser) return;
+    const cleanPath = String(path || '').replace(/^\/+|\/+$/g, '');
+    if (cleanPath === 'users/' + currentUser.key && method !== 'DELETE' && data) {
+      applyRemoteUserSnap(data, true);
+    } else if (cleanPath.startsWith('notifications/global/')) {
+      const nid = cleanPath.split('/')[2];
+      if (method === 'DELETE' || !data) {
+        delete globalNotificationsCache[nid];
+      } else {
+        globalNotificationsCache[nid] = data;
+        triggerIncomingNotificationAlert(nid, data);
+      }
+      renderUserNotificationsBellAndList();
+    } else if (cleanPath.startsWith('user_notifications/' + currentUser.key + '/')) {
+      const nid = cleanPath.split('/')[2];
+      if (method === 'DELETE' || !data) {
+        delete privateNotificationsCache[nid];
+      } else {
+        privateNotificationsCache[nid] = data;
+        triggerIncomingNotificationAlert(nid, data);
+      }
+      renderUserNotificationsBellAndList();
+    } else if (cleanPath === 'notifications' && method === 'DELETE') {
+      globalNotificationsCache = {};
+      renderUserNotificationsBellAndList();
+    } else if (cleanPath === 'user_notifications' && method === 'DELETE') {
+      privateNotificationsCache = {};
+      renderUserNotificationsBellAndList();
+    }
+  }
+
+  function initUserNotificationsSync() {
+    if (!currentUser) return;
+    globalNotificationsCache = {};
+    privateNotificationsCache = { ...(currentUser.notifications || {}) };
+
+    if (db) {
+      db.ref('notifications/global').off();
+      db.ref('notifications/global').on('value', snap => {
+        const val = (snap && snap.exists()) ? (snap.val() || {}) : {};
+        Object.entries(val).forEach(([nid, nObj]) => {
+          if (nObj && typeof nObj === 'object') {
+            if (initialNotifsLoaded && !globalNotificationsCache[nid]) {
+              triggerIncomingNotificationAlert(nid, nObj);
+            }
+            globalNotificationsCache[nid] = nObj;
+          }
+        });
+        Object.keys(globalNotificationsCache).forEach(k => {
+          if (!val[k]) delete globalNotificationsCache[k];
+        });
+        renderUserNotificationsBellAndList();
+      });
+
+      db.ref('user_notifications/' + currentUser.key).off();
+      db.ref('user_notifications/' + currentUser.key).on('value', snap => {
+        const val = (snap && snap.exists()) ? (snap.val() || {}) : {};
+        Object.entries(val).forEach(([nid, nObj]) => {
+          if (nObj && typeof nObj === 'object') {
+            if (initialNotifsLoaded && !privateNotificationsCache[nid]) {
+              triggerIncomingNotificationAlert(nid, nObj);
+            }
+            privateNotificationsCache[nid] = nObj;
+          }
+        });
+        renderUserNotificationsBellAndList();
+      });
+    }
+
+    pollNotificationsFromRest().then(() => {
+      initialNotifsLoaded = true;
+    });
+  }
+
+  async function pollNotificationsFromRest() {
+    if (!currentUser) return;
+    const [gData, pData] = await Promise.all([
+      restGetJson('notifications/global'),
+      restGetJson('user_notifications/' + currentUser.key)
+    ]);
+    if (gData && typeof gData === 'object') {
+      Object.entries(gData).forEach(([nid, nObj]) => {
+        if (nObj && typeof nObj === 'object') {
+          if (initialNotifsLoaded && !globalNotificationsCache[nid]) {
+            triggerIncomingNotificationAlert(nid, nObj);
+          }
+          globalNotificationsCache[nid] = nObj;
+        }
+      });
+    }
+    if (pData && typeof pData === 'object') {
+      Object.entries(pData).forEach(([nid, nObj]) => {
+        if (nObj && typeof nObj === 'object') {
+          if (initialNotifsLoaded && !privateNotificationsCache[nid]) {
+            triggerIncomingNotificationAlert(nid, nObj);
+          }
+          privateNotificationsCache[nid] = nObj;
+        }
+      });
+    }
+    renderUserNotificationsBellAndList();
+  }
+
+  function getCombinedUserNotificationsList() {
+    if (!currentUser) return [];
+    const clearedMap = currentUser.clearedNotifIds || {};
+    const mergedMap = {};
+
+    Object.entries(globalNotificationsCache || {}).forEach(([nid, n]) => {
+      if (n && typeof n === 'object' && !clearedMap[nid]) {
+        mergedMap[nid] = { ...n, id: nid, scope: 'all' };
+      }
+    });
+    Object.entries(currentUser.notifications || {}).forEach(([nid, n]) => {
+      if (n && typeof n === 'object' && !clearedMap[nid]) {
+        mergedMap[nid] = { ...n, id: nid, scope: 'single' };
+      }
+    });
+    Object.entries(privateNotificationsCache || {}).forEach(([nid, n]) => {
+      if (n && typeof n === 'object' && !clearedMap[nid]) {
+        mergedMap[nid] = { ...n, id: nid, scope: 'single' };
+      }
+    });
+
+    return Object.values(mergedMap).sort((a, b) => (Number(b.timestamp) || 0) - (Number(a.timestamp) || 0));
+  }
+
+  function triggerIncomingNotificationAlert(nid, nObj) {
+    if (!nid || !nObj || knownToastNotifIds[nid]) return;
+    const readMap = (currentUser && currentUser.readNotifIds) ? currentUser.readNotifIds : {};
+    if (readMap[nid]) return;
+    knownToastNotifIds[nid] = true;
+    playGameSound('scatterBell');
+    const title = nObj.title || '🔔 إشعار جديد';
+    const msg = nObj.message || '';
+    showToast(`🔔 ${title}: ${msg}`, '#f59e0b');
+  }
+
+  function renderUserNotificationsBellAndList() {
+    if (!currentUser) return;
+    const list = getCombinedUserNotificationsList();
+    const readMap = currentUser.readNotifIds || {};
+    const unreadCount = list.filter(n => !readMap[n.id]).length;
+
+    const badgeEl = document.getElementById('notifUnreadBadge');
+    const bellBtn = document.getElementById('notifBellBtn');
+    if (badgeEl) {
+      if (unreadCount > 0) {
+        badgeEl.style.display = 'flex';
+        badgeEl.innerText = unreadCount > 99 ? '99+' : unreadCount;
+      } else {
+        badgeEl.style.display = 'none';
+      }
+    }
+    if (bellBtn) {
+      bellBtn.classList.toggle('bell-ringing', unreadCount > 0);
+    }
+
+    const box = document.getElementById('userNotificationsListBox');
+    if (!box) return;
+
+    if (list.length === 0) {
+      box.innerHTML = `<div style="text-align:center; color:#64748b; padding:24px; font-size:0.82rem;">لا توجد إشعارات حالياً 🔔</div>`;
+      return;
+    }
+
+    box.innerHTML = list.map(n => {
+      const isUnread = !readMap[n.id];
+      const isGlobal = n.scope === 'all';
+      const timeStr = n.timestamp ? new Date(Number(n.timestamp)).toLocaleString('ar-IQ') : '';
+      const giftParts = [];
+      if (Number(n.giftGold) > 0) giftParts.push(`+${formatCoins(n.giftGold)} ذهب 🪙`);
+      if (Number(n.giftPts) > 0) giftParts.push(`+${Number(n.giftPts).toLocaleString()} نقطة VIP 💎`);
+      if (Number(n.giftVouchers) > 0) giftParts.push(`+${Number(n.giftVouchers).toLocaleString()} قسيمة 🎫`);
+
+      return `
+        <div class="notif-card-item ${isUnread ? 'unread' : ''}" onclick="markSingleNotificationRead('${escapeHtml(n.id)}')">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:5px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span class="notif-scope-pill ${isGlobal ? 'notif-scope-global' : 'notif-scope-private'}">
+                ${isGlobal ? '📢 إشعار عام للجميع' : '🎯 إشعار خاص لك'}
+              </span>
+              ${isUnread ? `<span style="background:var(--red); color:#fff; font-size:0.6rem; font-weight:900; padding:1px 6px; border-radius:6px;">جديد ✨</span>` : ''}
+            </div>
+            <span style="font-size:0.64rem; color:#94a3b8;">${escapeHtml(timeStr)}</span>
+          </div>
+          <div style="font-weight:900; font-size:0.88rem; color:var(--gold); margin-bottom:4px;">${escapeHtml(n.title || '👑 إشعار من الإدارة')}</div>
+          <div style="font-size:0.82rem; color:#f1f5f9; line-height:1.5;">${escapeHtml(n.message || '')}</div>
+          ${giftParts.length > 0 ? `<div style="margin-top:6px; background:rgba(16,185,129,0.15); border:1px solid var(--green); border-radius:8px; padding:4px 8px; font-size:0.74rem; color:#34d399; font-weight:900;">🎁 هدية مرفقة: ${giftParts.join(' | ')}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function openUserNotificationsModal() {
+    playGameSound('click');
+    const modal = document.getElementById('userNotificationsModal');
+    if (modal) modal.classList.add('open');
+    renderUserNotificationsBellAndList();
+  }
+
+  function closeUserNotificationsModal() {
+    markAllUserNotificationsRead(true);
+    const modal = document.getElementById('userNotificationsModal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function markSingleNotificationRead(nid) {
+    if (!currentUser || !nid) return;
+    if (!currentUser.readNotifIds) currentUser.readNotifIds = {};
+    currentUser.readNotifIds[nid] = true;
+    safeStorageSet('royal_read_notifs_' + currentUser.key, JSON.stringify(currentUser.readNotifIds));
+    renderUserNotificationsBellAndList();
+  }
+
+  function markAllUserNotificationsRead(silent = false) {
+    if (!currentUser) return;
+    if (!currentUser.readNotifIds) currentUser.readNotifIds = {};
+    const list = getCombinedUserNotificationsList();
+    list.forEach(n => {
+      if (n && n.id) currentUser.readNotifIds[n.id] = true;
+    });
+    safeStorageSet('royal_read_notifs_' + currentUser.key, JSON.stringify(currentUser.readNotifIds));
+    safeStorageSet('royal_pro_' + currentUser.key, JSON.stringify(currentUser));
+    if (db && !currentUser.isAdmin) {
+      db.ref('users/' + currentUser.key + '/readNotifIds').update(currentUser.readNotifIds).catch(() => {});
+    }
+    renderUserNotificationsBellAndList();
+    if (!silent) showToast('✔️ تم تحديد جميع الإشعارات كمقروءة');
+  }
+
+  function clearUserNotificationsModal() {
+    if (!currentUser) return;
+    if (!currentUser.clearedNotifIds) currentUser.clearedNotifIds = {};
+    if (!currentUser.readNotifIds) currentUser.readNotifIds = {};
+    const list = getCombinedUserNotificationsList();
+    list.forEach(n => {
+      if (n && n.id) {
+        currentUser.readNotifIds[n.id] = true;
+        currentUser.clearedNotifIds[n.id] = true;
+      }
+    });
+    safeStorageSet('royal_read_notifs_' + currentUser.key, JSON.stringify(currentUser.readNotifIds));
+    safeStorageSet('royal_cleared_notifs_' + currentUser.key, JSON.stringify(currentUser.clearedNotifIds));
+    renderUserNotificationsBellAndList();
+    showToast('🧹 تم تنظيف قائمة الإشعارات');
+  }
+
+  async function adminSendNotifFromModal() {
+    if (!verifyStrictAdminAccess()) return;
+    const scope = document.getElementById('inAppAdminNotifScope').value;
+    const rawTarget = (document.getElementById('inAppAdminNotifTarget').value || '').trim();
+    const title = (document.getElementById('inAppAdminNotifTitle').value || '').trim() || '👑 إشعار من الإدارة';
+    const message = (document.getElementById('inAppAdminNotifMsg').value || '').trim();
+
+    if (!message) {
+      showToast('⚠️ يرجى كتابة نص الإشعار أولاً!', '#ef4444');
+      return;
+    }
+
+    const nowTs = getTrustedTimestamp();
+    const notifId = 'ntf_' + nowTs + '_' + Math.floor(100 + Math.random() * 899);
+
+    if (scope === 'single') {
+      const targetKey = await resolveAdminTargetUserKey(rawTarget);
+      if (!targetKey) {
+        showToast('⚠️ أدخل اسم اللاعب أو معرفه الصحيح!', '#ef4444');
+        return;
+      }
+      const notifObj = {
+        id: notifId,
+        scope: 'single',
+        targetUserKey: targetKey,
+        title: title,
+        message: message,
+        timestamp: nowTs
+      };
+      if (db) {
+        await dbWriteWithTimeout(db.ref(`user_notifications/${targetKey}/${notifId}`).set(notifObj));
+        await dbWriteWithTimeout(db.ref(`users/${targetKey}/notifications/${notifId}`).set(notifObj));
+        await dbWriteWithTimeout(db.ref(`users/${targetKey}`).update({ lastAdminModifiedAt: nowTs }));
+      }
+      await restWriteJson(`user_notifications/${targetKey}/${notifId}`, notifObj, 'PUT');
+      await restWriteJson(`users/${targetKey}/notifications/${notifId}`, notifObj, 'PUT');
+      document.getElementById('inAppAdminNotifMsg').value = '';
+      showToast(`🔔 تم إرسال الإشعار الخاص إلى (${targetKey}) فوراً!`);
+    } else {
+      const notifObj = {
+        id: notifId,
+        scope: 'all',
+        title: title,
+        message: message,
+        timestamp: nowTs
+      };
+      if (db) {
+        await dbWriteWithTimeout(db.ref(`notifications/global/${notifId}`).set(notifObj));
+        await dbWriteWithTimeout(db.ref('settings/app_config').update({
+          broadcastMsg: `${title}: ${message}`,
+          updatedAt: nowTs
+        }));
+      }
+      await restWriteJson(`notifications/global/${notifId}`, notifObj, 'PUT');
+      await restWriteJson('settings/app_config', { broadcastMsg: `${title}: ${message}`, updatedAt: nowTs }, 'PATCH');
+      document.getElementById('inAppAdminNotifMsg').value = '';
+      showToast('📢 تم إرسال الإشعار العام لجميع اللاعبين فوراً!');
+    }
+  }
+
   window.onload = async () => {
+    initCrossTabAdminSync();
     initGlobalAdminSettingsSync();
     preloadAllCatalogImages();
     renderLobbyGames();
