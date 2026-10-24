@@ -53,6 +53,21 @@
       box-shadow: 0 0 45px rgba(0,0,0,0.95);
     }
 
+    /* وضع ملء الشاشة للدردشة: إخفاء القائمة العلوية والسفلية */
+    .app-wrapper.chat-fullscreen-mode {
+      padding-bottom: 8px !important;
+    }
+    .app-wrapper.chat-fullscreen-mode .top-bar,
+    .app-wrapper.chat-fullscreen-mode .bottom-nav {
+      display: none !important;
+    }
+    .app-wrapper.chat-fullscreen-mode #chatView {
+      padding: 8px 10px !important;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
     /* شاشة الحظر الكاملة غير القابلة للتخطي */
     .ban-screen {
       position: fixed;
@@ -262,6 +277,7 @@
       50% { transform: translateY(5px); }
     }
 
+    /* إطارات الصور الأساسية والمشتراة بالتأثيرات */
     .frame-vip-0 { border: 2px solid #475569; }
     .frame-vip-1, .frame-vip-2 { border: 2px solid #38bdf8; box-shadow: 0 0 10px #38bdf8; }
     .frame-vip-3, .frame-vip-4 { border: 2px solid #a855f7; box-shadow: 0 0 12px #a855f7; }
@@ -273,12 +289,66 @@
       animation: rainbowSpin 2s infinite linear;
     }
 
+    /* تأثيرات إطارات الصور الإضافية من المتجر والحقيبة */
+    .frame-fx-fire {
+      border: 3px solid #f97316 !important;
+      box-shadow: 0 0 16px #ef4444, 0 0 26px #f59e0b, inset 0 0 10px #dc2626 !important;
+      animation: pulseGlow 1s infinite alternate !important;
+    }
+    .frame-fx-neon {
+      border: 3px solid #22d3ee !important;
+      box-shadow: 0 0 18px #06b6d4, 0 0 30px #3b82f6, inset 0 0 10px #22d3ee !important;
+      animation: pulseGlow 1.3s infinite !important;
+    }
+    .frame-fx-emerald {
+      border: 3px solid #34d399 !important;
+      box-shadow: 0 0 18px #10b981, 0 0 28px #059669, inset 0 0 8px #6ee7b7 !important;
+      animation: pulseGlow 1.4s infinite !important;
+    }
+    .frame-fx-galaxy {
+      border: 3px solid #e879f9 !important;
+      box-shadow: 0 0 20px #a855f7, 0 0 34px #ec4899, inset 0 0 12px #6366f1 !important;
+      animation: rainbowSpin 3s infinite linear !important;
+    }
+    .frame-fx-royaldragon {
+      border: 3.5px solid #fde047 !important;
+      box-shadow: 0 0 24px #fbbf24, 0 0 40px #dc2626, inset 0 0 14px #f59e0b !important;
+      animation: pulseGlow 0.9s infinite alternate !important;
+    }
+
     .chat-frame-0 { background: #1e293b; border: 1px solid #475569; color: #cbd5e1; }
     .chat-frame-1, .chat-frame-2 { background: linear-gradient(135deg, #0c4a6e, #1e3a8a); border: 1px solid #38bdf8; box-shadow: 0 0 8px rgba(56,189,248,0.4); }
     .chat-frame-3, .chat-frame-4 { background: linear-gradient(135deg, #3b0764, #581c87); border: 1px solid #c084fc; box-shadow: 0 0 10px rgba(192,132,252,0.5); }
     .chat-frame-5, .chat-frame-6 { background: linear-gradient(135deg, #78350f, #b45309); border: 2px solid #fbbf24; box-shadow: 0 0 12px rgba(251,191,36,0.5); }
     .chat-frame-7, .chat-frame-8 { background: linear-gradient(135deg, #831843, #be185d); border: 2px solid #f472b6; box-shadow: 0 0 14px rgba(244,114,182,0.6); }
     .chat-frame-9, .chat-frame-10 { background: linear-gradient(135deg, #7f1d1d, #b45309, #3b0764); border: 2px solid #fde047; box-shadow: 0 0 18px #eab308; }
+
+    /* تأثيرات إطارات الدردشة الإضافية من المتجر والحقيبة */
+    .chat-fx-cyber {
+      background: linear-gradient(135deg, #042f2e, #0f172a, #1e3a8a) !important;
+      border: 1.5px solid #22d3ee !important;
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.5) !important;
+    }
+    .chat-fx-inferno {
+      background: linear-gradient(135deg, #450a0a, #9a3412, #7c2d12) !important;
+      border: 1.5px solid #fb923c !important;
+      box-shadow: 0 0 15px rgba(249, 115, 22, 0.55) !important;
+    }
+    .chat-fx-emerald {
+      background: linear-gradient(135deg, #022c22, #065f46, #047857) !important;
+      border: 1.5px solid #34d399 !important;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.5) !important;
+    }
+    .chat-fx-nebula {
+      background: linear-gradient(135deg, #2e1065, #701a75, #311042) !important;
+      border: 1.5px solid #f472b6 !important;
+      box-shadow: 0 0 16px rgba(236, 72, 153, 0.55) !important;
+    }
+    .chat-fx-emperor {
+      background: linear-gradient(135deg, #422006, #991b1b, #581c87) !important;
+      border: 2px solid #fde047 !important;
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.7) !important;
+    }
 
     @keyframes pulseGlow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     @keyframes rainbowSpin { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
@@ -467,19 +537,25 @@
 
     .store-tabs {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
     }
+    .store-tabs::-webkit-scrollbar { display: none; }
     .store-tab-btn {
       flex: 1;
-      padding: 10px;
+      min-width: fit-content;
+      padding: 8px 11px;
       border-radius: 12px;
       border: 1px solid #334155;
       background: var(--bg-card);
       color: #cbd5e1;
       font-weight: 900;
-      font-size: 0.84rem;
+      font-size: 0.76rem;
       cursor: pointer;
+      white-space: nowrap;
     }
     .store-tab-btn.active {
       background: linear-gradient(135deg, var(--gold), var(--gold-dark));
@@ -1306,8 +1382,9 @@
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
 
+    /* شريط الأخبار: يظهر مباشرة عند دخول المستخدم وبسرعة أبطأ قليلاً */
     .news-ticker-banner {
-      display: none;
+      display: flex;
       background: linear-gradient(135deg, #0f172a, #1e3a8a, #0c4a6e);
       border: 1.5px solid #38bdf8;
       border-radius: 14px;
@@ -1345,12 +1422,12 @@
     .news-ticker-track {
       display: inline-block;
       white-space: nowrap;
-      padding-left: 100%;
-      animation: newsTickerMove 18s linear infinite;
+      padding-left: 35%;
+      animation: newsTickerMove 32s linear infinite;
       color: #fde047;
     }
     @keyframes newsTickerMove {
-      0% { transform: translateX(-100%); }
+      0% { transform: translateX(-15%); }
       100% { transform: translateX(100%); }
     }
 
@@ -1451,27 +1528,28 @@
       align-items: center;
     }
 
+    /* تقليل حجم الكتابة والتفاصيل في الدردشة لتكون مرتبة وبملء الشاشة */
     .chat-container {
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 165px);
+      height: calc(100dvh - 105px);
       background: #060a16;
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid #263354;
       overflow: hidden;
     }
     .chat-messages-box {
       flex: 1;
       overflow-y: auto;
-      padding: 10px;
+      padding: 7px 8px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 6px;
     }
     .chat-msg-row {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
+      gap: 6px;
       animation: fadeIn 0.2s ease-in;
     }
     @keyframes fadeIn {
@@ -1480,26 +1558,32 @@
     }
     .chat-bubble {
       flex: 1;
-      padding: 8px 11px;
-      border-radius: 12px;
+      padding: 5px 9px;
+      border-radius: 10px;
       position: relative;
+      cursor: pointer;
+      transition: filter 0.15s;
+    }
+    .chat-bubble:active {
+      filter: brightness(1.15);
     }
     .chat-msg-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7rem;
-      margin-bottom: 3px;
+      font-size: 0.62rem;
+      margin-bottom: 2px;
     }
     .chat-msg-text {
-      font-size: 0.84rem;
+      font-size: 0.74rem;
+      line-height: 1.38;
       word-break: break-word;
       color: #f1f5f9;
     }
     .chat-actions-strip {
       display: flex;
-      gap: 6px;
-      margin-top: 5px;
+      gap: 4px;
+      margin-top: 3px;
       justify-content: flex-end;
       flex-wrap: wrap;
     }
@@ -1507,9 +1591,9 @@
       background: rgba(0,0,0,0.35);
       border: 1px solid rgba(255,255,255,0.15);
       color: #cbd5e1;
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      border-radius: 6px;
+      font-size: 0.58rem;
+      padding: 1px 5px;
+      border-radius: 5px;
       cursor: pointer;
     }
     .chat-action-btn:hover {
@@ -1517,11 +1601,11 @@
       color: #fff;
     }
     .chat-input-bar {
-      padding: 8px 10px;
+      padding: 6px 8px;
       background: #0a1020;
       border-top: 1px solid #1e2946;
       display: flex;
-      gap: 6px;
+      gap: 5px;
     }
 
     .friends-search-box {
@@ -1670,7 +1754,7 @@
       white-space: nowrap;
       vertical-align: bottom;
     }
-    .currencies { flex-shrink: 0; max-width: 62%; }
+    .currencies { flex-shrink: 0; max-width: 66%; }
     .curr-pill { white-space: nowrap; flex-shrink: 0; }
     .task-card, .friend-card { gap: 8px; max-width: 100%; }
     .task-card > div:first-child, .friend-card > div:first-child {
@@ -1682,11 +1766,6 @@
     .task-card .btn-primary, .friend-card .btn-primary, .friend-card .chat-action-btn {
       flex-shrink: 0;
       white-space: nowrap;
-    }
-    .chat-container {
-      height: calc(100vh - 195px);
-      height: calc(100dvh - 195px);
-      margin-bottom: 12px;
     }
     .chat-bubble { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
     .game-modal { height: 100vh; height: 100dvh; max-height: 100dvh; }
@@ -1970,21 +2049,21 @@
     .chat-mode-switch-bar {
       display: flex;
       gap: 6px;
-      margin-bottom: 10px;
+      margin-bottom: 7px;
       background: #060913;
-      padding: 5px;
-      border-radius: 14px;
+      padding: 4px;
+      border-radius: 12px;
       border: 1px solid #263354;
     }
     .chat-mode-tab-btn {
       flex: 1;
-      padding: 9px 8px;
+      padding: 6px 8px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       background: transparent;
       color: #94a3b8;
       font-weight: 900;
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -2009,9 +2088,9 @@
     }
     .chat-gifts-quick-strip {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       overflow-x: auto;
-      padding: 6px 8px;
+      padding: 5px 8px;
       background: linear-gradient(90deg, #0b1326, #1e1b4b, #0b1326);
       border-top: 1px solid rgba(251, 191, 36, 0.3);
       scrollbar-width: none;
@@ -2022,9 +2101,9 @@
       background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(180, 83, 9, 0.32));
       border: 1px solid var(--gold);
       color: #fde047;
-      padding: 4px 9px;
-      border-radius: 12px;
-      font-size: 0.68rem;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.64rem;
       font-weight: 900;
       white-space: nowrap;
       cursor: pointer;
@@ -2034,11 +2113,11 @@
     .gift-quick-chip:active { transform: scale(0.94); }
     .chat-gift-bubble-card {
       background: linear-gradient(135deg, #422006 0%, #78350f 50%, #1e1b4b 100%) !important;
-      border: 2px solid #fde047 !important;
-      box-shadow: 0 0 20px rgba(251, 191, 36, 0.45);
-      border-radius: 14px;
-      padding: 10px;
-      margin-top: 4px;
+      border: 1.5px solid #fde047 !important;
+      box-shadow: 0 0 16px rgba(251, 191, 36, 0.45);
+      border-radius: 11px;
+      padding: 7px;
+      margin-top: 2px;
     }
     .top10-showcase-box {
       background: linear-gradient(160deg, rgba(66, 32, 6, 0.55) 0%, rgba(15, 23, 42, 0.95) 100%);
@@ -2133,8 +2212,8 @@
     .user-news-ticker-track {
       display: inline-block;
       white-space: nowrap;
-      padding-left: 100%;
-      animation: newsTickerMove 22s linear infinite;
+      padding-left: 35%;
+      animation: newsTickerMove 36s linear infinite;
       color: #fde047;
     }
     .user-news-add-mini {
@@ -2184,6 +2263,35 @@
       border-radius: 14px;
       padding: 11px 12px;
       margin-bottom: 9px;
+    }
+
+    /* أزرار الخصوصية والحقيبة */
+    .privacy-switch-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #060913;
+      border: 1px solid #263354;
+      border-radius: 12px;
+      padding: 9px 12px;
+      margin-bottom: 8px;
+    }
+    .toggle-pill-btn {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.74rem;
+      font-weight: 900;
+      border: 1px solid #475569;
+      background: #1e293b;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+    .toggle-pill-btn.active {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #000;
+      border-color: #fde047;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.45);
     }
   </style>
 </head>
@@ -2335,8 +2443,8 @@
 </div>
 
 <!-- التطبيق الرئيسي -->
-<div class="app-wrapper">
-  <div class="top-bar">
+<div class="app-wrapper" id="mainAppWrapper">
+  <div class="top-bar" id="mainTopBar">
     <div class="user-mini" onclick="switchView('profileView')">
       <div class="avatar-wrap frame-vip-0" id="topAvatarFrame">
         <span id="topAvatarContent">🦁</span>
@@ -2357,6 +2465,10 @@
       <div class="curr-pill curr-gold" onclick="switchView('storeView')">🪙 <span id="goldBalance">1.0M</span></div>
       <div class="curr-pill curr-pts" onclick="switchView('storeView')">💎 <span id="vipPointsBalance">0</span></div>
       <div class="curr-pill curr-ticket" onclick="switchView('walletView')">🎫 <span id="voucherBalance">0</span></div>
+      <button onclick="openBagModal()" class="notif-bell-btn" title="حقيبتي 🎒" style="border-color:#a855f7; box-shadow:0 0 10px rgba(168,85,247,0.45);">
+        <span>🎒</span>
+        <span id="bagCountBadge" class="notif-unread-badge" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9); display:none;">0</span>
+      </button>
       <button onclick="startAppDownloadAnim()" id="topDownloadAppBtn" class="top-dl-mini-btn" title="تنزيل التطبيق">
         <span style="font-size:0.84rem; line-height:1;">📲</span>
         <span style="color:#fde047; font-size:0.58rem; font-weight:900; line-height:1;">تنزيل</span>
@@ -2371,10 +2483,10 @@
 
   <!-- 1. القائمة الرئيسية للألعاب -->
   <div class="view-section active" id="lobbyView">
-    <div id="liveBroadcastBanner" class="news-ticker-banner">
+    <div id="liveBroadcastBanner" class="news-ticker-banner" style="display:flex;">
       <span class="news-ticker-label">📢 الأخبار</span>
       <div class="news-ticker-viewport">
-        <div id="liveBroadcastText" class="news-ticker-track"></div>
+        <div id="liveBroadcastText" class="news-ticker-track">   ✦   👑 أهلاً بكم في أساطير رويل — استمتع بأقوى ألعاب الملوك والهدايا الملكية والمنافسة على صدارة الترتيب!   ✦   </div>
       </div>
     </div>
     <div id="userNewsTickerBanner" class="user-news-ticker-banner" onclick="openPublishUserNewsModal()">
@@ -2407,20 +2519,31 @@
     <div id="gamesGridContainer"></div>
   </div>
 
-  <!-- 2. المتجر -->
+  <!-- 2. المتجر الشامل + قسم المظاهر والتأثيرات + زر الحقيبة -->
   <div class="view-section" id="storeView">
     <div class="section-title">
-      <span>🛒 المتجر</span>
-      <span style="font-size:0.78rem; color:#38bdf8;">نقاطك: <strong id="storePointsText">0</strong> 💎</span>
+      <span>🛒 المتجر الملكي</span>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <button type="button" onclick="openBagModal()" style="background:linear-gradient(135deg,#7e22ce,#a855f7); color:#fff; border:1px solid #fde047; padding:4px 10px; border-radius:10px; font-size:0.74rem; font-weight:900; cursor:pointer;">🎒 حقيبتي</button>
+        <span style="font-size:0.76rem; color:#38bdf8;">نقاطك: <strong id="storePointsText">0</strong> 💎</span>
+      </div>
     </div>
 
     <div class="store-tabs">
       <button class="store-tab-btn active" id="tabStoreGold" onclick="switchStoreTab('gold')">🪙 شراء الذهب</button>
-      <button class="store-tab-btn" id="tabStorePts" onclick="switchStoreTab('points')">💎 شراء نقاط VIP</button>
+      <button class="store-tab-btn" id="tabStorePts" onclick="switchStoreTab('points')">💎 نقاط VIP</button>
+      <button class="store-tab-btn" id="tabStoreFrames" onclick="switchStoreTab('frames')">🖼️ إطارات صورة</button>
+      <button class="store-tab-btn" id="tabStoreChatFrames" onclick="switchStoreTab('chat_frames')">💬 إطارات دردشة</button>
+      <button class="store-tab-btn" id="tabStoreAvatars" onclick="switchStoreTab('avatars')">🦁 صور شخصية</button>
+      <button class="store-tab-btn" id="tabStoreCovers" onclick="switchStoreTab('covers')">🌌 أغلفة شخصية</button>
     </div>
 
     <div class="store-grid" id="storeGoldContainer"></div>
     <div class="store-grid" id="storePointsContainer" style="display:none;"></div>
+    <div class="store-grid" id="storeFramesContainer" style="display:none;"></div>
+    <div class="store-grid" id="storeChatFramesContainer" style="display:none;"></div>
+    <div class="store-grid" id="storeAvatarsContainer" style="display:none;"></div>
+    <div class="store-grid" id="storeCoversContainer" style="display:none;"></div>
   </div>
 
   <!-- 3. مستويات VIP -->
@@ -2498,11 +2621,17 @@
     <div id="requestsHistoryBox" style="font-size:0.78rem; color:#94a3b8;"></div>
   </div>
 
-  <!-- 6. الدردشة الحية العامة + الدردشة الخاصة المباشرة + إرسال الهدايا الملكية الـ 5 بدون شروحات -->
+  <!-- 6. الدردشة الحية العامة + الخاصة (بملء الشاشة بدون القائمة العلوية والسفلية مع زر خروج وتفاصيل مصغرة) -->
   <div class="view-section" id="chatView">
-    <div class="section-title">
-      <span>💬 الدردشة والهدايا</span>
-      <button type="button" onclick="openSendChatGiftModal()" style="background:linear-gradient(135deg,#b45309,#fbbf24); color:#000; border:1px solid #fff; padding:4px 10px; border-radius:10px; font-size:0.72rem; font-weight:900; cursor:pointer; box-shadow:0 0 12px rgba(251,191,36,0.5);">🎁 إرسال هدية</button>
+    <div class="section-title" style="margin:2px 0 6px;">
+      <div style="display:flex; align-items:center; gap:6px;">
+        <button type="button" onclick="exitChatFullscreen()" style="background:linear-gradient(135deg,#ef4444,#b91c1c); color:#fff; border:1px solid #fde047; padding:4px 10px; border-radius:9px; font-size:0.7rem; font-weight:900; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">🚪 خروج من الدردشة</button>
+        <span style="font-size:0.84rem;">💬 الدردشة</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:5px;">
+        <button type="button" onclick="openBagModal()" style="background:#1e2946; color:#fde047; border:1px solid var(--gold); padding:3px 8px; border-radius:8px; font-size:0.68rem; font-weight:900; cursor:pointer;">🎒 الحقيبة</button>
+        <button type="button" onclick="openSendChatGiftModal()" style="background:linear-gradient(135deg,#b45309,#fbbf24); color:#000; border:1px solid #fff; padding:3px 9px; border-radius:8px; font-size:0.68rem; font-weight:900; cursor:pointer; box-shadow:0 0 10px rgba(251,191,36,0.4);">🎁 إرسال هدية</button>
+      </div>
     </div>
 
     <div class="chat-mode-switch-bar">
@@ -2510,19 +2639,19 @@
         <span>🌍 الدردشة العامة</span>
       </button>
       <button type="button" class="chat-mode-tab-btn" id="chatTabPrivateBtn" onclick="switchChatSectionMode('private')">
-        <span>🔒 الدردشة الخاصة</span>
+        <span>🔒 الدردشة الخاصة (الأصدقاء)</span>
         <span id="privateChatUnreadBadge" class="pm-unread-pill" style="display:none;">0</span>
       </button>
     </div>
 
-    <div id="publicChatPaneWrapper">
-      <div class="chat-container" style="height: calc(100dvh - 245px);">
+    <div id="publicChatPaneWrapper" style="flex:1; display:flex; flex-direction:column; min-height:0;">
+      <div class="chat-container">
         <div class="chat-messages-box" id="liveChatMessagesBox">
-          <div style="text-align:center; color:#64748b; font-size:0.78rem; margin-top:20px;">جاري تحميل المحادثات...</div>
+          <div style="text-align:center; color:#64748b; font-size:0.74rem; margin-top:20px;">جاري تحميل المحادثات...</div>
         </div>
 
         <div class="chat-gifts-quick-strip">
-          <span style="font-size:0.68rem; color:#fff; font-weight:900; white-space:nowrap;">🎁 هدية:</span>
+          <span style="font-size:0.64rem; color:#fff; font-weight:900; white-space:nowrap;">🎁 هدية:</span>
           <button type="button" class="gift-quick-chip" onclick="openSendChatGiftModal('g10m')">🌹 10M</button>
           <button type="button" class="gift-quick-chip" onclick="openSendChatGiftModal('g40m')">👑 40M</button>
           <button type="button" class="gift-quick-chip" onclick="openSendChatGiftModal('g100m')">💎 100M</button>
@@ -2531,29 +2660,29 @@
         </div>
 
         <div class="chat-input-bar">
-          <button type="button" onclick="openSendChatGiftModal()" style="background:linear-gradient(135deg,#f59e0b,#b45309); color:#000; border:1px solid #fde047; border-radius:10px; padding:0 10px; font-weight:900; font-size:1.05rem; cursor:pointer;" title="إرسال هدية">🎁</button>
-          <input type="text" id="liveChatInput" class="form-input" placeholder="اكتب رسالتك..." maxlength="250" onkeydown="if(event.key==='Enter') sendLiveChatMessage()">
-          <button class="btn-primary" style="width:auto; padding:0 14px; font-size:0.85rem;" onclick="sendLiveChatMessage()">إرسال 🚀</button>
+          <button type="button" onclick="openSendChatGiftModal()" style="background:linear-gradient(135deg,#f59e0b,#b45309); color:#000; border:1px solid #fde047; border-radius:9px; padding:0 9px; font-weight:900; font-size:0.95rem; cursor:pointer;" title="إرسال هدية">🎁</button>
+          <input type="text" id="liveChatInput" class="form-input" style="padding:7px 10px; font-size:0.78rem;" placeholder="اكتب رسالتك..." maxlength="250" onkeydown="if(event.key==='Enter') sendLiveChatMessage()">
+          <button class="btn-primary" style="width:auto; padding:0 12px; font-size:0.78rem;" onclick="sendLiveChatMessage()">إرسال 🚀</button>
         </div>
       </div>
     </div>
 
-    <div id="privateChatInboxPaneWrapper" style="display:none;">
+    <div id="privateChatInboxPaneWrapper" style="display:none; flex:1; overflow-y:auto;">
       <div id="privateInboxListContainer">
-        <div style="text-align:center; color:#64748b; padding:24px; font-size:0.8rem;">لا توجد محادثات خاصة بعد 💬</div>
+        <div style="text-align:center; color:#64748b; padding:24px; font-size:0.78rem;">لا توجد محادثات خاصة بعد 💬</div>
       </div>
     </div>
   </div>
 
-  <!-- 7. الأصدقاء والبحث -->
+  <!-- 7. الأصدقاء وطلبات الصداقة والبحث -->
   <div class="view-section" id="friendsView">
     <div class="section-title">
-      <span>👥 قائمة الأصدقاء</span>
+      <span>👥 الأصدقاء وطلبات الصداقة</span>
       <span style="font-size:0.75rem; color:var(--gold);" id="friendsCountDisplay">0 صديق</span>
     </div>
 
     <div class="auth-card" style="margin-bottom:12px;">
-      <div style="font-size:0.8rem; font-weight:900; color:var(--gold); margin-bottom:6px;">🔍 البحث عن لاعب:</div>
+      <div style="font-size:0.8rem; font-weight:900; color:var(--gold); margin-bottom:6px;">🔍 البحث عن لاعب وإرسال طلب صداقة:</div>
       <div class="friends-search-box">
         <input type="text" id="friendSearchQuery" class="form-input" placeholder="اسم المستخدم أو المعرف (7 أرقام)...">
         <button class="btn-primary" style="width:auto; padding:0 14px; font-size:0.85rem;" onclick="searchPlayerToFriend()">بحث 🔎</button>
@@ -2561,26 +2690,33 @@
       <div id="friendSearchResultBox" style="display:none; margin-top:8px;"></div>
     </div>
 
-    <div class="section-title">قائمتك:</div>
+    <!-- قسم طلبات الصداقة الواردة -->
+    <div class="section-title">
+      <span>📩 طلبات الصداقة الواردة</span>
+      <span class="uid-badge" id="incomingFriendReqCountBadge">0 طلب</span>
+    </div>
+    <div id="friendRequestsIncomingContainer" style="margin-bottom:14px;">
+      <div style="text-align:center; color:#64748b; font-size:0.76rem; padding:10px; background:#060913; border-radius:12px; border:1px solid #1e2946;">لا توجد طلبات صداقة معلقة حالياً.</div>
+    </div>
+
+    <div class="section-title">👥 قائمة أصدقائك (يمكنك مراسلتهم خاص):</div>
     <div id="myFriendsListContainer">
       <div style="text-align:center; color:#64748b; font-size:0.78rem; padding:15px;">لا يوجد أصدقاء مضافون بعد.</div>
     </div>
   </div>
 
-  <!-- 7.5 قسم قائمة ترتيب اللاعبين والرابح الأكبر (أعلى 10 رابحين + اللعبة التي ربح بها + الهدايا + التصفير كل 3 أيام) -->
+  <!-- 7.5 قسم قائمة ترتيب اللاعبين والرابح الأكبر -->
   <div class="view-section" id="leaderboardView">
     <div class="section-title">
       <span>🏆 قائمة الترتيب والرابح الأكبر</span>
       <button type="button" onclick="fetchLeaderboardUsers(true)" style="background:#1e2946; color:var(--gold); border:1px solid var(--gold); padding:4px 10px; border-radius:9px; font-size:0.72rem; font-weight:900; cursor:pointer;">🔄 تحديث</button>
     </div>
 
-    <!-- عداد دورة الـ 3 أيام لتجديد الرابح الأكبر -->
     <div style="background:linear-gradient(135deg, rgba(120,53,15,0.45), rgba(15,23,42,0.95)); border:1.5px solid #fde047; border-radius:14px; padding:8px 12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
       <span style="font-size:0.75rem; font-weight:900; color:#fde047;">👑 تجديد قائمة الرابح الأكبر (كل 3 أيام):</span>
       <span style="font-size:0.78rem; font-weight:900; color:#34d399; background:#060913; padding:3px 9px; border-radius:9px; border:1px solid #10b981;" id="bwCycleCountdownText">03ي : 00س : 00د</span>
     </div>
 
-    <!-- بطاقة ترتيب اللاعب الحالي -->
     <div class="lb-my-rank-card" id="myLeaderboardRankBar">
       <div>
         <div style="font-size:0.72rem; color:#7dd3fc; font-weight:700;">⭐ موقعك الحالي:</div>
@@ -2594,7 +2730,6 @@
       </div>
     </div>
 
-    <!-- شريط أفضل 10 رابحين (Top 10 الرابح الأكبر) -->
     <div class="top10-showcase-box" id="top10BiggestWinnersShowcase">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:4px;">
         <span style="font-size:0.8rem; font-weight:900; color:#fde047;">👑 أعلى 10 رابحين ذهباً (Top 10)</span>
@@ -2603,7 +2738,6 @@
       <div class="top10-horiz-scroll" id="top10HorizontalList"></div>
     </div>
 
-    <!-- أزرار التبديل (الرابح الأكبر هو الافتراضي) -->
     <div class="lb-mode-tabs">
       <button type="button" class="lb-mode-btn active" id="lbTabBigWinner" onclick="switchLeaderboardMode('bigwinner')">
         <span>👑</span>
@@ -2623,22 +2757,23 @@
       <input type="text" id="leaderboardSearchInput" class="form-input" style="padding:8px 12px; font-size:0.8rem;" placeholder="🔍 ابحث بالاسم أو المعرف (#1234567)..." oninput="renderLeaderboardUI()">
     </div>
 
-    <!-- منصة التتويج لأول 3 لاعبين -->
     <div class="lb-podium-grid" id="leaderboardPodiumBox"></div>
 
-    <!-- قائمة اللاعبين المرتبة -->
     <div id="leaderboardListBox">
       <div style="text-align:center; color:#94a3b8; padding:24px; font-size:0.82rem;">⏳ جاري تحميل الترتيب...</div>
     </div>
   </div>
 
-  <!-- 8. الملف الشخصي -->
+  <!-- 8. الملف الشخصي + إعدادات الخصوصية (إخفاء الذهب وإخفاء التواصل) + الحقيبة -->
   <div class="view-section" id="profileView">
     <div class="profile-hero-cover" id="profileCoverBanner">
-      <label class="change-cover-btn">
-        📷 تغيير الغلاف
-        <input type="file" accept="image/*" style="display:none;" onchange="uploadCoverPhoto(event)">
-      </label>
+      <div style="display:flex; gap:6px;">
+        <button type="button" class="change-cover-btn" style="background:linear-gradient(135deg,#7e22ce,#a855f7); border-color:#fde047;" onclick="openBagModal()">🎒 حقيبتي</button>
+        <label class="change-cover-btn">
+          📷 تغيير الغلاف
+          <input type="file" accept="image/*" style="display:none;" onchange="uploadCoverPhoto(event)">
+        </label>
+      </div>
       <div class="profile-main-avatar frame-vip-0" id="profileAvatarBig">🦁</div>
     </div>
 
@@ -2654,7 +2789,10 @@
           <button onclick="copyMyUid()" style="background:#1e2946; color:#94a3b8; border:1px solid #334155; border-radius:6px; padding:1px 5px; font-size:0.65rem; cursor:pointer;">نسخ 📋</button>
         </div>
       </div>
-      <button onclick="switchView('friendsView')" style="background:#1e2946; color:#fff; border:1px solid var(--gold); padding:5px 10px; border-radius:9px; font-size:0.74rem; font-weight:700; cursor:pointer;">👥 أصدقائي</button>
+      <div style="display:flex; gap:5px;">
+        <button onclick="openBagModal()" style="background:linear-gradient(135deg,#581c87,#7e22ce); color:#fde047; border:1px solid #fde047; padding:5px 10px; border-radius:9px; font-size:0.74rem; font-weight:900; cursor:pointer;">🎒 الحقيبة</button>
+        <button onclick="switchView('friendsView')" style="background:#1e2946; color:#fff; border:1px solid var(--gold); padding:5px 10px; border-radius:9px; font-size:0.74rem; font-weight:700; cursor:pointer;">👥 أصدقائي</button>
+      </div>
     </div>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
@@ -2666,6 +2804,25 @@
         <span style="font-size:1.15rem;">🪙</span>
         <span>عطاء ذهب لمستخدم</span>
       </button>
+    </div>
+
+    <!-- خيارات الخصوصية: إخفاء الذهب وإخفاء التواصل (تظهر ***** للآخرين) -->
+    <div class="auth-card" style="margin-bottom:12px; border-color:rgba(56,189,248,0.45);">
+      <div style="font-size:0.82rem; font-weight:900; color:#38bdf8; margin-bottom:8px;">🛡️ إعدادات الخصوصية في ملفك الشخصي:</div>
+      <div class="privacy-switch-row">
+        <div>
+          <div style="font-size:0.78rem; font-weight:900; color:#fff;">🪙 إخفاء الذهب عن المستخدمين الآخرين</div>
+          <div style="font-size:0.66rem; color:#94a3b8;">يظهر رصيدك على شكل نجوم (*****) عند دخول أي شخص لملفك</div>
+        </div>
+        <button type="button" id="toggleHideGoldBtn" class="toggle-pill-btn" onclick="togglePrivacyOption('hideGold')">غير مفعل</button>
+      </div>
+      <div class="privacy-switch-row" style="margin-bottom:0;">
+        <div>
+          <div style="font-size:0.78rem; font-weight:900; color:#fff;">🔒 إخفاء التواصل لخصوصية أكثر</div>
+          <div style="font-size:0.66rem; color:#94a3b8;">تظهر بيانات التواصل على شكل نجوم (*****) للزوار</div>
+        </div>
+        <button type="button" id="toggleHideContactBtn" class="toggle-pill-btn" onclick="togglePrivacyOption('hideContact')">غير مفعل</button>
+      </div>
     </div>
 
     <div class="auth-card" style="margin-bottom:12px;">
@@ -2735,7 +2892,10 @@
     </div>
 
     <div class="auth-card" style="margin-bottom:12px;">
-      <div style="font-size:0.78rem; font-weight:900; color:var(--gold); margin-bottom:6px;">💬 إطار الدردشة:</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        <span style="font-size:0.78rem; font-weight:900; color:var(--gold);">💬 إطار الدردشة النشط:</span>
+        <button type="button" onclick="openBagModal()" style="background:#1e2946; color:#fde047; border:1px solid var(--gold); border-radius:7px; padding:2px 8px; font-size:0.68rem; font-weight:900; cursor:pointer;">تغيير من الحقيبة 🎒</button>
+      </div>
       <div id="vipChatPreviewBox" class="chat-frame-0" style="padding:10px 14px; border-radius:14px; font-size:0.82rem; display:flex; align-items:center; gap:8px;">
         <span id="chatPreviewIcon">🦁</span>
         <div>
@@ -2766,7 +2926,7 @@
   </div>
 
   <!-- شريط التنقل السفلي -->
-  <div class="bottom-nav">
+  <div class="bottom-nav" id="mainBottomNav">
     <div class="nav-item active" onclick="switchView('lobbyView', this)"><span class="nav-icon">🎰</span><span>الألعاب</span></div>
     <div class="nav-item" id="navItemLeaderboard" onclick="switchView('leaderboardView', this); fetchLeaderboardUsers(false);"><span class="nav-icon">🏆</span><span>الترتيب</span></div>
     <div class="nav-item" onclick="switchView('storeView', this)"><span class="nav-icon">🛒</span><span>المتجر</span></div>
@@ -2779,7 +2939,54 @@
   </div>
 </div>
 
-<!-- نافذة استعراض الملف الشخصي لأي لاعب -->
+<!-- نافذة الإجراءات السريعة عند الضغط على صورة أو كلام المستخدم في الدردشة -->
+<div class="popup-overlay" id="chatUserQuickMenuModal">
+  <div class="popup-box" style="max-width:360px; text-align:center; border:2px solid var(--gold);">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #263354; padding-bottom:8px; margin-bottom:12px;">
+      <span style="font-size:0.88rem; font-weight:900; color:var(--gold);">⚡ خيارات المستخدم</span>
+      <button type="button" onclick="closeChatUserQuickMenu()" style="background:#334155; color:#fff; border:none; width:28px; height:28px; border-radius:50%; font-weight:900; cursor:pointer;">✖</button>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:12px;">
+      <div id="quickMenuAvatar" class="avatar-wrap frame-vip-0" style="width:58px; height:58px; font-size:1.8rem; margin-bottom:6px;">🦁</div>
+      <div style="font-weight:900; font-size:0.95rem; color:#fff;" id="quickMenuUsername">لاعب</div>
+      <div style="font-size:0.7rem; color:#38bdf8; margin-top:2px;" id="quickMenuSubInfo">#0000000 | VIP 0</div>
+      <div id="quickMenuMsgPreview" style="margin-top:6px; font-size:0.72rem; color:#cbd5e1; background:#060913; border:1px solid #1e2946; padding:5px 9px; border-radius:8px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></div>
+    </div>
+    <div id="quickMenuActionsList" style="display:flex; flex-direction:column; gap:8px;"></div>
+  </div>
+</div>
+
+<!-- نافذة الحقيبة الملكية (🎒 تحفظ كل ما يشتريه المستخدم من إطارات صور وإطارات دردشة وصور وأغلفة) -->
+<div class="popup-overlay" id="userBagModal">
+  <div class="popup-box" style="max-width:445px; border:2px solid #a855f7; box-shadow:0 0 35px rgba(168,85,247,0.45);">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #263354; padding-bottom:8px; margin-bottom:10px;">
+      <div style="display:flex; align-items:center; gap:7px;">
+        <span style="font-size:1.55rem;">🎒</span>
+        <div>
+          <h3 style="color:#e9d5ff; font-size:0.96rem; margin:0;">حقيبتي الملكية</h3>
+          <div style="font-size:0.68rem; color:#94a3b8;">جميع مقتنياتك من الإطارات والصور والأغلفة المحفوظة</div>
+        </div>
+      </div>
+      <button type="button" onclick="closeBagModal()" style="background:#334155; color:#fff; border:none; width:30px; height:30px; border-radius:50%; font-weight:900; cursor:pointer;">✖</button>
+    </div>
+
+    <div class="store-tabs" style="margin-bottom:10px;">
+      <button type="button" class="store-tab-btn active" id="bagTab_frames" onclick="switchBagCategory('frames')">🖼️ إطارات صورة</button>
+      <button type="button" class="store-tab-btn" id="bagTab_chat_frames" onclick="switchBagCategory('chat_frames')">💬 إطارات دردشة</button>
+      <button type="button" class="store-tab-btn" id="bagTab_avatars" onclick="switchBagCategory('avatars')">🦁 صور رمزية</button>
+      <button type="button" class="store-tab-btn" id="bagTab_covers" onclick="switchBagCategory('covers')">🌌 أغلفة</button>
+    </div>
+
+    <div id="bagItemsGridContainer" class="store-grid" style="max-height:340px; overflow-y:auto; padding-right:2px; margin-bottom:12px;"></div>
+
+    <div style="display:flex; gap:8px;">
+      <button type="button" class="btn-primary" style="flex:1; padding:9px; font-size:0.82rem; background:linear-gradient(135deg,#0284c7,#2563eb); color:#fff;" onclick="closeBagModal(); switchView('storeView'); switchStoreTab('frames');">🛒 ذهاب للمتجر</button>
+      <button type="button" class="btn-primary" style="width:35%; background:#334155; color:#fff; padding:9px; font-size:0.82rem;" onclick="closeBagModal()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- نافذة استعراض الملف الشخصي لأي لاعب (مع احترام إخفاء الذهب وإخفاء التواصل بظهور ***** نجوم فقط) -->
 <div class="popup-overlay" id="playerProfileModal">
   <div class="popup-box" style="padding:14px;">
     <div id="pubProfCover" style="height:110px; border-radius:14px; background:linear-gradient(135deg,#1e1b4b,#7e22ce,#b45309); background-size:cover; background-position:center; position:relative; margin-bottom:42px; border:1.5px solid var(--gold);">
@@ -2865,7 +3072,7 @@
   </div>
 </div>
 
-<!-- 2. دايلوك شرح عن الربح وشرح مبسط عن التطبيق (المكان الوحيد المخصص للشرح) -->
+<!-- 2. دايلوك شرح عن الربح وشرح مبسط عن التطبيق -->
 <div class="popup-overlay" id="profitGuideModal">
   <div class="popup-box" style="max-width:450px; border:2px solid #38bdf8; box-shadow:0 0 35px rgba(56,189,248,0.45);">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #263354; padding-bottom:8px; margin-bottom:10px;">
@@ -2892,8 +3099,8 @@
         <p style="font-size:0.76rem; color:#cbd5e1;">
           • يومياً لديك <strong>11 مهمة يومية</strong> (تسجيل دخول، لعب جولات، وصرف ذهب 10M و50M و100M) تمنحك <strong>720 قسيمة مجانية كل 24 ساعة</strong>.<br>
           • بعد تجميع القسائم، ادخل إلى قسم <strong>المحفظة (🎫)</strong> واستبدل قسائمك مباشرة بـ:<br>
-          &nbsp;&nbsp;✅ <strong>أموال نقدية عبر محفظة زين كاش (ZainCash)</strong><br>
-          &nbsp;&nbsp;✅ <strong>تحويل رصيد هاتف مباشر (آسياسيل Asiacell)</strong><br>
+            ✅ <strong>أموال نقدية عبر محفظة زين كاش (ZainCash)</strong><br>
+            ✅ <strong>تحويل رصيد هاتف مباشر (آسياسيل Asiacell)</strong><br>
           • كل <strong>5,000 قسيمة = 1 دولار (1,000 دينار عراقي)</strong>.
         </p>
       </div>
@@ -2901,7 +3108,7 @@
       <div class="guide-step-card" style="border-color:rgba(16,185,129,0.5);">
         <div style="font-weight:900; color:#34d399; font-size:0.86rem; margin-bottom:4px;">🪙 3. تجميع الذهب من الألعاب وجوائز الرابح الأكبر:</div>
         <p style="font-size:0.76rem; color:#cbd5e1;">
-          • العب في الألعاب وضاعف ذهبك عبر جولات الـ <strong>4 ملوك (SCATTER)</strong> والمضاعفات.<br>
+          • العب في الألعاب وضاعف ذهبك عبر جولات الـ <strong>4 ملوك (SCATTER)</strong> في ألعاب الملوك والمضاعفات.<br>
           • في قائمة <strong>الرابح الأكبر (أعلى 10 رابحين كل 3 أيام)</strong> يحصل المركز الأول على <strong>500 مليون</strong>، الثاني <strong>400 مليون</strong>، الثالث <strong>300 مليون</strong>، ومن المركز 4 إلى 10 يحصل كل عضو على <strong>100 مليون ذهب</strong>.<br>
           • يتم بيع الذهب حصرياً إلى <strong>الوكلاء والتجار المعتمدين فقط</strong> (أصحاب <strong>VIP 6 فما فوق</strong> الحاملين لنجمة التوثيق الزرقاء <span class="verified-star-badge" style="font-size:0.6rem;">★ موثق</span>).
         </p>
@@ -2914,7 +3121,7 @@
   </div>
 </div>
 
-<!-- 3. نافذة الدردشة الخاصة المباشرة -->
+<!-- 3. نافذة الدردشة الخاصة المباشرة (تفتح بعد موافقة الصديق على طلب الصداقة) -->
 <div class="popup-overlay" id="privateChatModal">
   <div class="popup-box" style="max-width:445px; padding:12px; border:2px solid #38bdf8;">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #263354; padding-bottom:8px; margin-bottom:8px;">
@@ -2925,7 +3132,7 @@
             <strong style="color:var(--gold); font-size:0.9rem;" id="pmPeerNameText">لاعب</strong>
             <span class="uid-badge" style="font-size:0.6rem;" id="pmPeerUidText">#0000000</span>
           </div>
-          <div style="font-size:0.66rem; color:#34d399;">🔒 دردشة خاصة</div>
+          <div style="font-size:0.66rem; color:#34d399;">🔒 دردشة خاصة بين الأصدقاء</div>
         </div>
       </div>
       <button type="button" onclick="closePrivateChatModal()" style="background:#334155; color:#fff; border:none; width:30px; height:30px; border-radius:50%; font-weight:900; cursor:pointer;">✖</button>
@@ -2942,7 +3149,7 @@
   </div>
 </div>
 
-<!-- 4. نافذة إرسال الهدايا الـ 5 في الدردشة (بدون أي شرح وبمؤثرات بصرية) -->
+<!-- 4. نافذة إرسال الهدايا الـ 5 في الدردشة -->
 <div class="popup-overlay" id="sendChatGiftModal">
   <div class="popup-box" style="max-width:420px; border:2px solid #fde047; box-shadow:0 0 35px rgba(251,191,36,0.45);">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #263354; padding-bottom:8px; margin-bottom:10px;">
@@ -2961,7 +3168,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- 5. نافذة نشر خبر في الشريط المتحرك الخاص بالمستخدمين (VIP 4+) -->
 <div class="popup-overlay" id="publishUserNewsModal">
@@ -3000,7 +3206,7 @@
   </div>
 </div>
 
-<!-- 6. نافذة عطاء ذهب لمستخدم آخر (بدون أي شرح، بحث برقم المعرف فقط، ضريبة 10%، بدون كسور، وحدود VIP) -->
+<!-- 6. نافذة عطاء ذهب لمستخدم آخر -->
 <div class="popup-overlay" id="giveGoldModal">
   <div class="popup-box" style="max-width:425px; border:2px solid #10b981; box-shadow:0 0 35px rgba(16,185,129,0.4);">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #263354; padding-bottom:8px; margin-bottom:10px;">
@@ -3203,14 +3409,15 @@
   </div>
 </div>
 
-<!-- نافذة الإبلاغ عن الرسائل -->
+<!-- نافذة الإبلاغ عن الرسائل مع عرض الرسالة المبلغ عنها وكتابة السبب -->
 <div class="popup-overlay" id="reportChatModal">
   <div class="popup-box">
     <h3 style="color:var(--gold); text-align:center; margin-bottom:10px;">🚩 إبلاغ عن رسالة</h3>
-    <p style="font-size:0.82rem; color:#cbd5e1; margin-bottom:8px;" id="reportTargetUserText">إبلاغ عن مخالفة:</p>
+    <p style="font-size:0.82rem; color:#cbd5e1; margin-bottom:6px;" id="reportTargetUserText">إبلاغ عن مخالفة:</p>
+    <div id="reportTargetMsgBox" style="background:#060913; border:1px dashed var(--red); border-radius:10px; padding:8px 10px; font-size:0.76rem; color:#fca5a5; margin-bottom:10px; word-break:break-word;"></div>
     <div class="form-group">
       <label>سبب الإبلاغ</label>
-      <input type="text" id="reportReasonInput" class="form-input" placeholder="اكتب سبب المخالفة...">
+      <input type="text" id="reportReasonInput" class="form-input" placeholder="اكتب سبب الإبلاغ...">
     </div>
     <div style="display:flex; gap:8px;">
       <button class="btn-primary" onclick="submitChatMessageReport()">إرسال البلاغ 🚩</button>
@@ -3219,10 +3426,22 @@
   </div>
 </div>
 
-<!-- لوحة الأدمن -->
+<!-- لوحة الأدمن المدمجة داخل تطبيق المستخدم -->
 <div class="popup-overlay" id="adminModal">
   <div class="popup-box">
     <h3 style="color:var(--gold); margin-bottom:10px;">👑 لوحة الأدمن - اساطير رويل</h3>
+
+    <!-- التحكم المباشر بحظ أي مستخدم (ربح اعتيادي / ربح متوسط / ربح عالي / جعله رابح أكبر) -->
+    <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px; background:#0d1f1a; padding:9px; border-radius:10px; border:1px solid #10b981;">
+      <h4 style="color:#34d399; font-size:0.84rem; margin-bottom:6px;">🎲 تحكم مباشر بحظ المستخدم (يطبق فوراً):</h4>
+      <input type="text" id="adminLuckTargetUser" class="form-input" placeholder="اسم المستخدم أو المعرف (7 أرقام)" style="font-size:0.76rem; margin-bottom:6px;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+        <button type="button" class="btn-primary" style="background:#334155; color:#fff; font-size:0.72rem; padding:7px;" onclick="adminSetUserLuckMode('normal')">⚖️ ربح اعتيادي</button>
+        <button type="button" class="btn-primary" style="background:linear-gradient(135deg,#0284c7,#2563eb); color:#fff; font-size:0.72rem; padding:7px;" onclick="adminSetUserLuckMode('medium_win')">🎯 ربح متوسط (10x)</button>
+        <button type="button" class="btn-primary" style="background:linear-gradient(135deg,#10b981,#059669); color:#000; font-size:0.72rem; padding:7px;" onclick="adminSetUserLuckMode('high_win')">🔥 ربح عالي</button>
+        <button type="button" class="btn-primary" style="background:linear-gradient(135deg,#fbbf24,#d97706); color:#000; font-size:0.72rem; padding:7px;" onclick="adminSetUserLuckMode('always_win')">👑 جعله رابح أكبر</button>
+      </div>
+    </div>
 
     <div style="border-bottom:1px solid #263354; padding-bottom:10px; margin-bottom:10px; background:#1a0f1f; padding:8px; border-radius:10px;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -3283,7 +3502,7 @@
 
 <script>
   /**************************************************************
-   * 1. ربط Firebase وحفظ ومزامنة الوقت الحقيقي من السيرفر (مع حماية عدم التعليق)
+   * 1. ربط Firebase وحفظ ومزامنة الوقت الحقيقي من السيرفر
    **************************************************************/
   const firebaseConfig = {
     apiKey: "AIzaSyC0JJggNN2S-bnZcPnf5hMHfrQwP_iivzU",
@@ -3426,7 +3645,6 @@
     safeStorageSet('royal_local_store_orders', JSON.stringify(map));
   }
 
-  // دورة تجديد قائمة الرابح الأكبر كل 3 أيام (72 ساعة)
   const BIG_WINNER_CYCLE_MS = 3 * 24 * 60 * 60 * 1000;
   function getTrustedTimestamp() {
     return Math.floor(bootWallTime + (performance.now() - bootPerfTime) + serverTimeOffset);
@@ -3437,10 +3655,10 @@
   }
 
   function getBigWinnerPrizeForRank(rank) {
-    if (rank === 1) return 500000000; // الأول: 500 مليون
-    if (rank === 2) return 400000000; // الثاني: 400 مليون
-    if (rank === 3) return 300000000; // الثالث: 300 مليون
-    if (rank >= 4 && rank <= 10) return 100000000; // من الرابع للعاشر: 100 مليون
+    if (rank === 1) return 500000000;
+    if (rank === 2) return 400000000;
+    if (rank === 3) return 300000000;
+    if (rank >= 4 && rank <= 10) return 100000000;
     return 0;
   }
 
@@ -3470,9 +3688,21 @@
     base.vouchers = Number(remVouch) || 0;
     base.isBanned = !!remObj.isBanned;
     base.banReason = remObj.banReason || '';
-    base.customLuck = remObj.customLuck || 'normal';
+    base.customLuck = remObj.customLuck || localObj.customLuck || 'normal';
+    base.mediumWinGamesClaimed = remObj.mediumWinGamesClaimed || localObj.mediumWinGamesClaimed || {};
     base.traderStarGrantedByAdmin = !!remObj.traderStarGrantedByAdmin;
     base.traderStarRevoked = !!remObj.traderStarRevoked;
+    base.hideGold = remObj.hideGold !== undefined ? !!remObj.hideGold : !!localObj.hideGold;
+    base.hideContact = remObj.hideContact !== undefined ? !!remObj.hideContact : !!localObj.hideContact;
+    base.bagInventory = {
+      frames: { ...((localObj.bagInventory && localObj.bagInventory.frames) || {}), ...((remObj.bagInventory && remObj.bagInventory.frames) || {}) },
+      chatFrames: { ...((localObj.bagInventory && localObj.bagInventory.chatFrames) || {}), ...((remObj.bagInventory && remObj.bagInventory.chatFrames) || {}) },
+      avatars: { ...((localObj.bagInventory && localObj.bagInventory.avatars) || {}), ...((remObj.bagInventory && remObj.bagInventory.avatars) || {}) },
+      covers: { ...((localObj.bagInventory && localObj.bagInventory.covers) || {}), ...((remObj.bagInventory && remObj.bagInventory.covers) || {}) }
+    };
+    base.equippedFrame = remObj.equippedFrame || localObj.equippedFrame || '';
+    base.equippedChatFrame = remObj.equippedChatFrame || localObj.equippedChatFrame || '';
+    base.friendRequestsIn = { ...(localObj.friendRequestsIn || {}), ...(remObj.friendRequestsIn || {}) };
     base.notifications = { ...(localObj.notifications || {}), ...(remObj.notifications || {}) };
     base.readNotifIds = { ...(localObj.readNotifIds || {}), ...(remObj.readNotifIds || {}) };
     base.requests = Array.isArray(remObj.requests) && remObj.requests.length > 0 ? remObj.requests : (localObj.requests || []);
@@ -3543,7 +3773,7 @@
   }
 
   /**************************************************************
-   * 3. تنزيل التطبيق وإعدادات السيرفر
+   * 3. تنزيل التطبيق وإعدادات السيرفر وشريط الأخبار السريع بالظهور والأبطأ حركة
    **************************************************************/
   let APK_DOWNLOAD_URL = "https://www.mediafire.com/file/bhhl4j2y1zjalbm/thology_roye.apk/file";
   let liveGameOdds = {
@@ -3593,19 +3823,15 @@
         const bText = document.getElementById('liveBroadcastText');
         const msg = (cfg.broadcastMsg || '').trim();
         if (bBanner && bText) {
-          if (msg) {
-            bText.innerText = '   ✦   ' + msg + '   ✦   ';
-            const durSec = Math.max(12, Math.min(24, Math.round(10 + msg.length * 0.18)));
-            bText.style.animationDuration = durSec + 's';
-            bBanner.style.display = 'flex';
-            if (lastBroadcastMsgSeen && lastBroadcastMsgSeen !== msg) {
-              showToast('📢 ' + msg, '#f59e0b');
-            }
-            lastBroadcastMsgSeen = msg;
-          } else {
-            bBanner.style.display = 'none';
-            lastBroadcastMsgSeen = '';
+          const displayMsg = msg || '👑 أهلاً بكم في أساطير رويل — استمتع بأقوى ألعاب الملوك والهدايا الملكية والمنافسة على صدارة الترتيب!';
+          bText.innerText = '   ✦   ' + displayMsg + '   ✦   ';
+          const durSec = Math.max(28, Math.min(48, Math.round(24 + displayMsg.length * 0.25)));
+          bText.style.animationDuration = durSec + 's';
+          bBanner.style.display = 'flex';
+          if (msg && lastBroadcastMsgSeen && lastBroadcastMsgSeen !== msg) {
+            showToast('📢 ' + msg, '#f59e0b');
           }
+          lastBroadcastMsgSeen = msg;
         }
       }
     });
@@ -3654,7 +3880,7 @@
   }
 
   /**************************************************************
-   * 4. باقات المتجر ومستويات VIP والرهانات (حتى 20 مليار)
+   * 4. باقات المتجر ومستويات VIP والرهانات + عناصر المتجر والحقيبة الجديدة
    **************************************************************/
   const GOLD_STORE_PACKAGES = [
     { id: 'g1', label: '200 مليون ذهب',     goldAmount: 200000000,    priceUSD: 2,   icon: '🪙' },
@@ -3680,6 +3906,40 @@
     { id: 'p9',  points: 23000, priceUSD: 920,  icon: '🐉' },
     { id: 'p10', points: 37000, priceUSD: 1480, icon: '👑' }
   ];
+
+  // كتالوج عناصر المتجر والحقيبة (تأثيرات إطارات الصور، إطارات الدردشة، الصور الرمزية، والأغلفة الشخصية)
+  const COSMETIC_STORE_CATALOG = {
+    frames: [
+      { id: 'frm_vip1', title: 'إطار البرق الأزرق', icon: '💠', cssClass: 'frame-vip-2', reqVip: 1, costGold: 5000000 },
+      { id: 'frm_neon', title: 'إطار النيون الساطع', icon: '⚡', cssClass: 'frame-fx-neon', reqVip: 2, costGold: 15000000 },
+      { id: 'frm_emerald', title: 'إطار الزمرد الملكي', icon: '💚', cssClass: 'frame-fx-emerald', reqVip: 3, costGold: 30000000 },
+      { id: 'frm_fire', title: 'إطار اللهب الناري', icon: '🔥', cssClass: 'frame-fx-fire', reqVip: 4, costGold: 60000000 },
+      { id: 'frm_galaxy', title: 'إطار المجرة الكونية', icon: '🌌', cssClass: 'frame-fx-galaxy', reqVip: 6, costGold: 150000000 },
+      { id: 'frm_dragon', title: 'إطار التنين الإمبراطوري', icon: '🐉', cssClass: 'frame-fx-royaldragon', reqVip: 8, costGold: 400000000 }
+    ],
+    chat_frames: [
+      { id: 'cfrm_cyber', title: 'إطار دردشة سايبر', icon: '💎', cssClass: 'chat-fx-cyber', reqVip: 1, costGold: 5000000 },
+      { id: 'cfrm_emerald', title: 'إطار دردشة الزمرد', icon: '🌿', cssClass: 'chat-fx-emerald', reqVip: 2, costGold: 15000000 },
+      { id: 'cfrm_inferno', title: 'إطار دردشة البركان', icon: '🔥', cssClass: 'chat-fx-inferno', reqVip: 4, costGold: 45000000 },
+      { id: 'cfrm_nebula', title: 'إطار دردشة السديم', icon: '🌸', cssClass: 'chat-fx-nebula', reqVip: 5, costGold: 100000000 },
+      { id: 'cfrm_emperor', title: 'إطار دردشة الملوك', icon: '👑', cssClass: 'chat-fx-emperor', reqVip: 7, costGold: 250000000 }
+    ],
+    avatars: [
+      { id: 'av_tiger', title: 'النمر الذهبي', icon: '🐯', val: '🐯', reqVip: 0, costGold: 2000000 },
+      { id: 'av_falcon', title: 'الصقر الملكي', icon: '🦅', val: '🦅', reqVip: 1, costGold: 5000000 },
+      { id: 'av_king', title: 'تاج الأسطورة', icon: '👑', val: '👑', reqVip: 2, costGold: 12000000 },
+      { id: 'av_dragon', title: 'التنين الخارق', icon: '🐉', val: '🐉', reqVip: 3, costGold: 25000000 },
+      { id: 'av_knight', title: 'فارس الظلام', icon: '⚔️', val: '⚔️', reqVip: 4, costGold: 50000000 },
+      { id: 'av_diamond', title: 'الجوهرة النادرة', icon: '💎', val: '💎', reqVip: 6, costGold: 120000000 }
+    ],
+    covers: [
+      { id: 'cov_gold', title: 'غلاف القصر الذهبي', icon: '🏰', bgCss: 'linear-gradient(135deg, #422006, #b45309, #fde047)', reqVip: 0, costGold: 5000000 },
+      { id: 'cov_cyber', title: 'غلاف سايبر نيون', icon: '🌌', bgCss: 'linear-gradient(135deg, #090d16, #0284c7, #22d3ee)', reqVip: 1, costGold: 15000000 },
+      { id: 'cov_emerald', title: 'غلاف الغابة الزمردية', icon: '🌲', bgCss: 'linear-gradient(135deg, #022c22, #059669, #34d399)', reqVip: 2, costGold: 30000000 },
+      { id: 'cov_crimson', title: 'غلاف اللهب القرمزي', icon: '🔥', bgCss: 'linear-gradient(135deg, #450a0a, #dc2626, #f97316)', reqVip: 4, costGold: 75000000 },
+      { id: 'cov_royal', title: 'غلاف المجرة الإمبراطورية', icon: '👑', bgCss: 'linear-gradient(135deg, #1e1b4b, #7e22ce, #ec4899, #fde047)', reqVip: 6, costGold: 200000000 }
+    ]
+  };
 
   const VIP_TIERS = [
     { level: 1, reqPoints: 50,    goldBonus: 50000000,    extraAvatars: 1,  icon: '🥉', title: 'VIP 1' },
@@ -3727,7 +3987,7 @@
   }
 
   /**************************************************************
-   * 5. محرك الأصوات والمؤثرات البصرية (مع مؤثر الهدايا الاحتفالي)
+   * 5. محرك الأصوات والمؤثرات البصرية
    **************************************************************/
   let soundOn = true;
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -4254,7 +4514,7 @@
       if (currentLobbyCategory === 'all' || currentLobbyCategory === 'kings') {
         html += `
           <div class="lobby-row-header">
-            <div class="lobby-row-title">👑 ألعاب الملوك الأسطورية</div>
+            <div class="lobby-row-title">👑 ألعاب الملوك الأسطورية (نزول 4 ملوك SCATTER)</div>
           </div>
           <div class="horizontal-games-row">
             ${kingsGames.map(g => renderSingleGameCardHtml(g)).join('')}
@@ -4322,32 +4582,287 @@
     container.innerHTML = html;
   }
 
+  /**************************************************************
+   * 6.5 المتجر الشامل والحقيبة (إطارات صورة، إطارات دردشة، صور رمزية، أغلفة)
+   **************************************************************/
+  function ensureUserBagInventory() {
+    if (!currentUser) return { frames: {}, chatFrames: {}, avatars: {}, covers: {} };
+    if (!currentUser.bagInventory) {
+      currentUser.bagInventory = { frames: {}, chatFrames: {}, avatars: {}, covers: {} };
+    }
+    if (!currentUser.bagInventory.frames) currentUser.bagInventory.frames = {};
+    if (!currentUser.bagInventory.chatFrames) currentUser.bagInventory.chatFrames = {};
+    if (!currentUser.bagInventory.avatars) currentUser.bagInventory.avatars = {};
+    if (!currentUser.bagInventory.covers) currentUser.bagInventory.covers = {};
+    return currentUser.bagInventory;
+  }
+
   function renderStorePackages() {
     const goldBox = document.getElementById('storeGoldContainer');
-    goldBox.innerHTML = GOLD_STORE_PACKAGES.map(p => `
-      <div class="store-pack-card">
-        <div class="store-pack-icon">${p.icon}</div>
-        <div class="store-pack-amount">${p.label}</div>
-        <button class="store-buy-btn" onclick="openStoreCheckout('GOLD', '${p.id}')">${p.priceUSD} دولار 💳</button>
-      </div>
-    `).join('');
+    if (goldBox) {
+      goldBox.innerHTML = GOLD_STORE_PACKAGES.map(p => `
+        <div class="store-pack-card">
+          <div class="store-pack-icon">${p.icon}</div>
+          <div class="store-pack-amount">${p.label}</div>
+          <button class="store-buy-btn" onclick="openStoreCheckout('GOLD', '${p.id}')">${p.priceUSD} دولار 💳</button>
+        </div>
+      `).join('');
+    }
 
     const ptsBox = document.getElementById('storePointsContainer');
-    ptsBox.innerHTML = VIP_POINTS_PACKAGES.map(p => `
-      <div class="store-pack-card" style="border-color:rgba(56,189,248,0.45);">
-        <div class="store-pack-icon">${p.icon}</div>
-        <div class="store-pack-amount" style="color:#38bdf8;">${p.points.toLocaleString()} نقطة VIP</div>
-        <button class="store-buy-btn" style="background:linear-gradient(135deg,#0284c7,#4f46e5);" onclick="openStoreCheckout('POINTS', '${p.id}')">${p.priceUSD} دولار 💳</button>
-      </div>
-    `).join('');
+    if (ptsBox) {
+      ptsBox.innerHTML = VIP_POINTS_PACKAGES.map(p => `
+        <div class="store-pack-card" style="border-color:rgba(56,189,248,0.45);">
+          <div class="store-pack-icon">${p.icon}</div>
+          <div class="store-pack-amount" style="color:#38bdf8;">${p.points.toLocaleString()} نقطة VIP</div>
+          <button class="store-buy-btn" style="background:linear-gradient(135deg,#0284c7,#4f46e5);" onclick="openStoreCheckout('POINTS', '${p.id}')">${p.priceUSD} دولار 💳</button>
+        </div>
+      `).join('');
+    }
+
+    renderCosmeticStoreSections();
+  }
+
+  function renderCosmeticStoreSections() {
+    const bag = ensureUserBagInventory();
+    const userVip = currentUser ? (currentUser.isAdmin ? 10 : (Number(currentUser.vip) || 0)) : 0;
+
+    // 1. إطارات الصور
+    const frmBox = document.getElementById('storeFramesContainer');
+    if (frmBox) {
+      frmBox.innerHTML = COSMETIC_STORE_CATALOG.frames.map(item => {
+        const owned = !!bag.frames[item.id] || (currentUser && currentUser.isAdmin);
+        const equipped = currentUser && currentUser.equippedFrame === item.cssClass;
+        return `
+          <div class="store-pack-card" style="border-color:rgba(168,85,247,0.45);">
+            <div class="avatar-wrap ${item.cssClass}" style="width:52px; height:52px; font-size:1.45rem; margin:2px auto;">${item.icon}</div>
+            <div class="store-pack-amount" style="font-size:0.8rem; color:#fff;">${item.title}</div>
+            <div style="font-size:0.68rem; color:#fde047; font-weight:900;">يتطلب VIP ${item.reqVip} | ${formatCoins(item.costGold)} 🪙</div>
+            ${owned
+              ? `<button class="store-buy-btn" style="background:${equipped ? '#334155' : 'linear-gradient(135deg,#8b5cf6,#6d28d9)'};" onclick="equipBagItem('frames', '${item.id}')">${equipped ? 'مفعل حالياً ✅' : 'تفعيل من الحقيبة 🎒'}</button>`
+              : `<button class="store-buy-btn" onclick="buyCosmeticStoreItem('frames', '${item.id}')">${userVip < item.reqVip ? `🔒 VIP ${item.reqVip}` : `شراء (${formatCoins(item.costGold)}) 🪙`}</button>`
+            }
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 2. إطارات الدردشة
+    const cfrmBox = document.getElementById('storeChatFramesContainer');
+    if (cfrmBox) {
+      cfrmBox.innerHTML = COSMETIC_STORE_CATALOG.chat_frames.map(item => {
+        const owned = !!bag.chatFrames[item.id] || (currentUser && currentUser.isAdmin);
+        const equipped = currentUser && currentUser.equippedChatFrame === item.cssClass;
+        return `
+          <div class="store-pack-card" style="border-color:rgba(56,189,248,0.45);">
+            <div class="${item.cssClass}" style="padding:7px 10px; border-radius:10px; font-size:0.74rem; font-weight:900; width:100%;">${item.icon} ${item.title}</div>
+            <div style="font-size:0.68rem; color:#fde047; font-weight:900;">يتطلب VIP ${item.reqVip} | ${formatCoins(item.costGold)} 🪙</div>
+            ${owned
+              ? `<button class="store-buy-btn" style="background:${equipped ? '#334155' : 'linear-gradient(135deg,#0284c7,#2563eb)'};" onclick="equipBagItem('chat_frames', '${item.id}')">${equipped ? 'مفعل حالياً ✅' : 'تفعيل من الحقيبة 🎒'}</button>`
+              : `<button class="store-buy-btn" onclick="buyCosmeticStoreItem('chat_frames', '${item.id}')">${userVip < item.reqVip ? `🔒 VIP ${item.reqVip}` : `شراء (${formatCoins(item.costGold)}) 🪙`}</button>`
+            }
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 3. صور شخصية افتراضية
+    const avBox = document.getElementById('storeAvatarsContainer');
+    if (avBox) {
+      avBox.innerHTML = COSMETIC_STORE_CATALOG.avatars.map(item => {
+        const owned = !!bag.avatars[item.id] || (currentUser && currentUser.isAdmin);
+        const equipped = currentUser && currentUser.avatar === item.val;
+        return `
+          <div class="store-pack-card" style="border-color:rgba(251,191,36,0.45);">
+            <div class="avatar-wrap frame-vip-3" style="width:52px; height:52px; font-size:1.7rem; margin:2px auto;">${item.icon}</div>
+            <div class="store-pack-amount" style="font-size:0.8rem; color:#fff;">${item.title}</div>
+            <div style="font-size:0.68rem; color:#fde047; font-weight:900;">يتطلب VIP ${item.reqVip} | ${formatCoins(item.costGold)} 🪙</div>
+            ${owned
+              ? `<button class="store-buy-btn" style="background:${equipped ? '#334155' : 'linear-gradient(135deg,#f59e0b,#b45309)'}; color:${equipped ? '#fff' : '#000'};" onclick="equipBagItem('avatars', '${item.id}')">${equipped ? 'مفعلة حالياً ✅' : 'تفعيل من الحقيبة 🎒'}</button>`
+              : `<button class="store-buy-btn" onclick="buyCosmeticStoreItem('avatars', '${item.id}')">${userVip < item.reqVip ? `🔒 VIP ${item.reqVip}` : `شراء (${formatCoins(item.costGold)}) 🪙`}</button>`
+            }
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 4. أغلفة شخصية افتراضية
+    const covBox = document.getElementById('storeCoversContainer');
+    if (covBox) {
+      covBox.innerHTML = COSMETIC_STORE_CATALOG.covers.map(item => {
+        const owned = !!bag.covers[item.id] || (currentUser && currentUser.isAdmin);
+        const equipped = currentUser && currentUser.coverPhoto === item.bgCss;
+        return `
+          <div class="store-pack-card" style="border-color:rgba(236,72,153,0.45);">
+            <div style="width:100%; height:48px; border-radius:10px; background:${item.bgCss}; display:flex; align-items:center; justify-content:center; font-size:1.5rem; border:1px solid #fde047;">${item.icon}</div>
+            <div class="store-pack-amount" style="font-size:0.8rem; color:#fff;">${item.title}</div>
+            <div style="font-size:0.68rem; color:#fde047; font-weight:900;">يتطلب VIP ${item.reqVip} | ${formatCoins(item.costGold)} 🪙</div>
+            ${owned
+              ? `<button class="store-buy-btn" style="background:${equipped ? '#334155' : 'linear-gradient(135deg,#ec4899,#be185d)'};" onclick="equipBagItem('covers', '${item.id}')">${equipped ? 'مفعل حالياً ✅' : 'تفعيل من الحقيبة 🎒'}</button>`
+              : `<button class="store-buy-btn" onclick="buyCosmeticStoreItem('covers', '${item.id}')">${userVip < item.reqVip ? `🔒 VIP ${item.reqVip}` : `شراء (${formatCoins(item.costGold)}) 🪙`}</button>`
+            }
+          </div>
+        `;
+      }).join('');
+    }
   }
 
   function switchStoreTab(tab) {
     playGameSound('click');
-    document.getElementById('tabStoreGold').classList.toggle('active', tab === 'gold');
-    document.getElementById('tabStorePts').classList.toggle('active', tab === 'points');
-    document.getElementById('storeGoldContainer').style.display = tab === 'gold' ? 'grid' : 'none';
-    document.getElementById('storePointsContainer').style.display = tab === 'points' ? 'grid' : 'none';
+    const tabMap = {
+      gold: ['tabStoreGold', 'storeGoldContainer'],
+      points: ['tabStorePts', 'storePointsContainer'],
+      frames: ['tabStoreFrames', 'storeFramesContainer'],
+      chat_frames: ['tabStoreChatFrames', 'storeChatFramesContainer'],
+      avatars: ['tabStoreAvatars', 'storeAvatarsContainer'],
+      covers: ['tabStoreCovers', 'storeCoversContainer']
+    };
+    Object.keys(tabMap).forEach(k => {
+      const [btnId, boxId] = tabMap[k];
+      const b = document.getElementById(btnId);
+      const bx = document.getElementById(boxId);
+      if (b) b.classList.toggle('active', k === tab);
+      if (bx) bx.style.display = k === tab ? 'grid' : 'none';
+    });
+    renderCosmeticStoreSections();
+  }
+
+  function buyCosmeticStoreItem(catKey, itemId) {
+    if (!guardAntiSpam(350) || !currentUser) return;
+    const list = COSMETIC_STORE_CATALOG[catKey] || [];
+    const item = list.find(x => x.id === itemId);
+    if (!item) return;
+
+    const userVip = currentUser.isAdmin ? 10 : (Number(currentUser.vip) || 0);
+    if (userVip < item.reqVip) {
+      showToast(`⚠️ يتطلب مستوى VIP ${item.reqVip} فما فوق لفتح وشراء ${item.title}!`, '#ef4444');
+      return;
+    }
+
+    if (!currentUser.isAdmin && (Number(currentUser.gold) || 0) < item.costGold) {
+      showToast(`⚠️ رصيد الذهب غير كافٍ! تحتاج إلى ${formatCoins(item.costGold)} ذهب.`, '#ef4444');
+      return;
+    }
+
+    if (!currentUser.isAdmin) {
+      currentUser.gold -= item.costGold;
+    }
+    recordGoldSpentToday(item.costGold);
+
+    const bag = ensureUserBagInventory();
+    if (catKey === 'frames') {
+      bag.frames[item.id] = { ...item, purchasedAt: getTrustedTimestamp() };
+      currentUser.equippedFrame = item.cssClass;
+    } else if (catKey === 'chat_frames') {
+      bag.chatFrames[item.id] = { ...item, purchasedAt: getTrustedTimestamp() };
+      currentUser.equippedChatFrame = item.cssClass;
+    } else if (catKey === 'avatars') {
+      bag.avatars[item.id] = { ...item, purchasedAt: getTrustedTimestamp() };
+      currentUser.avatar = item.val;
+    } else if (catKey === 'covers') {
+      bag.covers[item.id] = { ...item, purchasedAt: getTrustedTimestamp() };
+      currentUser.coverPhoto = item.bgCss;
+    }
+
+    playGameSound('win');
+    saveUser();
+    renderCosmeticStoreSections();
+    showToast(`🎒 تم شراء (${item.title}) وحفظه في حقيبتك وتفعيله بنجاح!`);
+  }
+
+  let activeBagCategory = 'frames';
+  function openBagModal() {
+    if (!currentUser) return;
+    playGameSound('click');
+    renderBagItemsGrid();
+    const modal = document.getElementById('userBagModal');
+    if (modal) modal.classList.add('open');
+  }
+
+  function closeBagModal() {
+    const modal = document.getElementById('userBagModal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function switchBagCategory(cat) {
+    playGameSound('click');
+    activeBagCategory = cat;
+    ['frames', 'chat_frames', 'avatars', 'covers'].forEach(c => {
+      const b = document.getElementById('bagTab_' + c);
+      if (b) b.classList.toggle('active', c === cat);
+    });
+    renderBagItemsGrid();
+  }
+
+  function equipBagItem(catKey, itemId) {
+    if (!currentUser) return;
+    playGameSound('click');
+    const list = COSMETIC_STORE_CATALOG[catKey] || [];
+    const item = list.find(x => x.id === itemId);
+    if (!item) return;
+
+    if (catKey === 'frames') {
+      currentUser.equippedFrame = (currentUser.equippedFrame === item.cssClass) ? '' : item.cssClass;
+    } else if (catKey === 'chat_frames') {
+      currentUser.equippedChatFrame = (currentUser.equippedChatFrame === item.cssClass) ? '' : item.cssClass;
+    } else if (catKey === 'avatars') {
+      currentUser.avatar = item.val;
+    } else if (catKey === 'covers') {
+      currentUser.coverPhoto = item.bgCss;
+    }
+    saveUser();
+    renderCosmeticStoreSections();
+    renderBagItemsGrid();
+    showToast(`✅ تم تحديث المظهر من الحقيبة!`);
+  }
+
+  function renderBagItemsGrid() {
+    const grid = document.getElementById('bagItemsGridContainer');
+    if (!grid || !currentUser) return;
+    const bag = ensureUserBagInventory();
+    const catalogList = COSMETIC_STORE_CATALOG[activeBagCategory] || [];
+
+    const ownedItems = catalogList.filter(item => {
+      if (currentUser.isAdmin) return true;
+      if (activeBagCategory === 'frames') return !!bag.frames[item.id];
+      if (activeBagCategory === 'chat_frames') return !!bag.chatFrames[item.id];
+      if (activeBagCategory === 'avatars') return !!bag.avatars[item.id];
+      if (activeBagCategory === 'covers') return !!bag.covers[item.id];
+      return false;
+    });
+
+    if (ownedItems.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1 / -1; text-align:center; color:#94a3b8; padding:24px; font-size:0.8rem;">حقيبتك فارغة في هذا القسم 🎒<br>يمكنك شراء الإطارات والصور والأغلفة من المتجر!</div>`;
+      return;
+    }
+
+    grid.innerHTML = ownedItems.map(item => {
+      let isEquipped = false;
+      let previewHtml = '';
+      if (activeBagCategory === 'frames') {
+        isEquipped = currentUser.equippedFrame === item.cssClass;
+        previewHtml = `<div class="avatar-wrap ${item.cssClass}" style="width:52px; height:52px; font-size:1.5rem; margin:2px auto;">${item.icon}</div>`;
+      } else if (activeBagCategory === 'chat_frames') {
+        isEquipped = currentUser.equippedChatFrame === item.cssClass;
+        previewHtml = `<div class="${item.cssClass}" style="padding:6px 10px; border-radius:10px; font-size:0.74rem; font-weight:900; width:100%;">${item.icon} ${item.title}</div>`;
+      } else if (activeBagCategory === 'avatars') {
+        isEquipped = currentUser.avatar === item.val;
+        previewHtml = `<div class="avatar-wrap frame-vip-3" style="width:52px; height:52px; font-size:1.7rem; margin:2px auto;">${item.icon}</div>`;
+      } else if (activeBagCategory === 'covers') {
+        isEquipped = currentUser.coverPhoto === item.bgCss;
+        previewHtml = `<div style="width:100%; height:46px; border-radius:10px; background:${item.bgCss}; display:flex; align-items:center; justify-content:center; font-size:1.4rem; border:1px solid #fde047;">${item.icon}</div>`;
+      }
+
+      return `
+        <div class="store-pack-card" style="border-color:${isEquipped ? '#10b981' : 'rgba(168,85,247,0.45)'};">
+          ${previewHtml}
+          <div class="store-pack-amount" style="font-size:0.78rem; color:#fff;">${item.title}</div>
+          <button type="button" class="store-buy-btn" style="background:${isEquipped ? '#10b981' : '#334155'}; color:${isEquipped ? '#000' : '#fff'};" onclick="equipBagItem('${activeBagCategory}', '${item.id}')">
+            ${isEquipped ? 'مفعل حالياً ✅' : 'تفعيل الآن ✨'}
+          </button>
+        </div>
+      `;
+    }).join('');
   }
 
   /**************************************************************
@@ -4368,7 +4883,7 @@
   ];
 
   /**************************************************************
-   * 8. إدارة الحسابات، الجلسات، والمزامنة الخفيفة بدون تعليق المتصفح
+   * 8. إدارة الحسابات والجلسات والخيارات الجديدة
    **************************************************************/
   let authMode = 'login';
   let currentUser = null;
@@ -4635,6 +5150,12 @@
         traderOffer: 'الإدارة الرسمية — شحن ذهب ونقاط VIP مباشرة وبأمان تام',
         friendsCount: 999,
         friendsList: [],
+        friendRequestsIn: {},
+        bagInventory: { frames: {}, chatFrames: {}, avatars: {}, covers: {} },
+        equippedFrame: '',
+        equippedChatFrame: '',
+        hideGold: false,
+        hideContact: false,
         avatar: '👑',
         coverPhoto: '',
         avatarMonth: getTrustedMonthKey(),
@@ -4703,12 +5224,18 @@
         vouchers: 0,
         vip: 0,
         bio: '',
+        hideGold: false,
+        hideContact: false,
+        bagInventory: { frames: {}, chatFrames: {}, avatars: {}, covers: {} },
+        equippedFrame: '',
+        equippedChatFrame: '',
         traderStarRevoked: false,
         traderPhone: '',
         traderTelegram: '',
         traderOffer: '',
         friendsCount: 0,
         friendsList: [],
+        friendRequestsIn: {},
         avatar: regSelectedAvatar || '🦁',
         coverPhoto: '',
         avatarMonth: getTrustedMonthKey(),
@@ -4722,6 +5249,7 @@
         first10MScatterClaimed: false,
         newUserKingSpinsCount: 0,
         firstBetBonusClaimed: false,
+        mediumWinGamesClaimed: {},
         betBehavior: { lastTierIdx: -1, lastDir: 0, fluctCount: 0, forcedLossesLeft: 0, cycleStep: 0 },
         lastDailyReset: getTrustedTimestamp(),
         dailyState: { dayKey: getTrustedDayKey(), spins: 0, kingSpins: 0, wins: 0, stepWins: 0, chatMsgs: 0, vouchersToday: 0, claimed: {} },
@@ -4868,7 +5396,6 @@
       currentUser.dailyState.goldSpent = 0;
     }
 
-    // التحقق من انتهاء دورة الـ 3 أيام وتحويل الهدايا تلقائياً مع إشعارات الجرس
     checkAndSettleEndedBigWinnerCycles();
   }
 
@@ -4886,6 +5413,7 @@
     const prevPts = Number(currentUser.vipPoints) || 0;
     const prevVip = Number(currentUser.vip) || 0;
     const prevVouch = Number(currentUser.vouchers) || 0;
+    const prevLuck = currentUser.customLuck || 'normal';
     const prevAdminTs = Number(currentUser.lastAdminModifiedAt || 0);
     const incomingAdminTs = Number(rem.lastAdminModifiedAt || 0);
     const hasNewAdminStamp = incomingAdminTs > prevAdminTs;
@@ -4900,7 +5428,17 @@
     if (rem.pass !== undefined) currentUser.pass = rem.pass;
     if (rem.phone !== undefined) currentUser.phone = rem.phone;
     if (rem.numericId) currentUser.numericId = String(rem.numericId);
-    if (rem.customLuck !== undefined) currentUser.customLuck = rem.customLuck;
+    if (rem.customLuck !== undefined) {
+      if (rem.customLuck !== prevLuck && rem.customLuck === 'medium_win') {
+        currentUser.mediumWinGamesClaimed = {};
+      }
+      currentUser.customLuck = rem.customLuck;
+    }
+    if (rem.mediumWinGamesClaimed && typeof rem.mediumWinGamesClaimed === 'object') {
+      currentUser.mediumWinGamesClaimed = rem.mediumWinGamesClaimed;
+    } else if (rem.customLuck === 'medium_win' && hasNewAdminStamp && rem.mediumWinResetAt) {
+      currentUser.mediumWinGamesClaimed = {};
+    }
     if (rem.isBiggestWinner !== undefined) currentUser.isBiggestWinner = !!rem.isBiggestWinner;
     if (rem.biggestWin !== undefined) currentUser.biggestWin = Math.max(Number(currentUser.biggestWin || 0), Number(rem.biggestWin || 0));
     if (rem.bwCycleId !== undefined) currentUser.bwCycleId = Number(rem.bwCycleId);
@@ -4910,6 +5448,22 @@
     if (rem.bwLastGameId) currentUser.bwLastGameId = rem.bwLastGameId;
     if (rem.bwLastGameTitle) currentUser.bwLastGameTitle = rem.bwLastGameTitle;
     if (rem.bwRewardClaimedCycle !== undefined) currentUser.bwRewardClaimedCycle = Number(rem.bwRewardClaimedCycle);
+
+    if (rem.hideGold !== undefined) currentUser.hideGold = !!rem.hideGold;
+    if (rem.hideContact !== undefined) currentUser.hideContact = !!rem.hideContact;
+    if (rem.equippedFrame !== undefined) currentUser.equippedFrame = rem.equippedFrame;
+    if (rem.equippedChatFrame !== undefined) currentUser.equippedChatFrame = rem.equippedChatFrame;
+    if (rem.bagInventory && typeof rem.bagInventory === 'object') {
+      currentUser.bagInventory = {
+        frames: { ...((currentUser.bagInventory && currentUser.bagInventory.frames) || {}), ...(rem.bagInventory.frames || {}) },
+        chatFrames: { ...((currentUser.bagInventory && currentUser.bagInventory.chatFrames) || {}), ...(rem.bagInventory.chatFrames || {}) },
+        avatars: { ...((currentUser.bagInventory && currentUser.bagInventory.avatars) || {}), ...(rem.bagInventory.avatars || {}) },
+        covers: { ...((currentUser.bagInventory && currentUser.bagInventory.covers) || {}), ...(rem.bagInventory.covers || {}) }
+      };
+    }
+    if (rem.friendRequestsIn !== undefined) {
+      currentUser.friendRequestsIn = rem.friendRequestsIn || {};
+    }
 
     if (rem.fridayScatterState && typeof rem.fridayScatterState === 'object') currentUser.fridayScatterState = rem.fridayScatterState;
     if (rem.privateInbox && typeof rem.privateInbox === 'object') {
@@ -5032,6 +5586,13 @@
       isBanned: !!data.isBanned,
       banReason: data.banReason || '',
       bio: data.bio || '',
+      hideGold: !!data.hideGold,
+      hideContact: !!data.hideContact,
+      bagInventory: data.bagInventory || { frames: {}, chatFrames: {}, avatars: {}, covers: {} },
+      equippedFrame: data.equippedFrame || '',
+      equippedChatFrame: data.equippedChatFrame || '',
+      friendRequestsIn: data.friendRequestsIn || {},
+      mediumWinGamesClaimed: data.mediumWinGamesClaimed || {},
       traderStarRevoked: !!data.traderStarRevoked,
       traderStarGrantedByAdmin: !!data.traderStarGrantedByAdmin,
       traderPhone: data.traderPhone || '',
@@ -5052,8 +5613,6 @@
       key,
       isAdmin: isStrictlyAdmin
     };
-
-    // سيتم التحقق من انتهاء دورة الـ 3 أيام وتحويل الجائزة أو إرسال إشعار حظ أوفر تلقائياً بعد تحميل الترتيب
 
     if (isStrictlyAdmin) {
       currentUser.gold = 999999999999999;
@@ -5262,6 +5821,13 @@
         vouchers: Number(currentUser.vouchers) || 0,
         vip: Number(currentUser.vip) || 0,
         bio: (currentUser.bio || '').slice(0, 100),
+        hideGold: !!currentUser.hideGold,
+        hideContact: !!currentUser.hideContact,
+        bagInventory: currentUser.bagInventory || { frames: {}, chatFrames: {}, avatars: {}, covers: {} },
+        equippedFrame: currentUser.equippedFrame || '',
+        equippedChatFrame: currentUser.equippedChatFrame || '',
+        friendRequestsIn: currentUser.friendRequestsIn || {},
+        mediumWinGamesClaimed: currentUser.mediumWinGamesClaimed || {},
         traderStarRevoked: !!currentUser.traderStarRevoked,
         traderStarGrantedByAdmin: !!currentUser.traderStarGrantedByAdmin,
         traderPhone: currentUser.traderPhone || '',
@@ -5298,6 +5864,9 @@
         avatarMonth: currentUser.avatarMonth,
         avatarChangesUsed: currentUser.avatarChangesUsed || 0,
         totalLostUnrecovered: currentUser.totalLostUnrecovered || 0,
+        lossSpinsOnSameBet: currentUser.lossSpinsOnSameBet || 0,
+        next4KingsSpendTarget: currentUser.next4KingsSpendTarget || 0,
+        next4KingsMinSpins: currentUser.next4KingsMinSpins || 0,
         lastDailyReset: currentUser.lastDailyReset || nowTs,
         dailyState: currentUser.dailyState,
         requests: currentUser.requests || [],
@@ -5331,6 +5900,19 @@
         }
       } catch (e) {}
     }, 280);
+  }
+
+  function togglePrivacyOption(field) {
+    if (!currentUser) return;
+    playGameSound('click');
+    if (field === 'hideGold') {
+      currentUser.hideGold = !currentUser.hideGold;
+      showToast(currentUser.hideGold ? '🛡️ تم إخفاء رصيد الذهب (يظهر ***** للزوار)' : '🪙 تم إظهار رصيد الذهب في ملفك');
+    } else if (field === 'hideContact') {
+      currentUser.hideContact = !currentUser.hideContact;
+      showToast(currentUser.hideContact ? '🛡️ تم إخفاء التواصل (يظهر ***** للزوار)' : '💬 تم إظهار بيانات التواصل في ملفك');
+    }
+    saveUser();
   }
 
   function updateBioCharCounter() {
@@ -5401,9 +5983,9 @@
       traderCard.style.display = isVerifiedTrader ? 'block' : 'none';
     }
 
-    const frameCls = 'avatar-wrap frame-vip-' + vip;
-    document.getElementById('topAvatarFrame').className = frameCls;
-    document.getElementById('profileAvatarBig').className = 'profile-main-avatar frame-vip-' + vip;
+    const activeFrameCls = currentUser.equippedFrame || ('frame-vip-' + vip);
+    document.getElementById('topAvatarFrame').className = 'avatar-wrap ' + activeFrameCls;
+    document.getElementById('profileAvatarBig').className = 'profile-main-avatar ' + activeFrameCls;
 
     const avHtml = currentUser.avatar && currentUser.avatar.startsWith('data:image')
       ? `<img src="${currentUser.avatar}">`
@@ -5413,9 +5995,32 @@
 
     const coverBox = document.getElementById('profileCoverBanner');
     if (currentUser.coverPhoto) {
-      coverBox.style.backgroundImage = `url(${currentUser.coverPhoto})`;
+      if (currentUser.coverPhoto.startsWith('data:image') || currentUser.coverPhoto.startsWith('http')) {
+        coverBox.style.backgroundImage = `url(${currentUser.coverPhoto})`;
+      } else {
+        coverBox.style.backgroundImage = currentUser.coverPhoto;
+      }
     } else {
       coverBox.style.backgroundImage = 'linear-gradient(135deg, #1e1b4b, #7e22ce, #b45309)';
+    }
+
+    const hideGoldBtn = document.getElementById('toggleHideGoldBtn');
+    if (hideGoldBtn) {
+      hideGoldBtn.classList.toggle('active', !!currentUser.hideGold);
+      hideGoldBtn.innerText = currentUser.hideGold ? 'مفعل (*****) ✅' : 'غير مفعل';
+    }
+    const hideContactBtn = document.getElementById('toggleHideContactBtn');
+    if (hideContactBtn) {
+      hideContactBtn.classList.toggle('active', !!currentUser.hideContact);
+      hideContactBtn.innerText = currentUser.hideContact ? 'مفعل (*****) ✅' : 'غير مفعل';
+    }
+
+    const bag = ensureUserBagInventory();
+    const totalBagCount = Object.keys(bag.frames).length + Object.keys(bag.chatFrames).length + Object.keys(bag.avatars).length + Object.keys(bag.covers).length;
+    const bagBadge = document.getElementById('bagCountBadge');
+    if (bagBadge) {
+      bagBadge.style.display = totalBagCount > 0 ? 'flex' : 'none';
+      bagBadge.innerText = totalBagCount;
     }
 
     document.getElementById('profName').innerText = currentUser.username;
@@ -5431,7 +6036,8 @@
     if (infoGamesEl) infoGamesEl.innerText = `${totalGamesPlayed.toLocaleString()} جولة`;
 
     const chatBox = document.getElementById('vipChatPreviewBox');
-    chatBox.className = 'chat-frame-' + vip;
+    const activeChatFrameCls = currentUser.equippedChatFrame || ('chat-frame-' + vip);
+    chatBox.className = activeChatFrameCls;
     document.getElementById('chatPreviewUser').innerText = `[VIP ${vip}] ${currentUser.username} (#${currentUser.numericId}):`;
     document.getElementById('chatPreviewIcon').innerText = tier ? tier.icon : '🦁';
 
@@ -5448,6 +6054,7 @@
     renderVipCards();
     renderRequestsHistory();
     renderMyFriendsList();
+    renderCosmeticStoreSections();
     updateRedeemCostHint();
   }
 
@@ -5482,6 +6089,8 @@
   function logoutUser() {
     safeStorageRemove('royal_active_key');
     currentUser = null;
+    const wrap = document.getElementById('mainAppWrapper');
+    if (wrap) wrap.classList.remove('chat-fullscreen-mode');
     document.getElementById('exclusiveAdminBtn').style.display = 'none';
     document.getElementById('authScreen').style.display = 'flex';
     const qBtn = document.getElementById('quickAutoLoginBtn');
@@ -5499,7 +6108,6 @@
       const now = getTrustedTimestamp();
       const pad = n => n.toString().padStart(2, '0');
 
-      // عداد دورة الـ 3 أيام لتجديد قائمة الرابح الأكبر
       const curCycle = Math.floor(now / BIG_WINNER_CYCLE_MS);
       const nextCycleTs = (curCycle + 1) * BIG_WINNER_CYCLE_MS;
       const bwDiff = Math.max(0, nextCycleTs - now);
@@ -5538,19 +6146,32 @@
   }
 
   /**************************************************************
-   * 10. نظام الرهان الذكي + نظام نزول 4 ملوك في أي لعبة على الربح الاعتيادي
-   * - إذا صرف المستخدم 5 مليون أو 10 مليون أو 50 مليون أو 100 مليون أو 500 مليون أو 1 مليار أو 5 مليار أو 10 مليار أو 20 مليار
-   *   ينزل 4 ملوك في أي لعبة ويعيد نسبة ربع الخسارة (مثل 1,750,000 أو 2,100,000 عند صرف 5 مليون، وهكذا لبقية الرهانات)
+   * 10. نظام الألعاب المعدل حسب الطلب:
+   * - نزول 4 ملوك وربح الـ 4 ملوك حصراً على ألعاب الملوك (cascade) فقط!
+   * - عدم نزول 4 ملوك عند كل ضغطة على رهان 5M+، بل يصرف المستخدم أكثر (عتبة عشوائية متغيرة من الصرف والدورات) ثم ينزل لـ 4 ملوك ويرجع نسبة الخسارة.
+   * - عشوائية الربح بالأحجار ونزول الأحجار أكثر من مرة (عدة موجات متتالية) أحياناً في نفس الدورة.
+   * - نسبة ربح متوسطة (`medium_win`): عند تفعيلها على المستخدم يربح بنسبة متوسطة وحسب الرهان (مثال: دخل بـ 100 ألف يربح 1 مليون = 10x وهكذا لبقية الرهانات) في كل لعبة لمرة واحدة يلعب وينزل له 4 ملوك ويربح فقط في ألعاب الملوك، أما غير ألعاب الملوك فتكون الخسارة قليلة وربح متوسط.
+   * - دعم خيارات لوحة التحكم (ربح اعتيادي `normal`، ربح متوسط `medium_win`، ربح عالي `high_win`، جعله رابح أكبر `always_win`).
    **************************************************************/
   let isFreshGameEntryTurn = false;
 
-  // حساب مبلغ استرداد 4 ملوك على نظام الربح الاعتيادي (نسبة ربع الخسارة، مثل 1.75M أو 2.1M عند صرف 5M، وهكذا لجميع الرهانات حتى 20B)
   function computeNormalFourKingsRecovery(spentLossAmount) {
     const loss = Math.max(5000000, Number(spentLossAmount) || 5000000);
-    // نسب الاسترداد المعتمدة: ربع الخسارة (0.25) أو (0.35 = 1,750,000 لكل 5M) أو (0.42 = 2,100,000 لكل 5M)
-    const ratios = [0.25, 0.35, 0.42];
+    const ratios = [0.25, 0.32, 0.38, 0.42];
     const chosenRatio = ratios[Math.floor(Math.random() * ratios.length)];
     return Math.floor(loss * chosenRatio);
+  }
+
+  // توليد عتبة صرف وعدد دورات عشوائي حتى لا ينزل 4 ملوك في كل ضغطة على نفس الرهان
+  function ensureRandomFourKingsThreshold(betAmount) {
+    if (!currentUser) return;
+    const baseSpend = Math.max(12000000, (Number(betAmount) || 100000) * (3 + Math.floor(Math.random() * 5)));
+    if (!currentUser.next4KingsSpendTarget || currentUser.next4KingsSpendTarget < 6000000) {
+      currentUser.next4KingsSpendTarget = baseSpend;
+    }
+    if (!currentUser.next4KingsMinSpins || currentUser.next4KingsMinSpins < 3) {
+      currentUser.next4KingsMinSpins = 3 + Math.floor(Math.random() * 5); // يحتاج عدة دورات صرف قبل نزول 4 ملوك
+    }
   }
 
   function recordBigWinForUser(winAmount, gameObj) {
@@ -5582,42 +6203,74 @@
     }
   }
 
-  // فحص وتفعيل نزول 4 ملوك في الألعاب غير الكاسكيد (الصاروخ، التفاحة، الدجاجة، المنجم، العجلة) عند صرف 5 مليون فما فوق
+  // إلغاء نزول 4 ملوك في غير ألعاب الملوك (نزول 4 ملوك حصراً في ألعاب الملوك cascade فقط)
   function checkAndTriggerNormalFourKingsInAnyGame() {
-    if (!currentUser || currentUser.isAdmin) return false;
-    if (currentUser.customLuck === 'always_lose') return false;
-    const unrecovered = Number(currentUser.totalLostUnrecovered) || 0;
-    if (unrecovered < 5000000) return false;
-
-    const recoveryWin = computeNormalFourKingsRecovery(unrecovered);
-    currentUser.totalLostUnrecovered = 0;
-    currentUser.gold = (Number(currentUser.gold) || 0) + recoveryWin;
-    recordBigWinForUser(recoveryWin, activeGameObj);
-    recordGameProgress(0, true, false);
-    saveUser();
-
-    const gTitle = activeGameObj ? activeGameObj.title : 'اللعبة';
-    showInstantFourKingsBonusBanner(`👑 نزول 4 ملوك في ${gTitle}!`, recoveryWin);
-    launchFlyingGoldToBalance(recoveryWin);
-    const stEl = document.getElementById('gameStatusMsg');
-    if (stEl) {
-      stEl.innerHTML = `👑 نزول 4 ملوك! استرداد: <strong style="color:#fde047;">+${formatCoins(recoveryWin)} 🪙</strong>`;
-    }
-    showToast(`👑 نزل 4 ملوك! ربحت +${formatCoins(recoveryWin)} ذهب!`);
-    return true;
+    return false;
   }
 
   function evaluateSmartBetOutcome(tierIdx, betAmount) {
     if (!currentUser) {
       return { shouldWin: false, forceLose: true, isFirstTimeBonus: false, customWinAmount: 0, maxAllowedWin: 0 };
     }
-    if (currentUser.customLuck === 'always_win') {
+    const luckMode = currentUser.customLuck || 'normal';
+    const gameId = activeGameObj ? activeGameObj.id : 'olympus';
+    const isKingsGame = !!(activeGameObj && activeGameObj.type === 'cascade');
+
+    // 1. جعله رابح أكبر (always_win)
+    if (luckMode === 'always_win') {
       const bigBillionWin = computeGuaranteedBigWinnerBillions(betAmount);
       return { shouldWin: true, forceLose: false, isFirstTimeBonus: false, isBigWinnerGuaranteed: true, customWinAmount: bigBillionWin, maxAllowedWin: bigBillionWin };
     }
-    if (currentUser.customLuck === 'always_lose') {
+
+    // 2. ربح عالي (high_win) من لوحة التحكم
+    if (luckMode === 'high_win') {
+      const highWinChance = Math.random() < 0.78;
+      const mult = 3.5 + Math.random() * 4.5;
+      const highTarget = Math.floor(betAmount * mult);
+      return {
+        shouldWin: highWinChance,
+        forceLose: !highWinChance,
+        isFirstTimeBonus: false,
+        customWinAmount: highWinChance ? highTarget : 0,
+        maxAllowedWin: highWinChance ? highTarget : 0
+      };
+    }
+
+    // 3. ربح متوسط (medium_win) من لوحة التحكم:
+    // في ألعاب الملوك يربح 10x (مثال: 100 ألف -> 1 مليون) لمرة واحدة في كل لعبة مع نزول 4 ملوك، وفي غير ألعاب الملوك تكون الخسارة قليلة وربح متوسط
+    if (luckMode === 'medium_win') {
+      if (!currentUser.mediumWinGamesClaimed) currentUser.mediumWinGamesClaimed = {};
+      if (!isKingsGame) {
+        // في غير ألعاب الملوك: خسارة قليلة وربح متوسط بدون 4 ملوك
+        const winNonKing = Math.random() < 0.68;
+        const medMult = 1.65 + Math.random() * 0.95;
+        const medWinVal = Math.floor(betAmount * medMult);
+        return {
+          shouldWin: winNonKing,
+          forceLose: !winNonKing,
+          isFirstTimeBonus: false,
+          customWinAmount: winNonKing ? medWinVal : 0,
+          maxAllowedWin: winNonKing ? medWinVal : 0
+        };
+      } else {
+        // في ألعاب الملوك بعد أخذ مرة الـ 4 ملوك (10x): خسارة قليلة وربح متوسط بالأحجار العشوائية
+        const winStoneAfter = Math.random() < 0.55;
+        const stoneTarget = Math.floor(betAmount * (1.25 + Math.random() * 1.15));
+        return {
+          shouldWin: winStoneAfter,
+          forceLose: !winStoneAfter,
+          isFirstTimeBonus: false,
+          customWinAmount: winStoneAfter ? stoneTarget : 0,
+          maxAllowedWin: winStoneAfter ? stoneTarget : 0
+        };
+      }
+    }
+
+    if (luckMode === 'always_lose') {
       return { shouldWin: false, forceLose: true, isFirstTimeBonus: false, customWinAmount: 0, maxAllowedWin: 0 };
     }
+
+    // 4. الوضع الاعتيادي (normal): عشوائي الربح بالأحجار في ألعاب الملوك
     const todayKey = getTrustedDayKey();
     if (!currentUser.betBehavior) {
       currentUser.betBehavior = {
@@ -5643,109 +6296,28 @@
       beh.dailyEntryWinsUsed = 0;
       beh.dailyEntryWinsQuota = Math.random() < 0.65 ? 3 : 2;
     }
-    if (!beh.dailyEntryWinsQuota) beh.dailyEntryWinsQuota = 3;
 
-    let targetControlledWin = 0;
-    if (betAmount >= 10000000000) {
-      targetControlledWin = Math.floor(betAmount * 1.45);
-    } else if (betAmount >= 1000000000) {
-      targetControlledWin = Math.floor(betAmount * 1.55);
-    } else if (betAmount >= 5000000) {
-      targetControlledWin = Math.floor(betAmount * 1.65);
-    } else {
-      targetControlledWin = Math.min(3500000, Math.max(Math.floor(betAmount * 1.85), 350000));
-    }
+    const randomMult = 0.65 + Math.random() * 1.85;
+    const targetControlledWin = Math.floor(betAmount * randomMult);
 
-    const raisedBet = (!isFreshGameEntryTurn && beh.lastTierIdx !== -1 && tierIdx > beh.lastTierIdx);
-    if (beh.lastTierIdx !== -1 && tierIdx !== beh.lastTierIdx) {
-      const newDir = tierIdx > beh.lastTierIdx ? 1 : -1;
-      if (beh.lastDir !== 0 && newDir !== beh.lastDir) {
-        beh.fluctCount = (beh.fluctCount || 0) + 1;
-      }
-      beh.lastDir = newDir;
-    }
-    beh.lastTierIdx = tierIdx;
+    beh.cycleStep = ((beh.cycleStep || 0) + 1) % 4;
+    const baseWinRate = isKingsGame
+      ? Math.max(0.35, Number(liveGameOdds.cascadeWinRate || 0.38))
+      : 0.35;
+    const allowRandomWin = Math.random() < baseWinRate;
 
-    if (raisedBet) {
-      isFreshGameEntryTurn = false;
-      beh.forcedLossesLeft = 2;
-      beh.postChangePatternQueue = [false, true, false];
-      beh.lastRoundWon = false;
-      return {
-        shouldWin: false,
-        forceLose: true,
-        isFirstTimeBonus: false,
-        customWinAmount: 0,
-        maxAllowedWin: 0
-      };
-    }
-
-    if (isFreshGameEntryTurn && betAmount < 5000000) {
-      isFreshGameEntryTurn = false;
-      const canWinOnEntryToday = (beh.dailyEntryWinsUsed || 0) < (beh.dailyEntryWinsQuota || 3);
-      if (canWinOnEntryToday) {
-        beh.dailyEntryWinsUsed = (beh.dailyEntryWinsUsed || 0) + 1;
-        beh.forcedLossesLeft = 2;
-        beh.lastRoundWon = true;
-        beh.highBetPhase = (beh.highBetPhase || 0) + 1;
-        return {
-          shouldWin: true,
-          forceLose: false,
-          isFirstTimeBonus: true,
-          customWinAmount: targetControlledWin,
-          maxAllowedWin: targetControlledWin
-        };
-      }
-    }
-    isFreshGameEntryTurn = false;
-
-    if (beh.forcedLossesLeft > 0) {
-      beh.forcedLossesLeft--;
-      beh.lastRoundWon = false;
-      return {
-        shouldWin: false,
-        forceLose: true,
-        isFirstTimeBonus: false,
-        customWinAmount: 0,
-        maxAllowedWin: 0
-      };
-    }
-
-    if (beh.postChangePatternQueue.length > 0) {
-      const stepWin = beh.postChangePatternQueue.shift();
-      beh.lastRoundWon = stepWin;
-      if (stepWin) {
-        beh.forcedLossesLeft = 2;
-        beh.highBetPhase = (beh.highBetPhase || 0) + 1;
-      }
-      return {
-        shouldWin: stepWin,
-        forceLose: !stepWin,
-        isFirstTimeBonus: false,
-        customWinAmount: stepWin ? targetControlledWin : 0,
-        maxAllowedWin: stepWin ? targetControlledWin : 0
-      };
-    }
-
-    beh.cycleStep = ((beh.cycleStep || 0) + 1) % 3;
-    const allowCycleWin = (betAmount < 5000000) && ((beh.cycleStep === 1) || (Math.random() < 0.30));
-
-    beh.lastRoundWon = allowCycleWin;
-    if (allowCycleWin) {
-      beh.forcedLossesLeft = 2;
-      beh.highBetPhase = (beh.highBetPhase || 0) + 1;
-    }
+    beh.lastRoundWon = allowRandomWin;
     return {
-      shouldWin: allowCycleWin,
-      forceLose: !allowCycleWin,
+      shouldWin: allowRandomWin,
+      forceLose: !allowRandomWin,
       isFirstTimeBonus: false,
-      customWinAmount: allowCycleWin ? targetControlledWin : 0,
-      maxAllowedWin: allowCycleWin ? targetControlledWin : 0
+      customWinAmount: allowRandomWin ? targetControlledWin : 0,
+      maxAllowedWin: allowRandomWin ? targetControlledWin : 0
     };
   }
 
   /**************************************************************
-   * 11. ألعاب الملوك الكاسكيد
+   * 11. ألعاب الملوك الكاسكيد (انفجار ونزول الأحجار لأكثر من مرة أحياناً في نفس الدورة + نزول 4 ملوك في ألعاب الملوك فقط)
    **************************************************************/
   let activeGameObj = null;
   let freeSpinsLeft = 0;
@@ -5755,6 +6327,7 @@
   let autoSpinsTotalStarted = 0;
   let autoSpinTimer = null;
   let startCountdownInterval = null;
+  let plannedCascadeWavesInSpin = 0;
 
   function renderBetTiersBar() {
     const bar = document.getElementById('betTiersBar');
@@ -6163,6 +6736,7 @@
   function runCascadeSpin() {
     const bet = getCurrentBetAmount();
     const isFree = freeSpinsLeft > 0;
+    const gameId = activeGameObj ? activeGameObj.id : 'olympus';
 
     if (!isFree) {
       if (!currentUser.isAdmin && currentUser.gold < bet) {
@@ -6173,7 +6747,9 @@
       if (!currentUser.isAdmin) {
         currentUser.gold -= bet;
         currentUser.totalLostUnrecovered = (Number(currentUser.totalLostUnrecovered) || 0) + bet;
+        currentUser.lossSpinsOnSameBet = (Number(currentUser.lossSpinsOnSameBet) || 0) + 1;
       }
+      ensureRandomFourKingsThreshold(bet);
       recordGoldSpentToday(bet);
       currentUser.newUserKingSpinsCount = (currentUser.newUserKingSpinsCount || 0) + 1;
       recordGameProgress(1, false, true);
@@ -6188,21 +6764,35 @@
     playGameSound('drop');
     const syms = activeGameObj.syms;
 
-    const isForceLoseUser = (currentUser && currentUser.customLuck === 'always_lose');
-    const isForceWinUser = (currentUser && currentUser.customLuck === 'always_win');
+    const luckMode = (currentUser && currentUser.customLuck) || 'normal';
+    const isForceLoseUser = (luckMode === 'always_lose');
+    const isForceWinUser = (luckMode === 'always_win');
+    const isHighWinUser = (luckMode === 'high_win');
+    const isMediumWinUser = (luckMode === 'medium_win');
     const alreadyDone10M = !!currentUser.first10MScatterClaimed || (safeStorageGet('royal_10m_done_' + currentUser.key) === '1');
 
-    // 1. الحساب المختار من لوحة التحكم (ربح دائم مضمون)
+    // 1. جعله رابح أكبر (always_win)
     const triggerGuaranteedBigWinner4Kings = !isFree && isForceWinUser;
 
-    // 2. المستخدم الجديد في المحاولة 5 (يربح 10 مليون مرة واحدة فقط إذا كان الرهان أقل من 5 مليون)
-    const triggerNewUser5thScatter = !isFree && !isForceLoseUser && !triggerGuaranteedBigWinner4Kings && !alreadyDone10M && (currentUser.newUserKingSpinsCount === 5) && (bet < 5000000);
+    // 2. نسبة ربح متوسطة (medium_win): في كل لعبة من ألعاب الملوك لمرة واحدة يلعب وينزل له 4 ملوك ويربح 10x حسب الرهان (مثال: رهان 100 ألف يربح 1 مليون، رهان 1 مليون يربح 10 مليون، وهكذا)
+    if (!currentUser.mediumWinGamesClaimed) currentUser.mediumWinGamesClaimed = {};
+    const triggerMediumWin4KingsOncePerGame = !isFree && isMediumWinUser && !currentUser.mediumWinGamesClaimed[gameId];
 
-    // 3. نظام الربح الاعتيادي لنزول 4 ملوك: إذا صرف المستخدم 5 مليون أو 10 مليون أو 50 مليون أو 100 مليون أو 500 مليون أو 1 مليار أو 5 مليار أو 10 مليار أو 20 مليار ينزل 4 ملوك ويعيد نسبة ربع الخسارة!
+    // 3. ربح عالي (high_win): فرصة عالية لنزول 4 ملوك بربح مضاعف
+    const triggerHighWin4Kings = !isFree && isHighWinUser && (Math.random() < 0.38);
+
+    // 4. المستخدم الجديد في المحاولة 5
+    const triggerNewUser5thScatter = !isFree && !isForceLoseUser && !triggerGuaranteedBigWinner4Kings && !triggerMediumWin4KingsOncePerGame && !alreadyDone10M && (currentUser.newUserKingSpinsCount === 5) && (bet < 5000000);
+
+    // 5. عندما يصرف المستخدم في الوضع الاعتيادي: لا يطلع 4 ملوك في كل مرة يضغط على نفس الرهان، بل يصرف أكثر وبعدد دورات عشوائي ثم ينزل 4 ملوك ويرجع نسبة الخسارة
     const currentLossPool = Number(currentUser.totalLostUnrecovered) || 0;
-    const triggerNormalLossRecovery4Kings = !isFree && !isForceLoseUser && !triggerGuaranteedBigWinner4Kings && !triggerNewUser5thScatter && (currentLossPool >= 5000000);
+    const spinsSinceLast4Kings = Number(currentUser.lossSpinsOnSameBet) || 0;
+    const requiredSpendTarget = Math.max(10000000, Number(currentUser.next4KingsSpendTarget) || (bet * 4));
+    const requiredSpinsTarget = Math.max(3, Number(currentUser.next4KingsMinSpins) || 4);
+    const triggerNormalLossRecovery4Kings = !isFree && !isForceLoseUser && !triggerGuaranteedBigWinner4Kings && !triggerMediumWin4KingsOncePerGame && !triggerHighWin4Kings && !triggerNewUser5thScatter &&
+      (currentLossPool >= requiredSpendTarget) && (spinsSinceLast4Kings >= requiredSpinsTarget) && (Math.random() < 0.65);
 
-    const trigger4Kings = triggerGuaranteedBigWinner4Kings || triggerNewUser5thScatter || triggerNormalLossRecovery4Kings;
+    const trigger4Kings = triggerGuaranteedBigWinner4Kings || triggerMediumWin4KingsOncePerGame || triggerHighWin4Kings || triggerNewUser5thScatter || triggerNormalLossRecovery4Kings;
 
     isCurrentScatterFirst10M = triggerNewUser5thScatter;
     if (triggerGuaranteedBigWinner4Kings) {
@@ -6210,13 +6800,27 @@
       currentScatterPrecomputedTarget = computeGuaranteedBigWinnerBillions(bet);
       recordBigWinForUser(currentScatterPrecomputedTarget, activeGameObj);
       saveUser();
+    } else if (triggerMediumWin4KingsOncePerGame) {
+      // ربح متوسط: 10 أضعاف الرهان بالضبط (100 ألف -> 1 مليون، 500 ألف -> 5 مليون، 1 مليون -> 10 مليون...) لمرة واحدة في هذه اللعبة
+      currentScatterModeType = 'medium_10x';
+      currentScatterPrecomputedTarget = bet * 10;
+      currentUser.mediumWinGamesClaimed[gameId] = true;
+      currentUser.totalLostUnrecovered = 0;
+      currentUser.lossSpinsOnSameBet = 0;
+      saveUser();
+    } else if (triggerHighWin4Kings) {
+      currentScatterModeType = 'high_win';
+      currentScatterPrecomputedTarget = Math.floor(bet * (12 + Math.floor(Math.random() * 8)));
+      currentUser.totalLostUnrecovered = 0;
+      currentUser.lossSpinsOnSameBet = 0;
+      saveUser();
     } else if (triggerNewUser5thScatter) {
       currentScatterModeType = 'first10m';
       currentScatterPrecomputedTarget = 10000000;
       currentUser.first10MScatterClaimed = true;
       safeStorageSet('royal_10m_done_' + currentUser.key, '1');
       if (!currentUser.betBehavior) currentUser.betBehavior = {};
-      currentUser.betBehavior.forcedLossesLeft = 4;
+      currentUser.betBehavior.forcedLossesLeft = 3;
       saveUser();
     } else if (triggerNormalLossRecovery4Kings) {
       currentScatterModeType = 'normal';
@@ -6224,15 +6828,35 @@
       currentUser.first10MScatterClaimed = true;
       safeStorageSet('royal_10m_done_' + currentUser.key, '1');
       currentUser.totalLostUnrecovered = 0;
+      currentUser.lossSpinsOnSameBet = 0;
+      // تحديد عتبة صرف جديدة عشوائية للدورة القادمة حتى لا تتكرر في كل ضغطة
+      currentUser.next4KingsSpendTarget = Math.max(15000000, bet * (4 + Math.floor(Math.random() * 6)));
+      currentUser.next4KingsMinSpins = 4 + Math.floor(Math.random() * 5);
       saveUser();
     }
 
     const shouldWinWave1 = !trigger4Kings && (isFree ? true : currentSpinSmartOutcome.shouldWin);
 
+    // تحديد عدد موجات انفجار ونزول الأحجار في نفس الدورة (أحياناً تنزل الأحجار وتنفجر 2 أو 3 أو 4 مرات متتالية في نفس الدورة!)
+    if (shouldWinWave1) {
+      const rWave = Math.random();
+      if (isFree) {
+        plannedCascadeWavesInSpin = rWave < 0.45 ? 2 : (rWave < 0.78 ? 3 : 1);
+      } else if (rWave < 0.42) {
+        plannedCascadeWavesInSpin = 1;
+      } else if (rWave < 0.80) {
+        plannedCascadeWavesInSpin = 2;
+      } else {
+        plannedCascadeWavesInSpin = 3;
+      }
+    } else {
+      plannedCascadeWavesInSpin = 0;
+    }
+
     let rareMultOrb = null;
-    const liveOrbChance = Math.min(0.04, liveGameOdds.orbRate !== undefined ? liveGameOdds.orbRate * 0.4 : 0.03);
-    if (shouldWinWave1 && !isFree && !isCurrentScatterFirst10M && bet < 5000000 && Math.random() < liveOrbChance) {
-      rareMultOrb = 2;
+    const liveOrbChance = Math.min(0.12, liveGameOdds.orbRate !== undefined ? liveGameOdds.orbRate : 0.08);
+    if (shouldWinWave1 && !isFree && !isCurrentScatterFirst10M && Math.random() < liveOrbChance) {
+      rareMultOrb = Math.random() < 0.7 ? 2 : 4;
     }
 
     const board = generateCascadeBoard(syms, activeGameObj.king, shouldWinWave1, trigger4Kings);
@@ -6279,6 +6903,8 @@
 
     if (currentScatterModeType === 'big_winner_billions') {
       scatterTargetReturn = currentScatterPrecomputedTarget || computeGuaranteedBigWinnerBillions(bet);
+    } else if (currentScatterModeType === 'medium_10x' || currentScatterModeType === 'high_win') {
+      scatterTargetReturn = currentScatterPrecomputedTarget || (bet * 10);
     } else if (isFirst10M || currentScatterModeType === 'first10m') {
       scatterTargetReturn = 10000000;
     } else {
@@ -6345,22 +6971,22 @@
         }
       });
 
+      const totalPlannedWaves = Math.max(1, plannedCascadeWavesInSpin || 1);
       let waveWin = 0;
       if (isFree) {
-        if (freeSpinsLeft === 0) {
-          waveWin = Math.max(0, scatterTargetReturn - freeSpinsPot);
-        } else {
-          waveWin = Math.floor(scatterTargetReturn / 8);
-        }
+        const spinQuota = (freeSpinsLeft === 0)
+          ? Math.max(0, scatterTargetReturn - freeSpinsPot)
+          : Math.floor(scatterTargetReturn / 8);
+        waveWin = Math.max(10000, Math.floor(spinQuota / totalPlannedWaves));
       } else if (currentSpinSmartOutcome && currentSpinSmartOutcome.maxAllowedWin > 0) {
-        waveWin = currentSpinSmartOutcome.maxAllowedWin;
+        waveWin = Math.max(10000, Math.floor(currentSpinSmartOutcome.maxAllowedWin / totalPlannedWaves));
       } else {
-        const perPieceVal = (bet / 8) * 0.10;
-        waveWin = Math.min(1000000, Math.max(Math.floor(bet * 0.25), Math.floor(perPieceVal * matchedStonesTotal)));
+        const randStoneFactor = 0.15 + Math.random() * 0.35;
+        waveWin = Math.max(Math.floor(bet * 0.25), Math.floor(bet * randStoneFactor * (matchedStonesTotal / 8)));
       }
 
       accumulatedWin += waveWin;
-      document.getElementById('gameStatusMsg').innerHTML = `✨ تطابق ${matchedStonesTotal} قطع! الربح: <strong style="color:#10b981;">+${formatCoins(accumulatedWin)}</strong>`;
+      document.getElementById('gameStatusMsg').innerHTML = `✨ موجة #${waveNum} (${matchedStonesTotal} أحجار)! الربح: <strong style="color:#10b981;">+${formatCoins(accumulatedWin)}</strong>`;
 
       setTimeout(() => {
         const syms = activeGameObj.syms;
@@ -6370,10 +6996,23 @@
           if (!matchedSyms.includes(s) && currentCounts[s] !== undefined) currentCounts[s]++;
         });
 
+        // إذا كان مخططاً نزول موجة إضافية في نفس الدورة، نجعل الأحجار الجديدة تكمل 8 أحجار متطابقة لتنفجر مرة ثانية وثالثة!
+        const shouldChainAnotherWave = (waveNum < totalPlannedWaves);
+        let chainTargetSym = null;
+        if (shouldChainAnotherWave) {
+          const candidates = syms.filter(sym => !matchedSyms.includes(sym));
+          chainTargetSym = candidates[Math.floor(Math.random() * candidates.length)] || syms[0];
+        }
+
         board.forEach((s, idx) => {
           if (matchedSyms.includes(s)) {
-            const safeSyms = syms.filter(sym => (currentCounts[sym] || 0) < 6 && !matchedSyms.includes(sym));
-            const newSym = safeSyms.length > 0 ? safeSyms[Math.floor(Math.random() * safeSyms.length)] : syms[idx % syms.length];
+            let newSym;
+            if (shouldChainAnotherWave && chainTargetSym && (currentCounts[chainTargetSym] || 0) < 9) {
+              newSym = chainTargetSym;
+            } else {
+              const safeSyms = syms.filter(sym => (currentCounts[sym] || 0) < 6 && !matchedSyms.includes(sym));
+              newSym = safeSyms.length > 0 ? safeSyms[Math.floor(Math.random() * safeSyms.length)] : syms[idx % syms.length];
+            }
             currentCounts[newSym] = (currentCounts[newSym] || 0) + 1;
             board[idx] = newSym;
             const el = document.getElementById('sc_' + idx);
@@ -6442,7 +7081,7 @@
   }
 
   /**************************************************************
-   * 12. ألعاب الصاروخ والطائرات الـ 4 (مع نزول 4 ملوك عند صرف 5M فما فوق)
+   * 12. ألعاب الصاروخ والطائرات الـ 4 (بدون نزول 4 ملوك — 4 ملوك خاص بألعاب الملوك فقط)
    **************************************************************/
   const ROCKET_INDEPENDENT_DATA = {
     rocket: {
@@ -6818,11 +7457,6 @@
     if (rData.history.length > 11) rData.history.pop();
     renderCrashHistory11();
 
-    // إذا وصلت خسارة المستخدم 5 مليون فما فوق ينزل 4 ملوك ويعيد نسبة ربع الخسارة!
-    setTimeout(() => {
-      checkAndTriggerNormalFourKingsInAnyGame();
-    }, 350);
-
     clearTimeout(rocketNextRoundTimeout);
     rocketNextRoundTimeout = setTimeout(() => {
       if (activeGameObj && activeGameObj.type === 'rocket' && rocketState !== 'stopped') {
@@ -6836,20 +7470,16 @@
     const btn = document.getElementById('rcActionBtn_' + panelIdx);
     if (!b || !b.active || b.cashed) return;
 
-    const rawWin = Math.floor(b.amount * rocketMult);
-    let maxTotalReturn = Math.floor(b.amount * 2.25);
-    if (b.amount >= 5000000) {
-      maxTotalReturn = computeNormalFourKingsRecovery(Math.max(b.amount, Number(currentUser.totalLostUnrecovered) || b.amount));
-    }
-    let winVal = Math.min(rawWin, maxTotalReturn);
-    if (currentUser && currentUser.customLuck === 'always_win') {
+    const luckMode = (currentUser && currentUser.customLuck) || 'normal';
+    let winVal = Math.floor(b.amount * rocketMult);
+    if (luckMode === 'always_win') {
       winVal = computeGuaranteedBigWinnerBillions(b.amount);
-      showInstantFourKingsBonusBanner(`👑 4 ملوك الرابح الأكبر — +${formatCoins(winVal)} 👑`, winVal);
-    } else if (b.amount >= 5000000 || (Number(currentUser.totalLostUnrecovered) || 0) >= 5000000) {
-      const lossPool = Math.max(b.amount, Number(currentUser.totalLostUnrecovered) || b.amount);
-      winVal = computeNormalFourKingsRecovery(lossPool);
-      currentUser.totalLostUnrecovered = 0;
-      showInstantFourKingsBonusBanner(`👑 4 ملوك ${activeGameObj ? activeGameObj.title : ''} 👑`, winVal);
+    } else if (luckMode === 'high_win') {
+      winVal = Math.floor(b.amount * Math.max(rocketMult, 2.5));
+    } else if (luckMode === 'medium_win') {
+      winVal = Math.floor(b.amount * Math.min(2.6, Math.max(1.5, rocketMult)));
+    } else {
+      winVal = Math.min(winVal, Math.floor(b.amount * 2.35));
     }
 
     b.cashed = true;
@@ -6870,11 +7500,7 @@
       btn.innerText = `تم السحب (+${formatCoins(winVal)}) ✅`;
       btn.style.background = '#334155';
     }
-    if (currentUser) {
-      if (!currentUser.betBehavior) currentUser.betBehavior = {};
-      currentUser.betBehavior.forcedLossesLeft = b.amount >= 1000000000 ? 2 : 1;
-      saveUser();
-    }
+    saveUser();
   }
 
   function toggleRocketBet(panelIdx) {
@@ -7005,12 +7631,19 @@
     } else {
       rocketRoundSmartOutcome = evaluateSmartBetOutcome(activeBetObj.tierIdx, activeBetObj.amount);
       saveUser();
+      const luckMode = (currentUser && currentUser.customLuck) || 'normal';
 
-      if (currentUser && currentUser.customLuck === 'always_win') {
+      if (luckMode === 'always_win' || luckMode === 'high_win') {
         rocketTrapOnCashout = false;
-        rocketMaxAllowedCashoutMult = 3.50;
-        rocketCrashTarget = +(2.40 + Math.random() * 1.20).toFixed(2);
-      } else if (currentUser && currentUser.customLuck === 'always_lose') {
+        rocketMaxAllowedCashoutMult = 4.50;
+        rocketCrashTarget = +(2.60 + Math.random() * 1.60).toFixed(2);
+      } else if (luckMode === 'medium_win') {
+        // ربح متوسط وخسارة قليلة في غير ألعاب الملوك
+        const isSmallLoss = Math.random() < 0.25;
+        rocketTrapOnCashout = isSmallLoss;
+        rocketMaxAllowedCashoutMult = isSmallLoss ? 1.15 : 2.50;
+        rocketCrashTarget = isSmallLoss ? +(1.14 + Math.random() * 0.20).toFixed(2) : +(1.85 + Math.random() * 0.65).toFixed(2);
+      } else if (luckMode === 'always_lose') {
         rocketTrapOnCashout = true;
         rocketMaxAllowedCashoutMult = 1.00;
         rocketCrashTarget = +(1.05 + Math.random() * 0.20).toFixed(2);
@@ -7020,10 +7653,8 @@
         rocketCrashTarget = +(1.16 + Math.random() * 0.38).toFixed(2);
       } else {
         rocketTrapOnCashout = false;
-        rocketMaxAllowedCashoutMult = activeBetObj.amount >= 5000000 ? 1.85 : 2.35;
-        rocketCrashTarget = activeBetObj.amount >= 5000000
-          ? +(1.62 + Math.random() * 0.23).toFixed(2)
-          : +(1.78 + Math.random() * 0.57).toFixed(2);
+        rocketMaxAllowedCashoutMult = 2.25;
+        rocketCrashTarget = +(1.72 + Math.random() * 0.55).toFixed(2);
       }
     }
 
@@ -7041,7 +7672,7 @@
           const btn = document.getElementById('rcActionBtn_' + idx);
           if (btn) {
             btn.style.background = 'var(--green)';
-            const previewAmt = b.amount >= 5000000 ? Math.floor(b.amount * 0.35) : Math.floor(b.amount * rocketMult);
+            const previewAmt = Math.floor(b.amount * rocketMult);
             btn.innerText = `سحب ${formatCoins(previewAmt)}`;
           }
           if (b.mode === 'auto' && rocketMult >= (b.autoCashoutMult || 1.45)) {
@@ -7083,13 +7714,6 @@
         if (rData.history.length > 11) rData.history.pop();
         renderCrashHistory11();
 
-        const hadUncashedBet = rocketBets.some(b => b.active && !b.cashed);
-        if (hadUncashedBet) {
-          setTimeout(() => {
-            checkAndTriggerNormalFourKingsInAnyGame();
-          }, 350);
-        }
-
         clearTimeout(rocketNextRoundTimeout);
         rocketNextRoundTimeout = setTimeout(() => {
           if (activeGameObj && activeGameObj.type === 'rocket' && rocketState !== 'stopped') {
@@ -7101,7 +7725,7 @@
   }
 
   /**************************************************************
-   * 13. ألعاب الدجاج والتفاحة والخطوات (مع نزول 4 ملوك عند صرف 5M فما فوق)
+   * 13. ألعاب الدجاج والتفاحة والخطوات (بدون 4 ملوك — وفي الربح المتوسط تكون الخسارة قليلة وربح متوسط)
    **************************************************************/
   let stepRoundActive = false;
   let stepRowIndex = 0;
@@ -7109,7 +7733,7 @@
   let stepBetLocked = 100000;
   let stepSmartOutcome = null;
   let stepTrapOnCashout = false;
-  const STEP_HIGH_MULTS = [1.12, 1.24, 1.35, 1.48, 1.60, 1.75, 2.00];
+  const STEP_HIGH_MULTS = [1.15, 1.30, 1.48, 1.68, 1.90, 2.20, 2.60];
 
   function buildStepClimb35UI(box) {
     box.innerHTML = `
@@ -7142,7 +7766,8 @@
     stepRowIndex = 0;
     stepMultiplier = 1.0;
     stepSmartOutcome = evaluateSmartBetOutcome(selectedBetIndex, bet);
-    stepTrapOnCashout = !!(stepSmartOutcome && stepSmartOutcome.forceLose);
+    const luckMode = (currentUser && currentUser.customLuck) || 'normal';
+    stepTrapOnCashout = (luckMode === 'always_lose') || (luckMode === 'normal' && !!(stepSmartOutcome && stepSmartOutcome.forceLose));
     saveUser();
     recordGameProgress(1, false, false);
 
@@ -7163,11 +7788,15 @@
   function clickStepTile35(idx) {
     if (!stepRoundActive || Math.floor(idx / 5) !== stepRowIndex) return;
     const el = document.getElementById('stTile_' + idx);
+    const luckMode = (currentUser && currentUser.customLuck) || 'normal';
 
     let winStep = false;
-    if (currentUser && currentUser.customLuck === 'always_win') {
+    if (luckMode === 'always_win' || luckMode === 'high_win') {
       winStep = true;
-    } else if (currentUser && currentUser.customLuck === 'always_lose') {
+    } else if (luckMode === 'medium_win') {
+      // في الربح المتوسط: خسارة قليلة وربح متوسط
+      winStep = (stepRowIndex < 4) ? (Math.random() < 0.82) : (Math.random() < 0.45);
+    } else if (luckMode === 'always_lose') {
       winStep = false;
     } else if (stepSmartOutcome && stepSmartOutcome.forceLose) {
       winStep = (stepRowIndex === 0 && Math.random() < 0.45);
@@ -7183,19 +7812,13 @@
       document.getElementById('playMainBtn').style.display = 'block';
       document.getElementById('cashoutMainBtn').style.display = 'none';
       document.getElementById('gameStatusMsg').innerText = '💥 تعثرت وخسرت الرهان!';
-      setTimeout(() => {
-        checkAndTriggerNormalFourKingsInAnyGame();
-      }, 380);
     } else {
       el.innerHTML = `<div style="font-size:1.25rem;">${activeGameObj.safeIcon}</div>`;
       el.style.background = '#065f46';
       playGameSound('win');
       stepMultiplier = STEP_HIGH_MULTS[stepRowIndex];
       stepRowIndex++;
-      let currentWinCoins = Math.floor(stepBetLocked * stepMultiplier);
-      if (stepBetLocked >= 5000000) {
-        currentWinCoins = Math.floor(stepBetLocked * 0.35);
-      }
+      const currentWinCoins = Math.floor(stepBetLocked * stepMultiplier);
       document.getElementById('cashoutMainBtn').innerText = `سحب (${formatCoins(currentWinCoins)}) 💰`;
 
       if (stepRowIndex >= 7) cashoutStepGame();
@@ -7205,8 +7828,9 @@
 
   function cashoutStepGame() {
     if (!stepRoundActive || stepRowIndex === 0) return;
+    const luckMode = (currentUser && currentUser.customLuck) || 'normal';
 
-    if (stepTrapOnCashout && (!currentUser || currentUser.customLuck !== 'always_win')) {
+    if (stepTrapOnCashout && !['always_win', 'high_win', 'medium_win'].includes(luckMode)) {
       stepRoundActive = false;
       playGameSound('lose');
       const activeRowStart = Math.max(0, (stepRowIndex - 1) * 5);
@@ -7221,36 +7845,28 @@
       document.getElementById('cashoutMainBtn').style.display = 'none';
       document.getElementById('cashoutMainBtn').innerText = 'سحب الربح 💰';
       document.getElementById('gameStatusMsg').innerText = '💥 انفجر الفخ لحظة السحب!';
-      setTimeout(() => {
-        checkAndTriggerNormalFourKingsInAnyGame();
-      }, 380);
       return;
     }
 
     stepRoundActive = false;
     let winVal = Math.floor(stepBetLocked * stepMultiplier);
-    if (currentUser && currentUser.customLuck === 'always_win') {
+    if (luckMode === 'always_win') {
       winVal = computeGuaranteedBigWinnerBillions(stepBetLocked);
-      showInstantFourKingsBonusBanner(`👑 4 ملوك الرابح الأكبر — +${formatCoins(winVal)} 👑`, winVal);
-    } else if (stepBetLocked >= 5000000 || (Number(currentUser.totalLostUnrecovered) || 0) >= 5000000) {
-      const lossPool = Math.max(stepBetLocked, Number(currentUser.totalLostUnrecovered) || stepBetLocked);
-      winVal = computeNormalFourKingsRecovery(lossPool);
-      currentUser.totalLostUnrecovered = 0;
-      showInstantFourKingsBonusBanner(`👑 4 ملوك ${activeGameObj ? activeGameObj.title : ''} 👑`, winVal);
+    } else if (luckMode === 'high_win') {
+      winVal = Math.floor(stepBetLocked * Math.max(stepMultiplier, 3.0));
+    } else if (luckMode === 'medium_win') {
+      winVal = Math.floor(stepBetLocked * Math.max(stepMultiplier, 1.8));
     } else if (stepSmartOutcome && stepSmartOutcome.maxAllowedWin > 0) {
       winVal = Math.min(winVal, stepSmartOutcome.maxAllowedWin);
     }
+
     if (!currentUser.isAdmin) {
       currentUser.gold += winVal;
       currentUser.totalLostUnrecovered = Math.max(0, (Number(currentUser.totalLostUnrecovered) || 0) - winVal);
     }
     recordBigWinForUser(winVal, activeGameObj);
     playGameSound('win');
-
-    if (currentUser) {
-      if (!currentUser.betBehavior) currentUser.betBehavior = {};
-      currentUser.betBehavior.forcedLossesLeft = 2;
-    }
+    launchFlyingGoldToBalance(winVal);
 
     if (!currentUser.dailyState) currentUser.dailyState = {};
     currentUser.dailyState.stepWins = (currentUser.dailyState.stepWins || 0) + 1;
@@ -7264,7 +7880,7 @@
   }
 
   /**************************************************************
-   * 14. عجلة الفواكه (مع نزول 4 ملوك عند صرف 5M فما فوق)
+   * 14. عجلة الفواكه (بدون نزول 4 ملوك — وفي الربح المتوسط تكون الخسارة قليلة وربح متوسط)
    **************************************************************/
   const WHEEL_SEGMENTS = [
     { icon: '🍉', mult: 2.5 }, { icon: '🍓', mult: 0 }, { icon: '🍌', mult: 2.0 }, { icon: '🍒', mult: 4.0 },
@@ -7312,18 +7928,18 @@
     saveUser();
     recordGameProgress(1, false, false);
 
-    const has4KingsRecoveryReady = (Number(currentUser.totalLostUnrecovered) || 0) >= 5000000;
-    const winTurn = (currentUser && currentUser.customLuck === 'always_win')
+    const luckMode = (currentUser && currentUser.customLuck) || 'normal';
+    const winTurn = (luckMode === 'always_win' || luckMode === 'high_win')
       ? true
-      : ((currentUser && currentUser.customLuck === 'always_lose')
-        ? false
-        : (has4KingsRecoveryReady || (wheelOutcome.shouldWin && !wheelOutcome.forceLose)));
+      : (luckMode === 'medium_win'
+        ? (Math.random() < 0.72)
+        : (luckMode === 'always_lose' ? false : (wheelOutcome.shouldWin && !wheelOutcome.forceLose)));
 
-    const winIndices = [0, 2, 3, 5, 6, 7];
+    const winIndices = [0, 2, 3, 5, 6];
     const loseIndices = [1, 4];
-    const segIndex = has4KingsRecoveryReady ? 7 : (winTurn
+    const segIndex = winTurn
       ? winIndices[Math.floor(Math.random() * winIndices.length)]
-      : loseIndices[Math.floor(Math.random() * loseIndices.length)]);
+      : loseIndices[Math.floor(Math.random() * loseIndices.length)];
 
     const targetSliceAngle = 360 - (segIndex * 45 + 22.5);
     wheelRotation += 1440 + targetSliceAngle - (wheelRotation % 360);
@@ -7342,15 +7958,11 @@
       const chosen = WHEEL_SEGMENTS[segIndex];
       if (chosen.mult > 0) {
         let winVal = Math.floor(bet * chosen.mult);
-        if (currentUser && currentUser.customLuck === 'always_win') {
+        if (luckMode === 'always_win') {
           winVal = computeGuaranteedBigWinnerBillions(bet);
-          showInstantFourKingsBonusBanner(`👑 4 ملوك الرابح الأكبر — +${formatCoins(winVal)} 👑`, winVal);
-        } else if (has4KingsRecoveryReady || bet >= 5000000) {
-          const lossPool = Math.max(bet, Number(currentUser.totalLostUnrecovered) || bet);
-          winVal = computeNormalFourKingsRecovery(lossPool);
-          currentUser.totalLostUnrecovered = 0;
-          showInstantFourKingsBonusBanner(`👑 4 ملوك عجلة الفواكه 👑`, winVal);
-        } else if (wheelOutcome && wheelOutcome.maxAllowedWin > 0) {
+        } else if (luckMode === 'medium_win') {
+          winVal = Math.floor(bet * Math.min(2.5, chosen.mult));
+        } else if (wheelOutcome && wheelOutcome.maxAllowedWin > 0 && luckMode === 'normal') {
           winVal = Math.min(winVal, wheelOutcome.maxAllowedWin);
         }
         if (!currentUser.isAdmin) {
@@ -7365,7 +7977,6 @@
       } else {
         playGameSound('lose');
         document.getElementById('gameStatusMsg').innerText = `${chosen.icon} (0x)`;
-        checkAndTriggerNormalFourKingsInAnyGame();
       }
       isActionLocked = false;
       saveUser();
@@ -7382,7 +7993,7 @@
   }
 
   /**************************************************************
-   * 15. نظام الدردشة الحية العامة + فتح الملف الشخصي + الهدايا بدون شروحات وبمؤثرات بصرية
+   * 15. نظام الدردشة الحية (بملء الشاشة + نافذة خيارات المستخدم عند الضغط على الصورة أو الكلام + الرسالة الخاصة بعد موافقة الصداقة + حفظ نص البلاغ)
    **************************************************************/
   let chatListenerAttached = false;
   let cachedChatMessages = {};
@@ -7399,6 +8010,12 @@
     return '🦁';
   }
 
+  function isAcceptedFriendWith(targetKey) {
+    if (!currentUser || !targetKey) return false;
+    if (currentUser.isAdmin) return true;
+    return (currentUser.friendsList || []).some(f => f && f.key === targetKey);
+  }
+
   function initLiveChat() {
     if (!db || chatListenerAttached) return;
     chatListenerAttached = true;
@@ -7406,7 +8023,7 @@
     db.ref('chat_messages').limitToLast(60).on('value', snap => {
       const box = document.getElementById('liveChatMessagesBox');
       if (!snap || !snap.exists()) {
-        box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.8rem; margin-top:20px;">لا توجد رسائل بعد. كن أول من يكتب! 💬</div>';
+        box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.74rem; margin-top:20px;">لا توجد رسائل بعد. كن أول من يكتب! 💬</div>';
         return;
       }
       const msgs = snap.val();
@@ -7419,6 +8036,8 @@
         const vipLvl = m.vip || 0;
         const uidStr = m.numericId ? `#${m.numericId}` : '';
         const hasStar = ((vipLvl >= 6 || !!m.traderStarGrantedByAdmin) && !m.traderStarRevoked) || m.userKey === 'admin';
+        const avFrameCls = m.equippedFrame || `frame-vip-${vipLvl}`;
+        const bubbleFrameCls = m.equippedChatFrame || `chat-frame-${vipLvl}`;
 
         const isGiftMsg = !!m.isGiftAnnouncement;
         const giftClaimedByMe = isGiftMsg && m.claimedUsers && currentUser && m.claimedUsers[currentUser.key];
@@ -7427,37 +8046,35 @@
 
         return `
           <div class="chat-msg-row">
-            <div class="avatar-wrap frame-vip-${vipLvl}" style="width:36px; height:36px; font-size:1.1rem; flex-shrink:0; cursor:pointer;" onclick="openPlayerPublicProfile('${escapeHtml(m.userKey)}', '${m.msgKey}')">
+            <div class="avatar-wrap ${avFrameCls}" style="width:32px; height:32px; font-size:0.95rem; flex-shrink:0; cursor:pointer;" onclick="openChatUserQuickMenu('${escapeHtml(m.userKey)}', '${m.msgKey}')">
               ${m.avatar && m.avatar.startsWith('data:image') ? `<img src="${m.avatar}">` : (m.avatar || '🦁')}
             </div>
-            <div class="chat-bubble chat-frame-${vipLvl} ${isGiftMsg ? 'chat-gift-bubble-card' : ''}">
+            <div class="chat-bubble ${bubbleFrameCls} ${isGiftMsg ? 'chat-gift-bubble-card' : ''}" onclick="openChatUserQuickMenu('${escapeHtml(m.userKey)}', '${m.msgKey}')">
               <div class="chat-msg-header">
-                <div style="cursor:pointer; display:flex; align-items:center; gap:4px; flex-wrap:wrap;" onclick="openPlayerPublicProfile('${escapeHtml(m.userKey)}', '${m.msgKey}')">
-                  <strong style="color:var(--gold); text-decoration:underline;">${escapeHtml(m.username)}</strong>
-                  ${hasStar ? `<span class="verified-star-badge">★ موثق</span>` : ''}
-                  <span class="uid-badge" style="font-size:0.58rem; padding:1px 3px;">${uidStr}</span>
-                  <span style="font-size:0.65rem; color:#38bdf8;">[VIP ${vipLvl}]</span>
+                <div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
+                  <strong style="color:var(--gold); font-size:0.72rem;">${escapeHtml(m.username)}</strong>
+                  ${hasStar ? `<span class="verified-star-badge" style="font-size:0.54rem; padding:0 5px;">★ موثق</span>` : ''}
+                  <span class="uid-badge" style="font-size:0.54rem; padding:0 3px;">${uidStr}</span>
+                  <span style="font-size:0.58rem; color:#38bdf8;">[VIP ${vipLvl}]</span>
                 </div>
-                <span style="font-size:0.62rem; color:#94a3b8;">${formatMsgTime(m.timestamp)}</span>
+                <span style="font-size:0.58rem; color:#94a3b8;">${formatMsgTime(m.timestamp)}</span>
               </div>
               <div class="chat-msg-text">${escapeHtml(m.text)}</div>
               ${isGiftMsg ? `
-                <div style="margin-top:6px; background:rgba(6,9,19,0.85); border:1px solid #fde047; border-radius:10px; padding:7px 9px; font-size:0.76rem; text-align:center;">
+                <div style="margin-top:4px; background:rgba(6,9,19,0.85); border:1px solid #fde047; border-radius:8px; padding:5px 7px; font-size:0.68rem; text-align:center;" onclick="event.stopPropagation();">
                   <div style="color:#fde047; font-weight:900;">${escapeHtml(m.giftTitle || '🎁 هدية ملكية')} — ${formatCoins(m.giftTotal || 0)} 🪙</div>
                   ${canClaimGiftShare ? `
-                    <button type="button" class="btn-primary" style="margin-top:6px; padding:6px 10px; font-size:0.74rem; background:linear-gradient(135deg,#10b981,#059669); color:#000;" onclick="claimChatGiftShare('${m.msgKey}')">
+                    <button type="button" class="btn-primary" style="margin-top:4px; padding:4px 8px; font-size:0.68rem; background:linear-gradient(135deg,#10b981,#059669); color:#000;" onclick="claimChatGiftShare('${m.msgKey}')">
                       🎁 استلام الهدية (+${formatCoins(m.perPlayerShare || 0)} 🪙)
                     </button>
-                  ` : (giftClaimedByMe ? `<div style="margin-top:4px; color:#34d399; font-weight:900; font-size:0.68rem;">✅ تم الاستلام</div>` : '')}
+                  ` : (giftClaimedByMe ? `<div style="margin-top:3px; color:#34d399; font-weight:900; font-size:0.62rem;">✅ تم الاستلام</div>` : '')}
                 </div>
               ` : ''}
-              <div class="chat-actions-strip">
-                <button class="chat-action-btn" style="border-color:var(--gold); color:var(--gold);" onclick="openPlayerPublicProfile('${escapeHtml(m.userKey)}', '${m.msgKey}')">👤 الملف الشخصي</button>
-                ${!isMe ? `<button class="chat-action-btn" style="border-color:#38bdf8; color:#38bdf8;" onclick="openDirectPrivateChat('${escapeHtml(m.userKey)}', '${escapeHtml(m.username)}', '${m.numericId || ''}', '', ${vipLvl})">🔒 دردشة خاصة</button>` : ''}
-                ${!isMe ? `<button class="chat-action-btn" onclick="addFriendFromChat('${escapeHtml(m.userKey)}', '${escapeHtml(m.username)}', '${m.numericId || ''}', '', ${vipLvl})">➕ إضافة صديق</button>` : ''}
-                <button class="chat-action-btn" onclick="reportChatMessage('${m.msgKey}', '${escapeHtml(m.username)}')">🚩 إبلاغ</button>
-                ${canDelete ? `<button class="chat-action-btn" style="color:var(--red); border-color:rgba(239,68,68,0.4);" onclick="deleteChatMessage('${m.msgKey}')">🗑️ حذف</button>` : ''}
-              </div>
+              ${canDelete ? `
+                <div class="chat-actions-strip" onclick="event.stopPropagation();">
+                  <button class="chat-action-btn" style="color:var(--red); border-color:rgba(239,68,68,0.4);" onclick="deleteChatMessage('${m.msgKey}')">🗑️ حذف</button>
+                </div>
+              ` : ''}
             </div>
           </div>
         `;
@@ -7467,12 +8084,78 @@
     });
   }
 
+  // فتح نافذة خيارات المستخدم عند الضغط على صورته أو كلامه في الدردشة
+  function openChatUserQuickMenu(userKey, msgKey) {
+    if (!currentUser) return;
+    playGameSound('click');
+    const m = (msgKey && cachedChatMessages[msgKey]) ? cachedChatMessages[msgKey] : {};
+    const targetName = m.username || userKey || 'لاعب';
+    const targetUid = m.numericId || '0000000';
+    const targetVip = m.vip || 0;
+    const targetAv = m.avatar || resolveCachedUserAvatar(userKey);
+    const targetMsgText = m.text || '';
+    const isMe = (userKey === currentUser.key);
+    const isFriend = isAcceptedFriendWith(userKey);
+
+    const avEl = document.getElementById('quickMenuAvatar');
+    if (avEl) {
+      avEl.className = `avatar-wrap ${m.equippedFrame || ('frame-vip-' + targetVip)}`;
+      avEl.innerHTML = (targetAv && String(targetAv).startsWith('data:image')) ? `<img src="${targetAv}">` : `<span>${targetAv || '🦁'}</span>`;
+    }
+    document.getElementById('quickMenuUsername').innerText = targetName;
+    document.getElementById('quickMenuSubInfo').innerText = `#${targetUid} | VIP ${targetVip}`;
+    const prevBox = document.getElementById('quickMenuMsgPreview');
+    if (prevBox) {
+      prevBox.style.display = targetMsgText ? 'block' : 'none';
+      prevBox.innerText = `💬 "${targetMsgText}"`;
+    }
+
+    const actionsBox = document.getElementById('quickMenuActionsList');
+    let btnsHtml = `
+      <button type="button" class="btn-primary" style="padding:9px; font-size:0.82rem;" onclick="closeChatUserQuickMenu(); openPlayerPublicProfile('${escapeHtml(userKey)}', '${msgKey || ''}')">
+        👤 عرض الملف الشخصي
+      </button>
+    `;
+
+    if (!isMe) {
+      if (isFriend) {
+        // الرسالة الخاصة تظهر وتفتح مباشرة بعد موافقة الصديق على طلب الصداقة
+        btnsHtml += `
+          <button type="button" class="btn-primary" style="padding:9px; font-size:0.82rem; background:linear-gradient(135deg,#0284c7,#2563eb); color:#fff;" onclick="closeChatUserQuickMenu(); openDirectPrivateChat('${escapeHtml(userKey)}', '${escapeHtml(targetName)}', '${escapeHtml(targetUid)}', '', ${targetVip})">
+            💬 رسالة خاصة (صديقك ✅)
+          </button>
+        `;
+      } else {
+        btnsHtml += `
+          <button type="button" class="btn-primary" style="padding:9px; font-size:0.82rem; background:linear-gradient(135deg,#10b981,#059669); color:#000;" onclick="closeChatUserQuickMenu(); sendFriendRequestToUser('${escapeHtml(userKey)}', '${escapeHtml(targetName)}', '${escapeHtml(targetUid)}', ${targetVip})">
+            ➕ إرسال طلب صداقة (لفتح الرسالة الخاصة)
+          </button>
+        `;
+      }
+
+      btnsHtml += `
+        <button type="button" class="btn-primary" style="padding:9px; font-size:0.82rem; background:linear-gradient(135deg,#ef4444,#b91c1c); color:#fff;" onclick="closeChatUserQuickMenu(); reportChatMessage('${msgKey || ''}', '${escapeHtml(targetName)}', '${escapeHtml(userKey)}')">
+          🚩 إبلاغ عن الرسالة
+        </button>
+      `;
+    }
+
+    actionsBox.innerHTML = btnsHtml;
+    document.getElementById('chatUserQuickMenuModal').classList.add('open');
+  }
+
+  function closeChatUserQuickMenu() {
+    const modal = document.getElementById('chatUserQuickMenuModal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function exitChatFullscreen() {
+    const navHome = document.querySelector('.bottom-nav .nav-item');
+    switchView('lobbyView', navHome);
+  }
+
   /**************************************************************
-   * 15.5 نظام قائمة الترتيب والرابح الأكبر:
-   * - في قائمة الرابح الأكبر: إظهار فقط أعلى 10 مستخدمين ربحوا ذهباً (لـ 10 أعضاء فقط)
-   * - عرض: حساب المستخدم + الذهب الذي ربحه + اللعبة التي ربح بها (مع إمكانية فتح اللعبة عند الضغط عليها)
-   * - هدية لكل مستوى: الأول 500 مليون، الثاني 400 مليون، الثالث 300 مليون، وبقية الأعضاء (4 إلى 10) على 100 مليون
-   * - كل 3 أيام يتم إزالتهم وتجديد الأسماء حسب الربح الأعلى تلقائياً
+   * 15.5 نظام قائمة الترتيب والرابح الأكبر
    **************************************************************/
   let leaderboardUsersCache = {};
   let currentLeaderboardMode = 'bigwinner';
@@ -7491,12 +8174,11 @@
     return Number(u.gold !== undefined ? u.gold : (u.balance !== undefined ? u.balance : (u.coins || 0))) || 0;
   }
 
-  // حساب ذهب الربح خلال دورة الـ 3 أيام الحالية (يتم تصفيره تلقائياً كل 3 أيام لتجديد الأسماء)
   function getPlayerCurrent3DayWonGold(u) {
     if (!u || typeof u !== 'object') return 0;
     const curCycle = getCurrentBigWinnerCycleId();
     if (u.bwCycleId !== undefined && Number(u.bwCycleId) !== curCycle) {
-      return 0; // انتهت دورة الـ 3 أيام السابقة لهذا الاسم ويتم تجديده حسب ربح الدورة الجديدة
+      return 0;
     }
     return Math.max(Number(u.bwCycleGoldWon || 0), Number(u.biggestWin || 0), Number(u.lastBigWin || 0));
   }
@@ -7555,12 +8237,6 @@
     isFetchingLeaderboard = false;
   }
 
-  
-  /**************************************************************
-   * 15.6 التحويل التلقائي لهدايا الترتيب (الرابح الأكبر) بعد انتهاء الـ 3 أيام
-   * - تتحول الهدية تلقائياً للرابحين الـ 10 الأوائل بعد انتهاء الـ 3 أيام مباشرة مع إشعار في الجرس
-   * - إذا شارك المستخدم ولم يحصل على مركز ضمن الـ 10 الأوائل يرسل له إشعار حظ أوفر واعتذار في الجرس
-   **************************************************************/
   let isSettlingBwCycle = false;
 
   async function sendAutomaticBellNotificationToUser(targetKey, title, message, giftGoldAmount = 0) {
@@ -7601,7 +8277,6 @@
       allMap[currentUser.key] = { ...(allMap[currentUser.key] || {}), ...currentUser };
     }
 
-    // تحديد الدورات السابقة التي انتهت ولم يتم تصفيتها بعد للاعبين المشاركين
     const endedCyclesSet = new Set();
     if (forcedEndedCycleId !== null && forcedEndedCycleId < curCycle) {
       endedCyclesSet.add(Number(forcedEndedCycleId));
@@ -7621,7 +8296,6 @@
     try {
       const nowTs = getTrustedTimestamp();
       for (const endedCyc of Array.from(endedCyclesSet)) {
-        // جمع كل اللاعبين الذين كانوا في هذه الدورة المنتهية
         const cycleParticipants = Object.entries(allMap)
           .filter(([k, u]) => u && typeof u === 'object' && k !== 'admin' && !u.isAdmin)
           .filter(([, u]) => {
@@ -7638,7 +8312,6 @@
             participated: (Number(u.bwParticipatedCycle) === endedCyc) || (Number(u.bwCycleGoldWon || 0) > 0) || (Number(u.biggestWin || 0) > 0)
           }));
 
-        // ترتيب الفائزين (أعلى 10 رابحين في الدورة المنتهية)
         const winnersSorted = cycleParticipants
           .filter(p => p.wonGold > 0)
           .sort((a, b) => b.wonGold - a.wonGold || (Number(b.userObj.gold) || 0) - (Number(a.userObj.gold) || 0));
@@ -7679,7 +8352,6 @@
             }
           }
 
-          // تصفير أرباح الدورة السابقة لبدء المنافسة من جديد في الدورة الحالية
           u.bwCycleId = curCycle;
           u.bwCycleGoldWon = 0;
           u.biggestWin = 0;
@@ -7719,10 +8391,7 @@
   }
 
   /**************************************************************
-   * 15.7 شريط أخبار اللاعبين المتحرك (VIP 4+) مع حظر كلمات السب والشتم
-   * - يوم واحد = 10 مليون ذهب
-   * - يومين = 50 مليون ذهب
-   * - 3 أيام = 500 مليون ذهب
+   * 15.7 شريط أخبار اللاعبين المتحرك (VIP 4+)
    **************************************************************/
   const USER_NEWS_PACKAGES = {
     1: { days: 1, label: 'يوم واحد', cost: 10000000 },
@@ -7749,12 +8418,12 @@
       .replace(/[أإآ]/g, 'ا')
       .replace(/ة/g, 'ه')
       .replace(/ى/g, 'ي')
-      .replace(/(.)+/g, '$1');
+      .replace(/(.)+/g, '$1');
   }
 
   function containsProfanityOrAbuse(rawText) {
     const norm = normalizeArabicForFilter(rawText);
-    const words = norm.replace(/[^؀-ۿa-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
+    const words = norm.replace(/[^-ۿa-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
     for (const bad of BANNED_PROFANITY_ROOTS) {
       const normBad = normalizeArabicForFilter(bad);
       if (!normBad) continue;
@@ -7794,7 +8463,7 @@
 
     if (activeItems.length === 0) {
       trackEl.innerText = '   👑 أهلاً بكم في أساطير رويل ◄◄ ✦ ➤➤ انشر خبرك الآن من ملفك الشخصي ليظهر للجميع (VIP 4+) ◄◄ ✦ ➤➤   ';
-      trackEl.style.animationDuration = '20s';
+      trackEl.style.animationDuration = '32s';
       return;
     }
 
@@ -7805,7 +8474,7 @@
     }).join('   ◄◄ ✦ ➤➤   ');
 
     trackEl.innerText = `   ${joined}   ◄◄ ✦ ➤➤   `;
-    const durSec = Math.max(18, Math.min(45, Math.round(12 + joined.length * 0.16)));
+    const durSec = Math.max(28, Math.min(55, Math.round(22 + joined.length * 0.22)));
     trackEl.style.animationDuration = durSec + 's';
   }
 
@@ -7902,20 +8571,20 @@
   }
 
   /**************************************************************
-   * 15.9 نظام عطاء الذهب لمستخدم آخر (بدون شرح، بحث برقم المعرف فقط، ضريبة 10%، بدون كسور، وحدود VIP 1-10)
+   * 15.9 نظام عطاء الذهب لمستخدم آخر
    **************************************************************/
   const VIP_DAILY_GIVE_GOLD_LIMITS = {
     0: 0,
-    1: 1000000000,    // VIP 1: 1 مليار
-    2: 5000000000,    // VIP 2: 5 مليار
-    3: 15000000000,   // VIP 3: 15 مليار
-    4: 25000000000,   // VIP 4: 25 مليار
-    5: 35000000000,   // VIP 5: 35 مليار
-    6: 50000000000,   // VIP 6: 50 مليار
-    7: 60000000000,   // VIP 7: 60 مليار
-    8: 120000000000,  // VIP 8: 120 مليار
-    9: 250000000000,  // VIP 9: 250 مليار
-    10: 500000000000  // VIP 10: 500 مليار
+    1: 1000000000,
+    2: 5000000000,
+    3: 15000000000,
+    4: 25000000000,
+    5: 35000000000,
+    6: 50000000000,
+    7: 60000000000,
+    8: 120000000000,
+    9: 250000000000,
+    10: 500000000000
   };
 
   const GIVE_GOLD_INTEGER_AMOUNTS = [
@@ -8141,7 +8810,6 @@
     };
     saveUser();
 
-    // تحديث رصيد المستلم في فايربيس وإرسال إشعار لجرس الإشعارات
     let latestRecGold = foundGiveGoldRecipient.gold || 0;
     const snap = await dbOnceWithTimeout('users/' + foundGiveGoldRecipient.key, 2500);
     if (snap && snap.exists()) {
@@ -8221,6 +8889,8 @@
           numericId: u.numericId || '0000000',
           vip: Number(u.vip || u.vipLevel || 0),
           avatar: u.avatar || '🦁',
+          equippedFrame: u.equippedFrame || '',
+          hideGold: !!u.hideGold,
           gold: getPlayerGoldAmount(u),
           spins: getPlayerTotalSpinsCount(u),
           bwGoldWon: getPlayerCurrent3DayWonGold(u),
@@ -8238,13 +8908,11 @@
 
     const byGold = [...players].sort((a, b) => b.gold - a.gold || b.spins - a.spins);
     const bySpins = [...players].sort((a, b) => b.spins - a.spins || b.gold - a.gold);
-    // ترتيب الرابح الأكبر: فقط من ربح ذهباً، مرتبين من الأعلى ربحاً، ولأعلى 10 أعضاء فقط
     const byBigWinAll = [...players]
       .filter(p => p.bwGoldWon > 0)
       .sort((a, b) => b.bwGoldWon - a.bwGoldWon || b.gold - a.gold);
     const top10BigWinners = byBigWinAll.slice(0, 10);
 
-    // تحديث شريط أفضل 10 رابحين العلوي (يعرض فقط الـ 10 الرابحين مع اللعبة التي ربحوا بها وهدية كل مستوى)
     const top10Box = document.getElementById('top10HorizontalList');
     if (top10Box) {
       if (top10BigWinners.length === 0) {
@@ -8256,10 +8924,11 @@
           const avHtml = (p.avatar && p.avatar.startsWith('data:image'))
             ? `<img src="${p.avatar}">`
             : `<span>${p.avatar || '🦁'}</span>`;
+          const fCls = p.equippedFrame || ('frame-vip-' + p.vip);
           return `
             <div class="top10-mini-card" onclick="openPlayerPublicProfile('${escapeHtml(p.key)}', '')">
               <div style="font-size:0.68rem; font-weight:900; color:var(--gold); margin-bottom:3px;">#${rank} ${rank === 1 ? '👑' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : '⭐'))}</div>
-              <div class="avatar-wrap frame-vip-${p.vip}" style="width:38px; height:38px; font-size:1.1rem; margin:0 auto 4px;">
+              <div class="avatar-wrap ${fCls}" style="width:38px; height:38px; font-size:1.1rem; margin:0 auto 4px;">
                 ${avHtml}
               </div>
               <div style="font-size:0.72rem; font-weight:900; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(p.username)}</div>
@@ -8291,7 +8960,6 @@
       if (sValEl) sValEl.innerText = getPlayerTotalSpinsCount(currentUser).toLocaleString();
     }
 
-    // في وضع الرابح الأكبر نعرض فقط أعلى 10 رابحين ذهباً
     const sorted = currentLeaderboardMode === 'bigwinner'
       ? top10BigWinners
       : (currentLeaderboardMode === 'spins' ? bySpins.slice(0, 50) : byGold.slice(0, 50));
@@ -8308,18 +8976,21 @@
       podiumBox.style.display = 'grid';
       podiumBox.innerHTML = podiumOrder.map(p => {
         if (!p) return `<div></div>`;
+        const isMe = currentUser && p.key === currentUser.key;
         const avHtml = (p.avatar && p.avatar.startsWith('data:image'))
           ? `<img src="${p.avatar}">`
           : `<span>${p.avatar || '🦁'}</span>`;
+        const fCls = p.equippedFrame || ('frame-vip-' + p.vip);
         const giftPrize = getBigWinnerPrizeForRank(p.rank);
+        const displayGoldText = (p.hideGold && !isMe) ? '*****' : formatCoins(p.gold);
         const mainStat = currentLeaderboardMode === 'bigwinner'
           ? `🪙 ربح: ${formatCoins(p.bwGoldWon)}`
-          : (currentLeaderboardMode === 'spins' ? `🎮 ${p.spins.toLocaleString()} جولة` : `🪙 ${formatCoins(p.gold)}`);
+          : (currentLeaderboardMode === 'spins' ? `🎮 ${p.spins.toLocaleString()} جولة` : `🪙 ${displayGoldText}`);
 
         return `
           <div class="lb-podium-card rank-${p.rank}" onclick="openPlayerPublicProfile('${escapeHtml(p.key)}', '')">
             <div class="lb-medal-crown">${p.medal}</div>
-            <div class="avatar-wrap frame-vip-${p.vip}" style="width:${p.rank === 1 ? '54px' : '44px'}; height:${p.rank === 1 ? '54px' : '44px'}; font-size:1.4rem; margin-bottom:5px;">
+            <div class="avatar-wrap ${fCls}" style="width:${p.rank === 1 ? '54px' : '44px'}; height:${p.rank === 1 ? '54px' : '44px'}; font-size:1.4rem; margin-bottom:5px;">
               ${avHtml}
               <span class="vip-badge-mini">VIP ${p.vip}</span>
             </div>
@@ -8353,22 +9024,21 @@
       return;
     }
 
-    const curCycle = getCurrentBigWinnerCycleId();
     listBox.innerHTML = filtered.map(p => {
       const isMe = currentUser && p.key === currentUser.key;
       const rCls = p.trueRank === 1 ? 'top-1' : (p.trueRank === 2 ? 'top-2' : (p.trueRank === 3 ? 'top-3' : ''));
       const avHtml = (p.avatar && p.avatar.startsWith('data:image'))
         ? `<img src="${p.avatar}">`
         : `<span>${p.avatar || '🦁'}</span>`;
+      const fCls = p.equippedFrame || ('frame-vip-' + p.vip);
       const giftPrize = getBigWinnerPrizeForRank(p.trueRank);
-      const canClaimMyRankGift = isMe && currentLeaderboardMode === 'bigwinner' && p.trueRank <= 10 && p.bwRewardClaimedCycle !== curCycle;
-      const alreadyClaimedMyRankGift = isMe && currentLeaderboardMode === 'bigwinner' && p.trueRank <= 10 && p.bwRewardClaimedCycle === curCycle;
+      const displayGoldText = (p.hideGold && !isMe) ? '*****' : formatCoins(p.gold);
 
       return `
         <div class="lb-row-card ${isMe ? 'is-me-row' : ''}" onclick="openPlayerPublicProfile('${escapeHtml(p.key)}', '')">
           <div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1;">
             <div class="lb-rank-circle ${rCls}">${p.trueRank <= 3 ? (p.trueRank === 1 ? '🥇' : (p.trueRank === 2 ? '🥈' : '🥉')) : '#' + p.trueRank}</div>
-            <div class="avatar-wrap frame-vip-${p.vip}" style="width:40px; height:40px; font-size:1.2rem; flex-shrink:0;">
+            <div class="avatar-wrap ${fCls}" style="width:40px; height:40px; font-size:1.2rem; flex-shrink:0;">
               ${avHtml}
               <span class="vip-badge-mini">VIP ${p.vip}</span>
             </div>
@@ -8395,7 +9065,7 @@
                 </div>
               ` : `
                 <div style="display:flex; align-items:center; gap:8px; margin-top:3px; font-size:0.73rem; font-weight:900; flex-wrap:wrap;">
-                  <span style="color:var(--gold);">🪙 ${formatCoins(p.gold)}</span>
+                  <span style="color:var(--gold);">🪙 ${displayGoldText}</span>
                   <span style="color:#38bdf8;">🎮 ${p.spins.toLocaleString()} لعب</span>
                 </div>
               `}
@@ -8438,6 +9108,7 @@
     }
   }
 
+  // استعراض الملف الشخصي لأي لاعب مع تطبيق خيار إخفاء الذهب وإخفاء التواصل (تظهر نجوم ***** فقط)
   async function openPlayerPublicProfile(userKey, msgKey) {
     playGameSound('click');
     const modal = document.getElementById('playerProfileModal');
@@ -8455,6 +9126,9 @@
       totalSpins: getPlayerTotalSpinsCount(cachedLbUser),
       avatar: cachedLbUser.avatar || fallbackMsg.avatar || '🦁',
       coverPhoto: cachedLbUser.coverPhoto || fallbackMsg.coverPhoto || '',
+      equippedFrame: cachedLbUser.equippedFrame || fallbackMsg.equippedFrame || '',
+      hideGold: !!(cachedLbUser.hideGold || fallbackMsg.hideGold),
+      hideContact: !!(cachedLbUser.hideContact || fallbackMsg.hideContact),
       bio: cachedLbUser.bio || fallbackMsg.bio || '',
       traderStarRevoked: !!(cachedLbUser.traderStarRevoked || fallbackMsg.traderStarRevoked),
       traderStarGrantedByAdmin: !!(cachedLbUser.traderStarGrantedByAdmin || fallbackMsg.traderStarGrantedByAdmin),
@@ -8475,6 +9149,7 @@
       }
     }
 
+    const isMe = currentUser && (userKey === currentUser.key);
     const vipLvl = pData.isAdmin ? 10 : (Number(pData.vip) || 0);
     const isVerified = isPlayerVerifiedTrader(pData);
     const goldVal = getPlayerGoldAmount(pData);
@@ -8482,14 +9157,21 @@
 
     const coverEl = document.getElementById('pubProfCover');
     if (coverEl) {
-      coverEl.style.backgroundImage = pData.coverPhoto
-        ? `url(${pData.coverPhoto})`
-        : 'linear-gradient(135deg,#1e1b4b,#7e22ce,#b45309)';
+      if (pData.coverPhoto) {
+        if (pData.coverPhoto.startsWith('data:image') || pData.coverPhoto.startsWith('http')) {
+          coverEl.style.backgroundImage = `url(${pData.coverPhoto})`;
+        } else {
+          coverEl.style.backgroundImage = pData.coverPhoto;
+        }
+      } else {
+        coverEl.style.backgroundImage = 'linear-gradient(135deg,#1e1b4b,#7e22ce,#b45309)';
+      }
     }
 
     const avEl = document.getElementById('pubProfAvatar');
     if (avEl) {
-      avEl.className = `profile-main-avatar frame-vip-${vipLvl}`;
+      const frameCls = pData.equippedFrame || `frame-vip-${vipLvl}`;
+      avEl.className = `profile-main-avatar ${frameCls}`;
       avEl.innerHTML = (pData.avatar && pData.avatar.startsWith('data:image'))
         ? `<img src="${pData.avatar}">`
         : `<span>${pData.avatar || '🦁'}</span>`;
@@ -8501,19 +9183,22 @@
     document.getElementById('pubProfVerifiedBadge').style.display = isVerified ? 'inline-flex' : 'none';
     document.getElementById('pubProfBioText').innerText = (pData.bio && pData.bio.trim()) ? pData.bio : 'لا توجد سيرة ذاتية مضافة.';
 
+    // تطبيق إخفاء الذهب: يظهر نجوم ***** فقط للزوار
     const goldStatEl = document.getElementById('pubProfGoldStat');
     const spinsStatEl = document.getElementById('pubProfSpinsStat');
-    if (goldStatEl) goldStatEl.innerText = formatCoins(goldVal) + ' 🪙';
+    if (goldStatEl) {
+      goldStatEl.innerText = (pData.hideGold && !isMe) ? '***** 🪙' : (formatCoins(goldVal) + ' 🪙');
+    }
     if (spinsStatEl) spinsStatEl.innerText = spinsVal.toLocaleString() + ' جولة 🎮';
 
     const friendWrap = document.getElementById('pubProfFriendBtnWrap');
+    const isAlreadyFriend = isAcceptedFriendWith(userKey);
     if (friendWrap) {
-      if (currentUser && userKey !== currentUser.key) {
-        const already = (currentUser.friendsList || []).some(f => f.key === userKey);
+      if (currentUser && !isMe) {
         friendWrap.innerHTML = `
-          <button class="btn-primary" style="width:auto; padding:6px 12px; font-size:0.74rem; ${already ? 'background:#334155; color:#fff;' : ''}"
-            onclick="addFriendDirect('${escapeHtml(userKey)}', '${escapeHtml(pData.username)}', '${pData.numericId || ''}', '', ${vipLvl})">
-            ${already ? 'صديقك ✅' : '➕ إضافة صديق'}
+          <button class="btn-primary" style="width:auto; padding:6px 12px; font-size:0.74rem; ${isAlreadyFriend ? 'background:#10b981; color:#000;' : ''}"
+            onclick="${isAlreadyFriend ? '' : `sendFriendRequestToUser('${escapeHtml(userKey)}', '${escapeHtml(pData.username)}', '${pData.numericId || ''}', ${vipLvl})`}">
+            ${isAlreadyFriend ? 'صديقك ✅' : '➕ إرسال طلب صداقة'}
           </button>
         `;
       } else {
@@ -8521,44 +9206,55 @@
       }
     }
 
+    // تطبيق إخفاء التواصل: يظهر نجوم ***** فقط للزوار عند التفعيل، والرسالة الخاصة تظهر بعد موافقة الصداقة
     const directBox = document.getElementById('pubProfDirectActionsBox');
     if (directBox) {
       const cleanContactPhone = (pData.contactPhone || pData.traderPhone || '').trim();
       const cleanContactTele = (pData.contactTelegram || pData.traderTelegram || '').trim().replace(/^@/, '');
       let directHtml = `
         <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          ${(!currentUser || userKey !== currentUser.key) ? `
+          ${(!isMe && isAlreadyFriend) ? `
             <button type="button" class="btn-primary" style="flex:1; padding:8px 10px; font-size:0.76rem; background:linear-gradient(135deg,#10b981,#059669); color:#000;"
               onclick="document.getElementById('playerProfileModal').classList.remove('open'); openDirectPrivateChat('${escapeHtml(userKey)}', '${escapeHtml(pData.username)}', '${escapeHtml(pData.numericId || '0000000')}', '', ${vipLvl})">
-              🔒 دردشة خاصة
+              💬 رسالة خاصة (صديقك)
             </button>
-          ` : ''}
-          <button type="button" class="btn-primary" style="flex:1; padding:8px 10px; font-size:0.74rem; background:linear-gradient(135deg,#0284c7,#2563eb); color:#fff;"
-            onclick="startDirectChatMention('${escapeHtml(userKey)}', '${escapeHtml(pData.username)}', '${escapeHtml(pData.numericId || '0000000')}')">
-            💬 إشارة بالعام (@)
-          </button>
+          ` : (!isMe ? `
+            <button type="button" class="btn-primary" style="flex:1; padding:8px 10px; font-size:0.72rem; background:#1e2946; color:#94a3b8; border:1px dashed #475569;"
+              onclick="sendFriendRequestToUser('${escapeHtml(userKey)}', '${escapeHtml(pData.username)}', '${escapeHtml(pData.numericId || '0000000')}', ${vipLvl})">
+              🔒 الرسالة الخاصة تفتح بعد قبول طلب الصداقة
+            </button>
+          ` : '')}
           <button type="button" class="btn-primary" style="width:auto; padding:8px 10px; font-size:0.72rem; background:#1e2946; color:var(--gold); border:1px solid var(--gold);"
             onclick="copyPlayerUid('${escapeHtml(pData.numericId || '0000000')}')">
             📋 نسخ المعرف
           </button>
         </div>
       `;
-      if (cleanContactPhone) {
-        const waDigits = cleanContactPhone.replace(/[^\d]/g, '');
+
+      if (pData.hideContact && !isMe) {
         directHtml += `
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #10b981;">
-            <span style="font-size:0.75rem; color:#e2e8f0;">📱 واتساب: <strong style="color:#34d399; direction:ltr; display:inline-block;">${escapeHtml(cleanContactPhone)}</strong></span>
-            <a href="https://wa.me/${waDigits}" target="_blank" style="background:#10b981; color:#000; font-weight:900; font-size:0.7rem; padding:4px 10px; border-radius:8px; text-decoration:none;">💬 محادثة</a>
+          <div style="background:#060913; padding:8px 10px; border-radius:10px; border:1px solid #334155; text-align:center; font-size:0.78rem; color:#fde047; font-weight:900;">
+            🔒 بيانات التواصل مخفية للخصوصية: *****
           </div>
         `;
-      }
-      if (cleanContactTele) {
-        directHtml += `
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #38bdf8;">
-            <span style="font-size:0.75rem; color:#e2e8f0;">✈️ تلكرام: <strong style="color:#38bdf8; direction:ltr; display:inline-block;">@${escapeHtml(cleanContactTele)}</strong></span>
-            <a href="https://t.me/${encodeURIComponent(cleanContactTele)}" target="_blank" style="background:#0284c7; color:#fff; font-weight:900; font-size:0.7rem; padding:4px 10px; border-radius:8px; text-decoration:none;">✈️ محادثة</a>
-          </div>
-        `;
+      } else {
+        if (cleanContactPhone) {
+          const waDigits = cleanContactPhone.replace(/[^\d]/g, '');
+          directHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #10b981;">
+              <span style="font-size:0.75rem; color:#e2e8f0;">📱 واتساب: <strong style="color:#34d399; direction:ltr; display:inline-block;">${escapeHtml(cleanContactPhone)}</strong></span>
+              <a href="https://wa.me/${waDigits}" target="_blank" style="background:#10b981; color:#000; font-weight:900; font-size:0.7rem; padding:4px 10px; border-radius:8px; text-decoration:none;">💬 محادثة</a>
+            </div>
+          `;
+        }
+        if (cleanContactTele) {
+          directHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #38bdf8;">
+              <span style="font-size:0.75rem; color:#e2e8f0;">✈️ تلكرام: <strong style="color:#38bdf8; direction:ltr; display:inline-block;">@${escapeHtml(cleanContactTele)}</strong></span>
+              <a href="https://t.me/${encodeURIComponent(cleanContactTele)}" target="_blank" style="background:#0284c7; color:#fff; font-weight:900; font-size:0.7rem; padding:4px 10px; border-radius:8px; text-decoration:none;">✈️ محادثة</a>
+            </div>
+          `;
+        }
       }
       directBox.innerHTML = directHtml;
     }
@@ -8574,25 +9270,29 @@
         : '💎 تاجر معتمد لبيع وشراء الذهب ونقاط VIP';
 
       let cHtml = '';
-      const cleanPhone = (pData.traderPhone || pData.contactPhone || '').trim();
-      const cleanTele = (pData.traderTelegram || pData.contactTelegram || '').trim().replace(/^@/, '');
+      if (pData.hideContact && !isMe) {
+        cHtml = `<div style="background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #334155; text-align:center; font-size:0.76rem; color:#fde047; font-weight:900;">🔒 أرقام التواصل: *****</div>`;
+      } else {
+        const cleanPhone = (pData.traderPhone || pData.contactPhone || '').trim();
+        const cleanTele = (pData.traderTelegram || pData.contactTelegram || '').trim().replace(/^@/, '');
 
-      if (cleanPhone) {
-        const waDigits = cleanPhone.replace(/[^\d]/g, '');
-        cHtml += `
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #10b981;">
-            <span style="font-size:0.76rem; color:#e2e8f0;">📱 الهاتف: <strong style="color:#34d399; direction:ltr; display:inline-block;">${escapeHtml(cleanPhone)}</strong></span>
-            <a href="https://wa.me/${waDigits}" target="_blank" style="background:#10b981; color:#000; font-weight:900; font-size:0.7rem; padding:4px 9px; border-radius:8px; text-decoration:none;">💬 تواصل</a>
-          </div>
-        `;
-      }
-      if (cleanTele) {
-        cHtml += `
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #38bdf8;">
-            <span style="font-size:0.76rem; color:#e2e8f0;">✈️ تلكرام: <strong style="color:#38bdf8; direction:ltr; display:inline-block;">@${escapeHtml(cleanTele)}</strong></span>
-            <a href="https://t.me/${encodeURIComponent(cleanTele)}" target="_blank" style="background:#0284c7; color:#fff; font-weight:900; font-size:0.7rem; padding:4px 9px; border-radius:8px; text-decoration:none;">✈️ مراسلة</a>
-          </div>
-        `;
+        if (cleanPhone) {
+          const waDigits = cleanPhone.replace(/[^\d]/g, '');
+          cHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #10b981;">
+              <span style="font-size:0.76rem; color:#e2e8f0;">📱 الهاتف: <strong style="color:#34d399; direction:ltr; display:inline-block;">${escapeHtml(cleanPhone)}</strong></span>
+              <a href="https://wa.me/${waDigits}" target="_blank" style="background:#10b981; color:#000; font-weight:900; font-size:0.7rem; padding:4px 9px; border-radius:8px; text-decoration:none;">💬 تواصل</a>
+            </div>
+          `;
+        }
+        if (cleanTele) {
+          cHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#060913; padding:7px 10px; border-radius:10px; border:1px solid #38bdf8;">
+              <span style="font-size:0.76rem; color:#e2e8f0;">✈️ تلكرام: <strong style="color:#38bdf8; direction:ltr; display:inline-block;">@${escapeHtml(cleanTele)}</strong></span>
+              <a href="https://t.me/${encodeURIComponent(cleanTele)}" target="_blank" style="background:#0284c7; color:#fff; font-weight:900; font-size:0.7rem; padding:4px 9px; border-radius:8px; text-decoration:none;">✈️ مراسلة</a>
+            </div>
+          `;
+        }
       }
       contactsBox.innerHTML = cHtml;
     } else {
@@ -8601,7 +9301,7 @@
   }
 
   /**************************************************************
-   * 15.8 نظام الهدايا الـ 5 في الدردشة (بدون أي شروحات + مؤثرات بصرية احتفالية)
+   * 15.8 نظام الهدايا الـ 5 في الدردشة
    **************************************************************/
   const CHAT_ROYAL_GIFTS = [
     { id: 'g10m',  title: '🌹 هدية الوردة الملكية',   cost: 10000000,   icon: '🌹' },
@@ -8724,6 +9424,8 @@
       numericId: currentUser.numericId || '0000000',
       vip: currentUser.vip || 0,
       avatar: currentUser.avatar || '🦁',
+      equippedFrame: currentUser.equippedFrame || '',
+      equippedChatFrame: currentUser.equippedChatFrame || '',
       isGiftAnnouncement: true,
       giftId: chosen.id,
       giftTitle: chosen.title,
@@ -8799,7 +9501,7 @@
     const pPriv = document.getElementById('privateChatInboxPaneWrapper');
     if (bPub) bPub.classList.toggle('active', currentChatSectionMode === 'public');
     if (bPriv) bPriv.classList.toggle('active', currentChatSectionMode === 'private');
-    if (pPub) pPub.style.display = currentChatSectionMode === 'public' ? 'block' : 'none';
+    if (pPub) pPub.style.display = currentChatSectionMode === 'public' ? 'flex' : 'none';
     if (pPriv) pPriv.style.display = currentChatSectionMode === 'private' ? 'block' : 'none';
     if (currentChatSectionMode === 'private') {
       renderPrivateInboxList();
@@ -8852,7 +9554,7 @@
     if (!box) return;
 
     if (entries.length === 0) {
-      box.innerHTML = `<div style="text-align:center; color:#64748b; padding:24px; font-size:0.8rem;">لا توجد محادثات خاصة بعد 💬</div>`;
+      box.innerHTML = `<div style="text-align:center; color:#64748b; padding:24px; font-size:0.8rem;">لا توجد محادثات خاصة بعد 💬<br><span style="font-size:0.7rem;">تفتح المحادثة الخاصة بعد موافقة الصديق على طلب الصداقة.</span></div>`;
       return;
     }
 
@@ -8891,6 +9593,10 @@
     if (!currentUser || !peerKey) return;
     if (peerKey === currentUser.key) {
       showToast('لا يمكنك فتح دردشة خاصة مع نفسك!', '#f59e0b');
+      return;
+    }
+    if (!isAcceptedFriendWith(peerKey)) {
+      showToast('🔒 الرسالة الخاصة متاحة فقط بعد موافقة المستخدم على طلب الصداقة!', '#f59e0b');
       return;
     }
     playGameSound('click');
@@ -8977,8 +9683,8 @@
       const isMe = currentUser && m.senderKey === currentUser.key;
       return `
         <div style="display:flex; flex-direction:column; align-items:${isMe ? 'flex-start' : 'flex-end'};">
-          <div style="max-width:82%; padding:8px 11px; border-radius:12px; background:${isMe ? 'linear-gradient(135deg,#0c4a6e,#1e3a8a)' : '#162038'}; border:1px solid ${isMe ? '#38bdf8' : 'rgba(251,191,36,0.4)'}; color:#fff; font-size:0.82rem;">
-            <div style="font-size:0.65rem; color:${isMe ? '#7dd3fc' : 'var(--gold)'}; font-weight:900; margin-bottom:2px;">
+          <div style="max-width:82%; padding:7px 10px; border-radius:11px; background:${isMe ? 'linear-gradient(135deg,#0c4a6e,#1e3a8a)' : '#162038'}; border:1px solid ${isMe ? '#38bdf8' : 'rgba(251,191,36,0.4)'}; color:#fff; font-size:0.78rem;">
+            <div style="font-size:0.62rem; color:${isMe ? '#7dd3fc' : 'var(--gold)'}; font-weight:900; margin-bottom:2px;">
               ${escapeHtml(m.senderName || 'لاعب')} • ${formatMsgTime(m.timestamp)}
             </div>
             <div style="word-break:break-word;">${escapeHtml(m.text || '')}</div>
@@ -9056,7 +9762,6 @@
     return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
   }
 
-  // دالة escapeHtml المحمية 100% ضد أخطاء فك التشفير عند النسخ أو الرفع على المتصفح
   function escapeHtml(text) {
     if (text === null || text === undefined) return '';
     const amp = '&' + 'amp;';
@@ -9088,6 +9793,8 @@
       numericId: currentUser.numericId || '0000000',
       vip: currentUser.vip || 0,
       avatar: currentUser.avatar || '🦁',
+      equippedFrame: currentUser.equippedFrame || '',
+      equippedChatFrame: currentUser.equippedChatFrame || '',
       bio: (currentUser.bio || '').slice(0, 100),
       traderStarRevoked: !!currentUser.traderStarRevoked,
       traderStarGrantedByAdmin: !!currentUser.traderStarGrantedByAdmin,
@@ -9119,11 +9826,23 @@
 
   let currentReportingMsgKey = null;
   let currentReportingUser = null;
+  let currentReportingUserKey = null;
+  let currentReportingMessageText = '';
 
-  function reportChatMessage(msgKey, targetUser) {
-    currentReportingMsgKey = msgKey;
-    currentReportingUser = targetUser;
-    document.getElementById('reportTargetUserText').innerText = `إبلاغ عن رسالة اللاعب: ${targetUser}`;
+  function reportChatMessage(msgKey, targetUser, targetUserKey) {
+    currentReportingMsgKey = msgKey || ('rep_' + getTrustedTimestamp());
+    currentReportingUser = targetUser || 'مستخدم';
+    currentReportingUserKey = targetUserKey || '';
+    const msgObj = (msgKey && cachedChatMessages[msgKey]) ? cachedChatMessages[msgKey] : null;
+    currentReportingMessageText = msgObj ? (msgObj.text || '') : '';
+
+    document.getElementById('reportTargetUserText').innerText = `إبلاغ عن رسالة اللاعب: ${currentReportingUser}`;
+    const msgPreviewEl = document.getElementById('reportTargetMsgBox');
+    if (msgPreviewEl) {
+      msgPreviewEl.innerText = currentReportingMessageText
+        ? `الرسالة المبلغ عنها: "${currentReportingMessageText}"`
+        : 'بلاغ على رسائل المستخدم في الدردشة';
+    }
     document.getElementById('reportReasonInput').value = '';
     document.getElementById('reportChatModal').classList.add('open');
   }
@@ -9139,24 +9858,74 @@
       showToast('يرجى كتابة سبب الإبلاغ!', '#ef4444');
       return;
     }
+    const repId = 'r_' + getTrustedTimestamp();
+    const reportPayload = {
+      msgKey: currentReportingMsgKey,
+      reportedBy: currentUser.username,
+      reportedByKey: currentUser.key,
+      reportedUser: currentReportingUser,
+      reportedUserKey: currentReportingUserKey,
+      messageText: currentReportingMessageText || '---',
+      reason: reason,
+      timestamp: getTrustedTimestamp()
+    };
     if (db) {
-      await dbWriteWithTimeout(db.ref('chat_reports/' + currentReportingMsgKey).push({
-        reportedBy: currentUser.username,
-        reportedUser: currentReportingUser,
-        reason: reason,
-        timestamp: getTrustedTimestamp()
-      }));
+      await dbWriteWithTimeout(db.ref(`chat_reports/${currentReportingMsgKey}/${repId}`).set(reportPayload));
     }
+    await restWriteJson(`chat_reports/${currentReportingMsgKey}/${repId}`, reportPayload, 'PUT');
     closeReportModal();
-    showToast('🚩 تم إرسال البلاغ للإدارة بنجاح!');
+    showToast('🚩 تم إرسال البلاغ مع نص الرسالة والسبب إلى لوحة التحكم بنجاح!');
   }
 
   /**************************************************************
-   * 16. نظام الأصدقاء والبحث
+   * 16. نظام الأصدقاء وطلبات الصداقة (إرسال طلب صداقة، موافقة أو حذف طلب، وتفعيل الرسالة الخاصة بعد الموافقة)
    **************************************************************/
   function renderMyFriendsList() {
+    if (!currentUser) return;
+
+    // 1. عرض طلبات الصداقة الواردة
+    const reqBox = document.getElementById('friendRequestsIncomingContainer');
+    const reqBadge = document.getElementById('incomingFriendReqCountBadge');
+    const incomingMap = currentUser.friendRequestsIn || {};
+    const incomingList = Object.entries(incomingMap)
+      .filter(([, r]) => r && typeof r === 'object')
+      .map(([senderKey, r]) => ({ ...r, senderKey }));
+
+    if (reqBadge) {
+      reqBadge.innerText = `${incomingList.length} طلب`;
+    }
+    if (reqBox) {
+      if (incomingList.length === 0) {
+        reqBox.innerHTML = `<div style="text-align:center; color:#64748b; font-size:0.76rem; padding:10px; background:#060913; border-radius:12px; border:1px solid #1e2946;">لا توجد طلبات صداقة واردة حالياً.</div>`;
+      } else {
+        reqBox.innerHTML = incomingList.map(r => {
+          const avHtml = (r.avatar && String(r.avatar).startsWith('data:image'))
+            ? `<img src="${r.avatar}">`
+            : `<span>${r.avatar || '🦁'}</span>`;
+          return `
+            <div class="friend-card" style="border-color:var(--gold); background:#091224;">
+              <div style="display:flex; align-items:center; gap:9px; cursor:pointer;" onclick="openPlayerPublicProfile('${escapeHtml(r.senderKey)}', '')">
+                <div class="avatar-wrap frame-vip-${r.vip || 0}" style="width:38px; height:38px; font-size:1.2rem;">
+                  ${avHtml}
+                </div>
+                <div>
+                  <div style="font-weight:900; font-size:0.84rem; color:var(--gold);">${escapeHtml(r.username || r.senderKey)}</div>
+                  <div style="font-size:0.68rem; color:#38bdf8;">#${escapeHtml(r.numericId || '0000000')} • VIP ${r.vip || 0}</div>
+                </div>
+              </div>
+              <div style="display:flex; gap:5px;">
+                <button type="button" class="chat-action-btn" style="background:var(--green); color:#000; font-weight:900; padding:5px 10px; border:none;" onclick="acceptIncomingFriendRequest('${escapeHtml(r.senderKey)}')">✅ موافقة</button>
+                <button type="button" class="chat-action-btn" style="background:var(--red); color:#fff; font-weight:900; padding:5px 9px; border:none;" onclick="deleteIncomingFriendRequest('${escapeHtml(r.senderKey)}')">❌ حذف</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // 2. عرض قائمة الأصدقاء الحاليين
     const box = document.getElementById('myFriendsListContainer');
-    if (!box || !currentUser) return;
+    if (!box) return;
     const list = currentUser.friendsList || [];
     if (list.length === 0) {
       box.innerHTML = '<div style="text-align:center; color:#64748b; font-size:0.78rem; padding:15px;">لا يوجد أصدقاء بعد.</div>';
@@ -9178,11 +9947,127 @@
           </div>
         </div>
         <div style="display:flex; gap:5px;">
-          <button class="chat-action-btn" style="color:#38bdf8; border-color:#38bdf8; padding:4px 8px;" onclick="openDirectPrivateChat('${escapeHtml(f.key)}', '${escapeHtml(f.username)}', '${escapeHtml(f.numericId || '0000000')}', '', ${f.vip || 0})">🔒 خاص</button>
+          <button class="chat-action-btn" style="color:#38bdf8; border-color:#38bdf8; padding:4px 8px; font-weight:900;" onclick="openDirectPrivateChat('${escapeHtml(f.key)}', '${escapeHtml(f.username)}', '${escapeHtml(f.numericId || '0000000')}', '', ${f.vip || 0})">💬 رسالة خاصة</button>
           <button class="chat-action-btn" style="color:var(--red); border-color:rgba(239,68,68,0.3); padding:4px 8px;" onclick="removeFriend('${f.key}')">حذف ✖</button>
         </div>
       </div>
     `).join('');
+  }
+
+  // إرسال طلب صداقة لمستخدم آخر
+  async function sendFriendRequestToUser(targetKey, targetUsername, targetNumericId, targetVip) {
+    if (!guardAntiSpam(350) || !currentUser || !targetKey) return;
+    if (targetKey === currentUser.key) {
+      showToast('لا يمكنك إرسال طلب صداقة لنفسك!', '#ef4444');
+      return;
+    }
+    if (isAcceptedFriendWith(targetKey)) {
+      showToast('هذا اللاعب صديقك بالفعل! يمكنك مراسلته خاص ✅', '#10b981');
+      return;
+    }
+
+    const reqPayload = {
+      senderKey: currentUser.key,
+      username: currentUser.username,
+      numericId: currentUser.numericId || '0000000',
+      vip: currentUser.vip || 0,
+      avatar: currentUser.avatar || '🦁',
+      timestamp: getTrustedTimestamp()
+    };
+
+    if (db) {
+      await dbWriteWithTimeout(db.ref(`users/${targetKey}/friendRequestsIn/${currentUser.key}`).set(reqPayload));
+    }
+    await restWriteJson(`users/${targetKey}/friendRequestsIn/${currentUser.key}`, reqPayload, 'PUT');
+
+    await sendAutomaticBellNotificationToUser(
+      targetKey,
+      '👥 طلب صداقة جديد!',
+      `أرسل إليك ${currentUser.username} (#${currentUser.numericId}) طلب صداقة. وافق عليه من قسم الأصدقاء لتفعيل الرسائل الخاصة!`,
+      0
+    );
+
+    playGameSound('win');
+    showToast(`📩 تم إرسال طلب الصداقة إلى ${targetUsername || targetKey} بنجاح!`);
+  }
+
+  // الموافقة على طلب الصداقة الوارد وتفعيل الرسالة الخاصة بين الطرفين
+  async function acceptIncomingFriendRequest(senderKey) {
+    if (!guardAntiSpam(350) || !currentUser || !senderKey) return;
+    const reqObj = (currentUser.friendRequestsIn && currentUser.friendRequestsIn[senderKey]) ? currentUser.friendRequestsIn[senderKey] : null;
+    if (!reqObj) return;
+
+    if (!currentUser.friendsList) currentUser.friendsList = [];
+    if (!currentUser.friendsList.some(f => f.key === senderKey)) {
+      currentUser.friendsList.push({
+        key: senderKey,
+        username: reqObj.username || senderKey,
+        numericId: reqObj.numericId || '0000000',
+        avatar: reqObj.avatar || resolveCachedUserAvatar(senderKey),
+        vip: reqObj.vip || 0
+      });
+    }
+    currentUser.friendsCount = currentUser.friendsList.length;
+    delete currentUser.friendRequestsIn[senderKey];
+
+    if (db) {
+      await dbWriteWithTimeout(db.ref(`users/${currentUser.key}/friendRequestsIn/${senderKey}`).remove());
+    }
+    await restWriteJson(`users/${currentUser.key}/friendRequestsIn/${senderKey}`, null, 'DELETE');
+    saveUser();
+
+    // إضافة الصداقة تلقائياً لدى الطرف المرسل أيضاً
+    try {
+      const snap = await dbOnceWithTimeout('users/' + senderKey, 3000);
+      const senderData = (snap && snap.exists()) ? (snap.val() || {}) : {};
+      const senderFriends = Array.isArray(senderData.friendsList) ? senderData.friendsList : [];
+      if (!senderFriends.some(f => f && f.key === currentUser.key)) {
+        senderFriends.push({
+          key: currentUser.key,
+          username: currentUser.username,
+          numericId: currentUser.numericId || '0000000',
+          avatar: currentUser.avatar || '🦁',
+          vip: currentUser.vip || 0
+        });
+      }
+      if (db) {
+        await dbWriteWithTimeout(db.ref('users/' + senderKey).update({
+          friendsList: senderFriends,
+          friendsCount: senderFriends.length,
+          lastAdminModifiedAt: getTrustedTimestamp()
+        }));
+      }
+      await restWriteJson('users/' + senderKey, {
+        friendsList: senderFriends,
+        friendsCount: senderFriends.length,
+        lastAdminModifiedAt: getTrustedTimestamp()
+      }, 'PATCH');
+
+      await sendAutomaticBellNotificationToUser(
+        senderKey,
+        '✅ تمت الموافقة على طلب صداقتك!',
+        `وافق ${currentUser.username} (#${currentUser.numericId}) على طلب صداقتك! يمكنك الآن إرسال رسائل خاصة له.`,
+        0
+      );
+    } catch (e) {}
+
+    playGameSound('win');
+    renderMyFriendsList();
+    showToast(`🎉 أصبحتما صديقين! تم فتح الرسائل الخاصة مع ${reqObj.username || senderKey}`);
+  }
+
+  async function deleteIncomingFriendRequest(senderKey) {
+    if (!currentUser || !senderKey) return;
+    if (currentUser.friendRequestsIn) {
+      delete currentUser.friendRequestsIn[senderKey];
+    }
+    if (db) {
+      await dbWriteWithTimeout(db.ref(`users/${currentUser.key}/friendRequestsIn/${senderKey}`).remove());
+    }
+    await restWriteJson(`users/${currentUser.key}/friendRequestsIn/${senderKey}`, null, 'DELETE');
+    saveUser();
+    renderMyFriendsList();
+    showToast('🗑️ تم حذف طلب الصداقة.');
   }
 
   async function searchPlayerToFriend() {
@@ -9243,10 +10128,10 @@
           </div>
         </div>
         ${isMyself ? '<span style="font-size:0.72rem; color:#94a3b8;">(حسابك)</span>' : `
-          <button class="btn-primary" style="width:auto; padding:5px 10px; font-size:0.72rem; ${isAlreadyFriend ? 'background:#334155;' : ''}"
-            onclick="addFriendDirect('${foundKey}', '${escapeHtml(foundUser.username)}', '${foundUser.numericId || ''}', '', ${foundUser.vip || 0})"
+          <button class="btn-primary" style="width:auto; padding:5px 10px; font-size:0.72rem; ${isAlreadyFriend ? 'background:#10b981; color:#000;' : ''}"
+            onclick="sendFriendRequestToUser('${foundKey}', '${escapeHtml(foundUser.username)}', '${foundUser.numericId || ''}', ${foundUser.vip || 0})"
             ${isAlreadyFriend ? 'disabled' : ''}>
-            ${isAlreadyFriend ? 'صديقك ✅' : '➕ إضافة'}
+            ${isAlreadyFriend ? 'صديقك ✅' : '➕ طلب صداقة'}
           </button>
         `}
       </div>
@@ -9254,33 +10139,11 @@
   }
 
   function addFriendFromChat(userKey, username, numericId, avatar, vip) {
-    addFriendDirect(userKey, username, numericId, avatar, vip);
+    sendFriendRequestToUser(userKey, username, numericId, vip);
   }
 
   function addFriendDirect(key, username, numericId, avatar, vip) {
-    if (!currentUser) return;
-    if (key === currentUser.key) {
-      showToast('لا يمكنك إضافة نفسك!', '#ef4444');
-      return;
-    }
-    if (!currentUser.friendsList) currentUser.friendsList = [];
-    if (currentUser.friendsList.some(f => f.key === key)) {
-      showToast('هذا اللاعب مضاف مسبقاً لديك!', '#ef4444');
-      return;
-    }
-    const resolvedAv = avatar || resolveCachedUserAvatar(key);
-    currentUser.friendsList.push({
-      key,
-      username,
-      numericId: numericId || '0000000',
-      avatar: resolvedAv,
-      vip: vip || 0
-    });
-    currentUser.friendsCount = currentUser.friendsList.length;
-    saveUser();
-    playGameSound('win');
-    showToast(`👥 تمت إضافة ${username} إلى أصدقائك!`);
-    renderMyFriendsList();
+    sendFriendRequestToUser(key, username, numericId, vip);
   }
 
   function removeFriend(key) {
@@ -9293,7 +10156,7 @@
   }
 
   /**************************************************************
-   * 17. سحب القسائم ولوحة الأدمن
+   * 17. سحب القسائم ولوحة الأدمن المدمجة
    **************************************************************/
   function updateRedeemCostHint() {
     const usd = parseInt(document.getElementById('rechargeSelect').value) || 1;
@@ -9693,6 +10556,36 @@
     loadAdminBannedAndVerifiedLists();
   }
 
+  async function adminSetUserLuckMode(luckMode) {
+    if (!verifyStrictAdminAccess()) return;
+    const rawTarget = (document.getElementById('adminLuckTargetUser').value || '').trim();
+    if (!rawTarget) {
+      showToast('⚠️ أدخل اسم المستخدم أو المعرف الرقمي أولاً!', '#ef4444');
+      return;
+    }
+    const targetKey = await resolveAdminTargetUserKey(rawTarget);
+    if (!targetKey) return;
+    const nowTs = getTrustedTimestamp();
+    const updates = {
+      customLuck: luckMode,
+      isBiggestWinner: luckMode === 'always_win',
+      mediumWinGamesClaimed: luckMode === 'medium_win' ? {} : null,
+      mediumWinResetAt: luckMode === 'medium_win' ? nowTs : null,
+      lastAdminModifiedAt: nowTs
+    };
+    if (db) {
+      await dbWriteWithTimeout(db.ref('users/' + targetKey).update(updates));
+    }
+    await restWriteJson('users/' + targetKey, updates, 'PATCH');
+    const labels = {
+      normal: '⚖️ ربح اعتيادي',
+      medium_win: '🎯 ربح متوسط (10x مع 4 ملوك لمرة واحدة في كل لعبة ملوك)',
+      high_win: '🔥 ربح عالي',
+      always_win: '👑 جعله رابح أكبر'
+    };
+    showToast(`✅ تم تطبيق (${labels[luckMode] || luckMode}) على اللاعب (${targetKey}) فوراً!`);
+  }
+
   async function loadAdminBannedAndVerifiedLists() {
     if (!verifyStrictAdminAccess()) return;
     const banBox = document.getElementById('adminBannedUsersList');
@@ -10065,13 +10958,26 @@
     reader.readAsDataURL(file);
   }
 
+  // عند الدخول لصفحة الدردشة تختفي القائمة العلوية والقائمة السفلية وتبقى الدردشة فقط
   function switchView(id, navEl) {
     playGameSound('click');
     document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+    const targetSec = document.getElementById(id);
+    if (targetSec) targetSec.classList.add('active');
+
+    const appWrap = document.getElementById('mainAppWrapper');
+    if (appWrap) {
+      appWrap.classList.toggle('chat-fullscreen-mode', id === 'chatView');
+    }
+
     if (navEl) {
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       navEl.classList.add('active');
+    } else {
+      document.querySelectorAll('.nav-item').forEach(n => {
+        const oc = n.getAttribute('onclick') || '';
+        n.classList.toggle('active', oc.includes(`'${id}'`));
+      });
     }
   }
 
